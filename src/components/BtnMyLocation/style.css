@@ -1,0 +1,5 @@
+.fab {
+  position: absolute;
+  top: calc(100% - 120px);
+  left: calc(100% - 70px);
+}
