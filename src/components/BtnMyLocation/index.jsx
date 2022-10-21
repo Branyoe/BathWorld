@@ -7,11 +7,15 @@ import { BathroomsContext, MapContext } from "../../context";
 
 export const BtnMyLocation = () => {
   const { map, isMapReady } = useContext(MapContext);
-  const { userLocation } = useContext(BathroomsContext);
+  const { userLocation, queryLocation } = useContext(BathroomsContext);
 
   const handleClick = () => {
     if(!isMapReady) throw new Error('Mapa no está listo');
-    if(!userLocation) throw new Error('Hubicación de usuario inexistente');
+    // if(!userLocation) throw new Error('Hubicación de usuario inexistente');
+    if(!userLocation) {
+      queryLocation();
+      return
+    }
     map?.flyTo({
       zoom: 14,
       center: userLocation

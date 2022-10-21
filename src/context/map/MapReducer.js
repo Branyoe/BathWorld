@@ -6,6 +6,16 @@ export const mapReducer = (state, action) => {
         isMapReady: true,
         map: action.payload
       }
+    case 'setMarkers':
+      return {
+        ...state,
+        markers: action.payload
+      }
+    case 'setLocationMarker':
+      return {
+        ...state,
+        locationMarker: action.payload
+      }
 
     default:
       return state;

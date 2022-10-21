@@ -6,6 +6,11 @@ export const BathroomsReducer = (state, action) => {
         isLoading: false,
         userLocation: action.payload
       }
+    case 'setBathrooms':
+      return {
+        ...state,
+        bathrooms: action.payload
+      }
     default:
       return state;
   }

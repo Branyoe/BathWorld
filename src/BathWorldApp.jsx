@@ -1,13 +1,17 @@
 import React from 'react'
 import { BathroomsProvider, MapProvider } from './context'
-import { HomeView } from './views'
+import { AuthProvider } from './context/authContext';
+import './dbConf';
+import Routes from './routes';
 
 export default function BathWorldApp() {
   return (
-    <BathroomsProvider>
-      <MapProvider>
-        <HomeView />
-      </MapProvider>
-    </BathroomsProvider>
+    <AuthProvider>
+      <BathroomsProvider>
+        <MapProvider>
+          <Routes />
+        </MapProvider>
+      </BathroomsProvider>
+    </AuthProvider>
   )
 }
