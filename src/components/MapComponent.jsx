@@ -54,7 +54,7 @@ export const MapComponent = () => {
     });
     setMarkers(newMarkers);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bathrooms])
+  }, [bathrooms, map])
 
   const el = document.createElement('div');
   const width = 60;
@@ -80,7 +80,7 @@ export const MapComponent = () => {
       setLocationMarker(marker)
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMapReady, isLoading, userLocation])
+  }, [isMapReady, isLoading, userLocation, map])
 
 
 

@@ -132,7 +132,7 @@ export default function BathroomView({ bathroom, setOpen }) {
             onClick={() => {
               setOpen();
               map?.flyTo({
-                zoom: 14,
+                zoom: 16,
                 center: [bathroom.lng, bathroom.lat]
               })
             }}
