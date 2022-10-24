@@ -2,6 +2,7 @@
 //@js-ignore
 
 import { useReducer } from "react";
+// import { directionsApi } from "../../apis/directionsApi";
 import { MapContext } from "./MapContext";
 import { mapReducer } from "./MapReducer";
 
@@ -24,8 +25,13 @@ export const MapProvider = ({ children }) => {
   }
 
   const setLocationMarker = marker => {
-    dispatch({ type: 'setLocationMarker', payload: marker})
+    dispatch({ type: 'setLocationMarker', payload: marker })
   }
+
+  // const getRouteBetweenPoints = async (start, end) => {
+  //   const resp = await directionsApi.get(`/${ start.join(',') };${ end.join(',') }`);
+  //   console.log(resp);
+  // }
 
   return (
     <MapContext.Provider value={{ ...state, setMap, setMarkers, setLocationMarker }}>

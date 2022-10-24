@@ -1,21 +1,24 @@
-import { Avatar, Button, Divider, Grid, Rating, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Divider, Rating, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { addComment, watchComments } from "../../DB";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+// import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import * as yup from "yup";
 import { useFormik } from "formik";
-import Comments from "./components/Comments";
+// import Comments from "./components/Comments";
 import { Loading } from "../../components";
 import { useAuth } from "../../context/authContext"
-import { MapContext } from "../../context";
+// import { MapContext } from "../../context";
+
+import "./index.css"
+import { Comments } from "./components/Comments";
 
 export default function BathroomView({ bathroom, setOpen }) {
   const [comments, setComments] = useState([]);
   const { user } = useAuth();
-  const {map} = useContext(MapContext);
+  // const { map } = useContext(MapContext);
 
 
   const queryComments = useCallback(async () => {
@@ -50,117 +53,44 @@ export default function BathroomView({ bathroom, setOpen }) {
 
   return (
     <>
-      <Box sx={{ height: "100vh", width: "100vw" }}>
-        <CloseIcon
-          style={{ position: "fixed", top: 10, left: "90%" }}
-          onClick={() => setOpen()}
-        />
-        <Box sx={{ padding: 1, paddingTop: 4 }}>
-          <Stack mb={5}>
-            <Grid container spacing={1}>
-              <Grid maxHeight="85px" item xs={4}>
-                <Box sx={{ height: "100%", bgcolor: "white", p: 1, borderRadius: 3 }}>
-                  <Avatar sx={{ height: 100, width: 100 }} src="/static/images/avatar/2.jpg" >B</Avatar>
-                </Box>
-              </Grid>
-              <Grid maxHeight="85px" item xs={8}>
-                <Box overflow="scroll" sx={{ maxHeight: "80px", bgcolor: "", p: 1 }}>
-                  <Typography
-                    variant="h6"
-                    fontWeight={600}
-                  >
-                    {bathroom.name}
-                  </Typography>
-                </Box>
-                <Stack>
-                  <Stack direction="row" alignItems="center">
-                    <AttachMoneyIcon fontSize="large" />
-                    <Typography variant="h6" >{bathroom.type}</Typography>
-                  </Stack>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} mt={8}>
-                {/* <Stack
-                bgcolor="white"
-                borderRadius={3}
-                mb={2}
-                p={1}
-              >
-                <Stack>
-                  <Stack
-                    component="form"
-                    onSubmit={formik.handleSubmit}
-                    noValidate sx={{ mt: 0 }}
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <TextField
-                      id="standard-number"
-                      label="Califíca este baño"
-                      type="number"
-                      variant="standard"
-                      name="calf"
-                      value={formik.values.calf}
-                      onChange={formik.handleChange}
-                      error={formik.touched.calf && Boolean(formik.errors.calf)}
-                      helperText={formik.touched.calf && formik.errors.calf}
-                    />
-                    <Button type="submit">Enviar</Button>
-                  </Stack>
-                </Stack>
-              </Stack> */}
-                <Stack justifyContent="center" alignItems="center">
-                  <Typography mb={2} variant="h4" component="legend">5</Typography>
+      <Box className="main-container">
+        <Box className="close-btn">
+          <CloseIcon sx={{ color: "white" }} onClick={() => setOpen()} />
+        </Box>
+        <Box className="main-img-container">
+          <Avatar variant="square" sx={{ height: "100%", width: "100%" }} src="/static/images/avatar/2.jpg" >B</Avatar>
+        </Box>
+        <div className="details-container">
+          <Stack className="title-container">
+            <div className="name-container">
+              <i className="fa-solid fa-toilet toilet-icon"></i>
+              <p className="name-text">{bathroom.name}</p>
+            </div>
+            <div>
+              <p className="adress-label">Dirección</p>
+              <p className="adress-text">{bathroom.address}</p>
+            </div>
+            <div>
+              <p className="adress-label">Calificación</p>
+              <div className="rating-container">
+                <div className="rating-inp">
                   <Rating
                     name="simple-controlled"
-                    value={5}
-                    onChange={(event, newValue) => {
-                      // setValue(newValue);
-                    }}
+                    size="large"
+                    value={4}
+                    defaultValue={4}
                   />
-                  <Typography mt={1} component="legend">Califica este baño</Typography>
-                </Stack>
-              </Grid>
-            </Grid>
+                </div>
+                <div className="rating-label">
+                  {4}
+                </div>
+              </div>
+            </div>
           </Stack>
-          <Stack
-            bgcolor="white"
-            borderRadius={3}
-            mb={2}
-            p={1}
-            onClick={() => {
-              setOpen();
-              map?.flyTo({
-                zoom: 16,
-                center: [bathroom.lng, bathroom.lat]
-              })
-            }}
-          >
-            <Stack>
-              <Typography
-                variant="subtitle2"
-              >
-                Ubicación
-              </Typography>
-              <Stack direction="row" alignItems="center">
-                <LocationOnIcon fontSize="large" />
-                <Typography variant="subtitle2" >{bathroom.address}</Typography>
-              </Stack>
-            </Stack>
-          </Stack>
-          <Stack
-            bgcolor="white"
-            borderRadius={3}
-            mb={2}
-            p={1}
-          >
-            <Stack>
-              <Typography
-                variant="subtitle2"
-              >
-                Comentarios
-              </Typography>
+        </div>
+        <div className="comments-container">
+          <div className="comments-box">
+            <div className="comments-inp">
               <Stack
                 component="form"
                 onSubmit={commentFormik.handleSubmit}
@@ -169,7 +99,6 @@ export default function BathroomView({ bathroom, setOpen }) {
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
-                pt={2}
                 px={1}
               >
                 <TextField
@@ -187,12 +116,12 @@ export default function BathroomView({ bathroom, setOpen }) {
                 <Button type="submit">Enviar</Button>
               </Stack>
               <Divider />
-              <Stack direction="row" alignItems="center">
-                <Comments data={comments} />
-              </Stack>
-            </Stack>
-          </Stack>
-        </Box>
+            </div>
+            <div className="comments-list">
+              <Comments data={comments} />
+            </div>
+          </div>
+        </div>
       </Box>
     </>
   );

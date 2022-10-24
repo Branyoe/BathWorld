@@ -1,0 +1,117 @@
+.main-container {
+  width: 100%;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.close-btn {
+  position: fixed;
+  top: 10px;
+  left: 2%;
+  background-color: #0532ff;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.main-img-container {
+  height: 25vh
+}
+
+.details-container {
+  height: calc(100vh - 25vh - 37.5vh);
+  /* overflow: scroll; */
+}
+
+.comments-container{
+  height: calc(100vh - 25vh - 40vh);
+  background-color: #f0f0f0;
+  padding-left: 5px;
+  padding-top: 10px;
+  padding-right: 5px;
+  /* overflow: scroll; */
+}
+
+.comments-box{
+  background-color: #fff;
+  border-radius: 10px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.comments-list{
+  margin: 0;
+  padding: 0;
+  height: calc(100% - 90px);
+  overflow: scroll;
+}
+
+.title-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.name-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toilet-icon {
+  color: #0532ff;
+  font-size: 30px;
+}
+
+.name-text {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1.7rem;
+  color: #000;
+}
+
+.adress-label{
+  margin: 0;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: #606060;
+}
+
+.adress-text{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  margin-top: 5px;
+  color: #161616;
+}
+
+.rating-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .3rem;
+}
+
+.rating-inp{
+  background-color: #0532ff;
+  padding: 5px 10px 5px 10px;
+  border-radius: 30px;
+}
+
+.rating-label{
+  background-color: #0532ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 100%;
+  color: #fff;
+  font-family: 'lato', sans-serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+}
