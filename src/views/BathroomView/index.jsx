@@ -3,23 +3,20 @@ import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { addComment, watchComments } from "../../DB";
-// import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import * as yup from "yup";
 import { useFormik } from "formik";
-// import Comments from "./components/Comments";
 import { Loading } from "../../components";
 import { useAuth } from "../../context/authContext"
-// import { MapContext } from "../../context";
-
-import "./index.css"
 import { Comments } from "./components/Comments";
 import { SendRounded } from "@mui/icons-material";
 
+import "./index.css"
+
 export default function BathroomView({ bathroom, setOpen }) {
   const [comments, setComments] = useState([]);
+  const [ratingValue, setRatingValue] = useState(0);
   const { user } = useAuth();
-  // const { map } = useContext(MapContext);
+  
 
 
   const queryComments = useCallback(async () => {
@@ -72,13 +69,17 @@ export default function BathroomView({ bathroom, setOpen }) {
               <p className="adress-text">{bathroom.address}</p>
             </div>
             <div>
-              <p className="adress-label">Calificación</p>
+              <p className="adress-label">Califíca este baño</p>
               <div className="rating-container">
                 <div className="rating-inp">
                   <Rating
                     name="simple-controlled"
                     size="large"
-                    value={4}
+                    value={ratingValue}
+                    onChange={(event, newValue) => {
+                      setRatingValue(newValue);
+                      
+                    }}
                     defaultValue={4}
                   />
                 </div>
