@@ -14,6 +14,7 @@ import { useAuth } from "../../context/authContext"
 
 import "./index.css"
 import { Comments } from "./components/Comments";
+import { SendRounded } from "@mui/icons-material";
 
 export default function BathroomView({ bathroom, setOpen }) {
   const [comments, setComments] = useState([]);
@@ -96,16 +97,19 @@ export default function BathroomView({ bathroom, setOpen }) {
                 onSubmit={commentFormik.handleSubmit}
                 noValidate
                 sx={{ mt: 0 }}
-                direction="column"
+                direction="row"
+                p={1}
                 justifyContent="center"
                 alignItems="center"
                 px={1}
+                mb={1}
               >
                 <TextField
                   id="standard-number"
                   label="Escribe aquí tu comentario"
                   type="string"
                   fullWidth
+                  autoComplete="off"
                   variant="standard"
                   name="comment"
                   value={commentFormik.values.comment}
@@ -113,7 +117,7 @@ export default function BathroomView({ bathroom, setOpen }) {
                   error={commentFormik.touched.comment && Boolean(commentFormik.errors.comment)}
                   helperText={commentFormik.touched.comment && commentFormik.errors.comment}
                 />
-                <Button type="submit">Enviar</Button>
+                <Button  type="submit"><SendRounded /></Button>
               </Stack>
               <Divider />
             </div>
@@ -126,3 +130,110 @@ export default function BathroomView({ bathroom, setOpen }) {
     </>
   );
 }
+
+// {/* <Stack mb={5}>
+//             <Grid container spacing={1}>
+//               <Grid maxHeight="85px" item xs={4}>
+//                 <Box sx={{ height: "100%", bgcolor: "white", p: 1, borderRadius: 3 }}>
+//                   <Avatar sx={{ height: 100, width: 100 }} src="/static/images/avatar/2.jpg" >B</Avatar>
+//                 </Box>
+//               </Grid>
+//               <Grid maxHeight="85px" item xs={8}>
+//                 <Box overflow="scroll" sx={{ maxHeight: "80px", bgcolor: "", p: 1 }}>
+//                   <Typography
+//                     variant="h6"
+//                     fontWeight={600}
+//                   >
+//                     {bathroom.name}
+//                   </Typography>
+//                 </Box>
+//                 <Stack>
+//                   <Stack direction="row" alignItems="center">
+//                     <AttachMoneyIcon fontSize="large" />
+//                     <Typography variant="h6" >{bathroom.type}</Typography>
+//                   </Stack>
+//                 </Stack>
+//               </Grid>
+//               <Grid item xs={12} mt={8}>
+//                 <Stack justifyContent="center" alignItems="center">
+//                   <Typography mb={2} variant="h4" component="legend">5</Typography>
+//                   <Rating
+//                     name="simple-controlled"
+//                     value={5}
+//                     onChange={(event, newValue) => {
+//                       // setValue(newValue);
+//                     }}
+//                   />
+//                   <Typography mt={1} component="legend">Califica este baño</Typography>
+//                 </Stack>
+//               </Grid>
+//             </Grid>
+//           </Stack>
+//           <Stack
+//             bgcolor="white"
+//             borderRadius={3}
+//             mb={2}
+//             p={1}
+//             onClick={() => {
+//               setOpen();
+//               map?.flyTo({
+//                 zoom: 16,
+//                 center: [bathroom.lng, bathroom.lat]
+//               })
+//             }}
+//           >
+//             <Stack>
+//               <Typography
+//                 variant="subtitle2"
+//               >
+//                 Ubicación
+//               </Typography>
+//               <Stack direction="row" alignItems="center">
+//                 <LocationOnIcon fontSize="large" />
+//                 <Typography variant="subtitle2" >{bathroom.address}</Typography>
+//               </Stack>
+//             </Stack>
+//           </Stack>
+//           <Stack
+//             bgcolor="white"
+//             borderRadius={3}
+//             mb={2}
+//             p={1}
+//           >
+//             <Stack>
+//               <Typography
+//                 variant="subtitle2"
+//               >
+//                 Comentarios
+//               </Typography>
+//               <Stack
+//                 component="form"
+//                 onSubmit={commentFormik.handleSubmit}
+//                 noValidate
+//                 sx={{ mt: 0 }}
+//                 direction="column"
+//                 justifyContent="center"
+//                 alignItems="center"
+//                 pt={2}
+//                 px={1}
+//               >
+//                 <TextField
+//                   id="standard-number"
+//                   label="Escribe aquí tu comentario"
+//                   type="string"
+//                   fullWidth
+//                   variant="standard"
+//                   name="comment"
+//                   value={commentFormik.values.comment}
+//                   onChange={commentFormik.handleChange}
+//                   error={commentFormik.touched.comment && Boolean(commentFormik.errors.comment)}
+//                   helperText={commentFormik.touched.comment && commentFormik.errors.comment}
+//                 />
+//                 <Button type="submit">Enviar</Button>
+//               </Stack>
+//               <Divider />
+//               <Stack direction="row" alignItems="center">
+//                 <Comments data={comments} />
+//               </Stack>
+//             </Stack>
+//           </Stack> */}
