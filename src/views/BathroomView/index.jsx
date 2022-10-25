@@ -101,8 +101,6 @@ export default function BathroomView({ bathroom, setOpen }) {
                 p={1}
                 justifyContent="center"
                 alignItems="center"
-                px={1}
-                mb={1}
               >
                 <TextField
                   id="standard-number"

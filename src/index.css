@@ -19,6 +19,8 @@
 
 ::-webkit-scrollbar {
   width: 7px;
+  background-color: red;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb {
