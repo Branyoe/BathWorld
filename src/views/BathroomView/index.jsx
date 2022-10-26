@@ -1,17 +1,14 @@
-/* eslint import/no-webpack-loader-syntax: off */
-//@js-ignore
-import { Map, Marker } from '!mapbox-gl';
-import { Avatar, Button, Divider, IconButton, Rating, styled, TextField } from "@mui/material";
+import { Avatar, Divider, Rating, styled } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import { useEffect, useState, useCallback, useLayoutEffect, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { addComment, watchComments } from "../../DB";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Loading } from "../../components";
 import { useAuth } from "../../context/authContext"
-import { Comments } from "./components/Comments";
-import { SendRounded } from "@mui/icons-material";
+// import { Comments } from "./components/Comments";
+// import { SendRounded } from "@mui/icons-material";
 
 import "./index.css"
 import { RatingDrawer } from "./components/RatingDrawer";
@@ -35,7 +32,7 @@ const StyledRating = styled(Rating)({
 
 
 export default function BathroomView({ bathroom, setOpen }) {
-  const [comments, setComments] = useState([]);
+  const [ setComments] = useState([]); //todo: add comments
   const [ratingValue, setRatingValue] = useState(0);
   const [ratingDrawerOpen, setRatingDrawerOpen] = useState(false);
   const [miniMap, setMiniMap] = useState(null);
