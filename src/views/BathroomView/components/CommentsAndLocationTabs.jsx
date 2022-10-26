@@ -43,12 +43,12 @@ function a11yProps(index) {
   };
 }
 
-const LABEL_STYLES = {
-  margin: 0,
-  fontWeight: 600,
-  fontFamily: '"Poppins", sans-serif',
-  color: "#606060"
-}
+// const LABEL_STYLES = {
+//   margin: 0,
+//   fontWeight: 600,
+//   fontFamily: '"Poppins", sans-serif',
+//   color: "#606060"
+// }
 
 const TEXT_STYLES = {
   margin: 0,
