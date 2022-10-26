@@ -14,13 +14,13 @@ export const MyRating = ({size, disable, ratingValue, setRatingValue, setOpenRat
   
   
   const handleOnChange = (event, newValue) => {
-    if(disable) return;
     setRatingValue(newValue);
     setOpenRatingDialog(true);
   }
 
   return (
     <StyledRating
+      readOnly={disable ? true : false}
       name="simple-controlled"
       size={size ? size : "large"}
       sx={{ gap: 1 }}

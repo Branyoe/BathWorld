@@ -35,6 +35,13 @@ export default function SignIn() {
       .required("campo requerido")
   });
 
+  const dbErrors = {
+    "Firebase: Error (auth/user-not-found).": "Usuario  inexistente",
+    "Firebase: Error (auth/wrong-password).":  "Contraseña incorrecta",
+    "Firebase: Error (auth/invalid-email).":  "Correo electónico invalido",
+    "Firebase: Error (auth/network-request-failed).":  "Problemas de red"
+  }
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -48,7 +55,7 @@ export default function SignIn() {
         setIsLoading(false);
         navigate('/');
       } catch (e) {
-        setError(e.message)
+        setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
         setIsLoading(false);
       }
       console.log("dataBaseUserQuery");

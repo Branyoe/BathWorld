@@ -39,6 +39,12 @@ export default function SignUp() {
       .oneOf([yup.ref('password'), null], 'las contraseñas no coinciden')
   });
 
+  const dbErrors = {
+    "Firebase: Error (auth/email-already-in-use).": "Este correo ya está registrado",
+    "Firebase: Error (auth/invalid-email).":  "Correo electónico invalido",
+    "Firebase: Error (auth/network-request-failed).":  "Problemas de red"
+  }
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -53,7 +59,7 @@ export default function SignUp() {
         setIsLoading(false);
         navigate('/')
       } catch (e) {
-        setError(e.message)
+        setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
         setIsLoading(false);
       }
       console.log("dataBaseUserQuery");
