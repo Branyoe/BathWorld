@@ -8,6 +8,7 @@ import Tab from '@mui/material/Tab';
 // import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Stack } from '@mui/system';
+import { Comments } from "../components/Comments";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,11 +52,12 @@ const LABEL_STYLES = {
 
 const TEXT_STYLES = {
   margin: 0,
-  fontWeight: 600,
+  fontWeight: 400,
+  fontSize: ".9rem",
   fontFamily: '"Poppins", sans-serif'
 }
 
-export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords }) => {
+export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, data}) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -113,13 +115,13 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords }
     <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab style={{ fontFamily: '"Poppins", sans-serif' }} label="Ubicación" {...a11yProps(0)} />
+          <Tab style={{ fontFamily: '"Poppins", sans-serif' }} label="Dirección" {...a11yProps(0)} />
           <Tab label="Comentarios" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <Stack>
-          <p style={LABEL_STYLES}>Direccion</p>
+          {/* <p style={LABEL_STYLES}>Direccion</p> */}
           <p style={TEXT_STYLES}>{address}</p>
         </Stack>
         <Box
@@ -136,7 +138,7 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords }
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Comentarios
+          <Comments data={data}/>
       </TabPanel>
     </Box>
   );

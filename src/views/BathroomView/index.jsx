@@ -1,40 +1,31 @@
-import { Avatar, Divider, Rating, styled } from "@mui/material";
+import { Avatar, Divider } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import { addComment, watchComments } from "../../DB";
+import { addComment, getCommentByUserEmail, watchComments } from "../../DB";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Loading } from "../../components";
 import { useAuth } from "../../context/authContext"
-// import { Comments } from "./components/Comments";
-// import { SendRounded } from "@mui/icons-material";
+import { CommentsAndLocationTabs } from "./components/CommentsAndLocationTabs.jsx";
+import RatingDialog from "./components/RatingDialog";
 
 import "./index.css"
-import { RatingDrawer } from "./components/RatingDrawer";
-import { CommentsAndLocationTabs } from "./components/CommentsAndLocationTabs.jsx";
+import { MyRating } from "./components/MyRating";
 
 const LABEL_STYLES = {
   margin: 0,
-  fontWeight: 600,
+  fontWeight: 400,
+  fontSize: ".9rem",
   fontFamily: '"Poppins", sans-serif',
   color: "#606060"
 }
 
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: 'brown',
-  },
-  '& .MuiRating-iconHover': {
-    color: 'brown',
-  },
-});
-
-
 export default function BathroomView({ bathroom, setOpen }) {
-  const [ setComments] = useState([]); //todo: add comments
+  const [comments, setComments] = useState([]);
+  const [hasComment, setHasComment] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
-  const [ratingDrawerOpen, setRatingDrawerOpen] = useState(false);
+  const [openRatingDialog, setOpenRatingDialog] = useState(false);
   const [miniMap, setMiniMap] = useState(null);
   const { user } = useAuth();
 
@@ -42,6 +33,15 @@ export default function BathroomView({ bathroom, setOpen }) {
   const queryComments = useCallback(async () => {
     await watchComments(bathroom.id, setComments);
   }, [setComments, bathroom.id])
+
+  const queryComment = useCallback(async () => {
+    const foundComment = await getCommentByUserEmail(user.email, bathroom.id);
+    if (foundComment.length) setHasComment(foundComment[0]);
+  }, [bathroom.id, setHasComment, user])
+
+  useEffect(() => {
+    queryComment();
+  }, [queryComment])
 
   useEffect(() => {
     queryComments()
@@ -69,13 +69,32 @@ export default function BathroomView({ bathroom, setOpen }) {
 
   if (!bathroom) return <Loading />
 
+  const ratingValidate = () => {
+    if (!hasComment) {
+      return (
+        <MyRating
+          ratingValue={ratingValue}
+          setRatingValue={setRatingValue}
+          setOpenRatingDialog={setOpenRatingDialog}
+        />
+      );
+    }
+    return (
+      <MyRating
+        disable
+        ratingValue={hasComment?.ratingValue}
+        setRatingValue={setRatingValue}
+        setOpenRatingDialog={setOpenRatingDialog}
+      />
+    );
+  }
+
   return (
     <>
       <Box
         sx={{
           width: "100%",
           height: "100vh",
-          bgcolor: "#f0f0f0",
           overflow: "scroll"
         }}
       >
@@ -105,25 +124,30 @@ export default function BathroomView({ bathroom, setOpen }) {
         </Box>
         {/* contenedor principal */}
         <Box sx={{
-          height: "calc(100vh - 25vh)",
-          px: 2.5
+          height: "calc(100vh - 25vh)"
         }}>
           {/* contenedor nombre */}
-          <Stack >
-            <div className="name-container">
-              <p className="name-text">{bathroom.name}</p>
+          <Stack mx={2}>
+            <div>
+              <p
+                style={{
+                  fontFamily: '"Nunito", sans-serif',
+                  fontWeight: 800,
+                  fontSize: "1.7rem",
+                  padding: 0,
+                  margin: "10px 0",
+                }}
+              >{bathroom.name}</p>
             </div>
           </Stack>
           {/* contenedor detalles */}
-          <Stack>
+          <Stack mx={2}>
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 width: 'fit-content',
                 border: (theme) => `1px solid ${theme.palette.divider}`,
-                borderRadius: 1,
-                bgcolor: 'background.paper',
                 color: 'text.secondary',
                 '& svg': {
                   m: 1.5,
@@ -143,7 +167,7 @@ export default function BathroomView({ bathroom, setOpen }) {
                     <i
                       className="fa-solid fa-poop"
                       style={{
-                        marginRight: "10px",
+                        marginRight: ".3rem",
                         color: "brown"
                       }}
                     ></i>
@@ -162,7 +186,7 @@ export default function BathroomView({ bathroom, setOpen }) {
                     <i
                       className="fa-solid fa-tag"
                       style={{
-                        marginRight: "10px"
+                        marginRight: ".3rem"
                       }}
                     ></i>
                     {bathroom.type}
@@ -172,20 +196,10 @@ export default function BathroomView({ bathroom, setOpen }) {
             </Box>
           </Stack>
           {/* contenedor calificacion */}
-          <Stack mb={3}>
+          <Stack mx={2} mb={3} mt={2}>
             <p style={LABEL_STYLES}>Califíca este baño</p>
             <Stack mt={.3}>
-              <StyledRating
-                name="simple-controlled"
-                size="large"
-                icon={<i className="fa-solid fa-poop"></i>}
-                emptyIcon={<i className="fa-solid fa-poop"></i>}
-                value={ratingValue}
-                onChange={(event, newValue) => {
-                  setRatingValue(newValue);
-                  // setRatingDrawerOpen(true);
-                }}
-              />
+              {ratingValidate()}
             </Stack>
           </Stack>
           <CommentsAndLocationTabs
@@ -193,44 +207,10 @@ export default function BathroomView({ bathroom, setOpen }) {
             coords={[bathroom.lng, bathroom.lat]}
             miniMap={miniMap}
             setMiniMap={setMiniMap}
+            data={comments}
           />
         </Box>
-        {/* <div className="comments-container">
-          <div className="comments-box">
-            <div className="comments-inp">
-              <Stack
-                component="form"
-                onSubmit={commentFormik.handleSubmit}
-                noValidate
-                sx={{ mt: 0 }}
-                direction="row"
-                p={1}
-                justifyContent="center"
-                alignItems="center"
-              >
-                <TextField
-                  id="standard-number"
-                  label="Escribe aquí tu comentario"
-                  type="string"
-                  fullWidth
-                  autoComplete="off"
-                  variant="standard"
-                  name="comment"
-                  value={commentFormik.values.comment}
-                  onChange={commentFormik.handleChange}
-                  error={commentFormik.touched.comment && Boolean(commentFormik.errors.comment)}
-                  helperText={commentFormik.touched.comment && commentFormik.errors.comment}
-                />
-                <Button type="submit"><SendRounded /></Button>
-              </Stack>
-              <Divider />
-            </div>
-            <div className="comments-list">
-              <Comments data={comments} />
-            </div>
-          </div>
-        </div> */}
-        <RatingDrawer isOpen={ratingDrawerOpen} setIsOpen={setRatingDrawerOpen} />
+        <RatingDialog bathroom={bathroom} ratingValue={ratingValue} isOpen={openRatingDialog} setIsOpen={setOpenRatingDialog} />
       </Box>
     </>
   );

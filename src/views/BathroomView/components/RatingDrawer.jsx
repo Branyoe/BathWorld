@@ -8,7 +8,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export const RatingDrawer = ({isOpen, setIsOpen}) =>  {
+export const RatingDrawer = ({ratingValue, isOpen, setIsOpen}) =>  {
 
   const handleClose = () => {
     setIsOpen(false);
@@ -22,7 +22,7 @@ export const RatingDrawer = ({isOpen, setIsOpen}) =>  {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <h1>sex</h1>
+        <h1>{ratingValue}</h1>
       </Dialog>
     </div>
   );
