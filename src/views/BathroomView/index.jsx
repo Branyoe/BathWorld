@@ -1,6 +1,9 @@
-import { Avatar, Button, Divider, Rating, TextField } from "@mui/material";
+/* eslint import/no-webpack-loader-syntax: off */
+//@js-ignore
+import { Map, Marker } from '!mapbox-gl';
+import { Avatar, Button, Divider, IconButton, Rating, styled, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useLayoutEffect, useRef } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { addComment, watchComments } from "../../DB";
 import * as yup from "yup";
@@ -11,12 +14,32 @@ import { Comments } from "./components/Comments";
 import { SendRounded } from "@mui/icons-material";
 
 import "./index.css"
+import { RatingDrawer } from "./components/RatingDrawer";
+import { CommentsAndLocationTabs } from "./components/CommentsAndLocationTabs.jsx";
+
+const LABEL_STYLES = {
+  margin: 0,
+  fontWeight: 600,
+  fontFamily: '"Poppins", sans-serif',
+  color: "#606060"
+}
+
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: 'brown',
+  },
+  '& .MuiRating-iconHover': {
+    color: 'brown',
+  },
+});
+
 
 export default function BathroomView({ bathroom, setOpen }) {
   const [comments, setComments] = useState([]);
   const [ratingValue, setRatingValue] = useState(0);
+  const [ratingDrawerOpen, setRatingDrawerOpen] = useState(false);
+  const [miniMap, setMiniMap] = useState(null);
   const { user } = useAuth();
-  
 
 
   const queryComments = useCallback(async () => {
@@ -51,46 +74,131 @@ export default function BathroomView({ bathroom, setOpen }) {
 
   return (
     <>
-      <Box className="main-container">
-        <Box className="close-btn">
-          <CloseIcon sx={{ color: "white" }} onClick={() => setOpen()} />
+      <Box
+        sx={{
+          width: "100%",
+          height: "100vh",
+          bgcolor: "#f0f0f0",
+          overflow: "scroll"
+        }}
+      >
+        {/* botón cerrar */}
+        <Box
+          sx={{
+            position: "fixed",
+            top: "10px",
+            left: "2%",
+            bgcolor: "#fff",
+            height: "35px",
+            width: "35px",
+            borderRadius: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 999
+          }}
+        >
+          <CloseIcon color="#000" onClick={() => setOpen()} />
         </Box>
-        <Box className="main-img-container">
-          <Avatar variant="square" sx={{ height: "100%", width: "100%" }} src="/static/images/avatar/2.jpg" >B</Avatar>
+        {/* contenedor img */}
+        <Box height="25vh" >
+          <Avatar variant="square" sx={{ height: "100%", width: "100%" }} src={bathroom.mainPhoto}>
+            <i style={{ color: "#fff", fontSize: "3rem" }} className="fa-solid fa-toilet"></i>
+          </Avatar>
         </Box>
-        <div className="details-container">
-          <Stack className="title-container">
+        {/* contenedor principal */}
+        <Box sx={{
+          height: "calc(100vh - 25vh)",
+          px: 2.5
+        }}>
+          {/* contenedor nombre */}
+          <Stack >
             <div className="name-container">
-              <i className="fa-solid fa-toilet toilet-icon"></i>
               <p className="name-text">{bathroom.name}</p>
             </div>
-            <div>
-              <p className="adress-label">Dirección</p>
-              <p className="adress-text">{bathroom.address}</p>
-            </div>
-            <div>
-              <p className="adress-label">Califíca este baño</p>
-              <div className="rating-container">
-                <div className="rating-inp">
-                  <Rating
-                    name="simple-controlled"
-                    size="large"
-                    value={ratingValue}
-                    onChange={(event, newValue) => {
-                      setRatingValue(newValue);
-                      
-                    }}
-                    defaultValue={4}
-                  />
-                </div>
-                <div className="rating-label">
-                  {4}
-                </div>
-              </div>
-            </div>
           </Stack>
-        </div>
-        <div className="comments-container">
+          {/* contenedor detalles */}
+          <Stack>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: 'fit-content',
+                border: (theme) => `1px solid ${theme.palette.divider}`,
+                borderRadius: 1,
+                bgcolor: 'background.paper',
+                color: 'text.secondary',
+                '& svg': {
+                  m: 1.5,
+                },
+                '& hr': {
+                  mx: 0.5,
+                },
+              }}
+            >
+              <Box mr={1}>
+                <p style={LABEL_STYLES}>Valoración</p>
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <p className="adress-text">
+                    <i
+                      className="fa-solid fa-poop"
+                      style={{
+                        marginRight: "10px",
+                        color: "brown"
+                      }}
+                    ></i>
+                    4.5
+                  </p>
+                </Box>
+              </Box>
+              <Divider orientation="vertical" variant="middle" flexItem />
+              <Box ml={1}>
+                <p style={LABEL_STYLES}>Precio</p>
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                  <p className="adress-text">
+                    <i
+                      className="fa-solid fa-tag"
+                      style={{
+                        marginRight: "10px"
+                      }}
+                    ></i>
+                    {bathroom.type}
+                  </p>
+                </Box>
+              </Box>
+            </Box>
+          </Stack>
+          {/* contenedor calificacion */}
+          <Stack mb={3}>
+            <p style={LABEL_STYLES}>Califíca este baño</p>
+            <Stack mt={.3}>
+              <StyledRating
+                name="simple-controlled"
+                size="large"
+                icon={<i className="fa-solid fa-poop"></i>}
+                emptyIcon={<i className="fa-solid fa-poop"></i>}
+                value={ratingValue}
+                onChange={(event, newValue) => {
+                  setRatingValue(newValue);
+                  // setRatingDrawerOpen(true);
+                }}
+              />
+            </Stack>
+          </Stack>
+          <CommentsAndLocationTabs
+            address={bathroom.address}
+            coords={[bathroom.lng, bathroom.lat]}
+            miniMap={miniMap}
+            setMiniMap={setMiniMap}
+          />
+        </Box>
+        {/* <div className="comments-container">
           <div className="comments-box">
             <div className="comments-inp">
               <Stack
@@ -116,7 +224,7 @@ export default function BathroomView({ bathroom, setOpen }) {
                   error={commentFormik.touched.comment && Boolean(commentFormik.errors.comment)}
                   helperText={commentFormik.touched.comment && commentFormik.errors.comment}
                 />
-                <Button  type="submit"><SendRounded /></Button>
+                <Button type="submit"><SendRounded /></Button>
               </Stack>
               <Divider />
             </div>
@@ -124,115 +232,9 @@ export default function BathroomView({ bathroom, setOpen }) {
               <Comments data={comments} />
             </div>
           </div>
-        </div>
+        </div> */}
+        <RatingDrawer isOpen={ratingDrawerOpen} setIsOpen={setRatingDrawerOpen} />
       </Box>
     </>
   );
 }
-
-// {/* <Stack mb={5}>
-//             <Grid container spacing={1}>
-//               <Grid maxHeight="85px" item xs={4}>
-//                 <Box sx={{ height: "100%", bgcolor: "white", p: 1, borderRadius: 3 }}>
-//                   <Avatar sx={{ height: 100, width: 100 }} src="/static/images/avatar/2.jpg" >B</Avatar>
-//                 </Box>
-//               </Grid>
-//               <Grid maxHeight="85px" item xs={8}>
-//                 <Box overflow="scroll" sx={{ maxHeight: "80px", bgcolor: "", p: 1 }}>
-//                   <Typography
-//                     variant="h6"
-//                     fontWeight={600}
-//                   >
-//                     {bathroom.name}
-//                   </Typography>
-//                 </Box>
-//                 <Stack>
-//                   <Stack direction="row" alignItems="center">
-//                     <AttachMoneyIcon fontSize="large" />
-//                     <Typography variant="h6" >{bathroom.type}</Typography>
-//                   </Stack>
-//                 </Stack>
-//               </Grid>
-//               <Grid item xs={12} mt={8}>
-//                 <Stack justifyContent="center" alignItems="center">
-//                   <Typography mb={2} variant="h4" component="legend">5</Typography>
-//                   <Rating
-//                     name="simple-controlled"
-//                     value={5}
-//                     onChange={(event, newValue) => {
-//                       // setValue(newValue);
-//                     }}
-//                   />
-//                   <Typography mt={1} component="legend">Califica este baño</Typography>
-//                 </Stack>
-//               </Grid>
-//             </Grid>
-//           </Stack>
-//           <Stack
-//             bgcolor="white"
-//             borderRadius={3}
-//             mb={2}
-//             p={1}
-//             onClick={() => {
-//               setOpen();
-//               map?.flyTo({
-//                 zoom: 16,
-//                 center: [bathroom.lng, bathroom.lat]
-//               })
-//             }}
-//           >
-//             <Stack>
-//               <Typography
-//                 variant="subtitle2"
-//               >
-//                 Ubicación
-//               </Typography>
-//               <Stack direction="row" alignItems="center">
-//                 <LocationOnIcon fontSize="large" />
-//                 <Typography variant="subtitle2" >{bathroom.address}</Typography>
-//               </Stack>
-//             </Stack>
-//           </Stack>
-//           <Stack
-//             bgcolor="white"
-//             borderRadius={3}
-//             mb={2}
-//             p={1}
-//           >
-//             <Stack>
-//               <Typography
-//                 variant="subtitle2"
-//               >
-//                 Comentarios
-//               </Typography>
-//               <Stack
-//                 component="form"
-//                 onSubmit={commentFormik.handleSubmit}
-//                 noValidate
-//                 sx={{ mt: 0 }}
-//                 direction="column"
-//                 justifyContent="center"
-//                 alignItems="center"
-//                 pt={2}
-//                 px={1}
-//               >
-//                 <TextField
-//                   id="standard-number"
-//                   label="Escribe aquí tu comentario"
-//                   type="string"
-//                   fullWidth
-//                   variant="standard"
-//                   name="comment"
-//                   value={commentFormik.values.comment}
-//                   onChange={commentFormik.handleChange}
-//                   error={commentFormik.touched.comment && Boolean(commentFormik.errors.comment)}
-//                   helperText={commentFormik.touched.comment && commentFormik.errors.comment}
-//                 />
-//                 <Button type="submit">Enviar</Button>
-//               </Stack>
-//               <Divider />
-//               <Stack direction="row" alignItems="center">
-//                 <Comments data={comments} />
-//               </Stack>
-//             </Stack>
-//           </Stack> */}
