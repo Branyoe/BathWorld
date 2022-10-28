@@ -22,6 +22,7 @@ export const MyRating = ({size, disable, ratingValue, setRatingValue, setOpenRat
     <StyledRating
       readOnly={disable ? true : false}
       name="simple-controlled"
+      defaultValue={0}
       size={size ? size : "large"}
       sx={{ gap: 1 }}
       icon={<i className="fa-solid fa-poop"></i>}

@@ -132,22 +132,22 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
           <p style={TEXT_STYLES}>{bathroom.address}</p>
         </Stack>
         <Box sx={{
-            position: 'fixed',
-            top: "calc(100% - 200px)",
-            left: "calc(100% - 55px)",
-            // bgcolor:"white",
-            borderRadius: "50%",
-            zIndex: 999,
-            width: "30px",
-            height: "30px",
+          position: 'fixed',
+          top: "calc(100% - 200px)",
+          left: "calc(100% - 55px)",
+          // bgcolor:"white",
+          borderRadius: "50%",
+          zIndex: 999,
+          width: "30px",
+          height: "30px",
 
-          }}
+        }}
           onClick={() => {
             navigator(`/route/${bathroom.id}`);
           }}
-          >
-            <DirectionsIcon sx={{ padding: 0, backgroundColor: 'white', borderRadius: '50%', width: "40px", height: "40px" }} color="primary" />
-          </Box>
+        >
+          <DirectionsIcon sx={{ padding: 0, backgroundColor: 'white', borderRadius: '50%', width: "40px", height: "40px" }} color="primary" />
+        </Box>
         <Box
           id="map"
           ref={(el) => mapContainer.current = el}

@@ -2,7 +2,7 @@ import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } fr
 import { db } from "./dbConf";
 
 export const getBathroom = (id) => getDoc(doc(db, "bathrooms", id));
-export const addComment = (bathroomId, userEmail, comment, ratingValue) => {
+export const addComment = ({bathroomId, userEmail, comment, ratingValue}) => {
   const newComment = doc(collection(db, "comments"));
   setDoc(newComment, { bathroomId, userEmail, comment, ratingValue });
 }

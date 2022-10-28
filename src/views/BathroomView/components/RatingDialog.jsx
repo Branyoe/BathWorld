@@ -14,7 +14,7 @@ import { useAuth } from '../../../context/authContext';
 
 
 
-export default function RatingDialog({bathroom, ratingValue, isOpen, setIsOpen }) {
+export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom, setRatingValue ,ratingValue, isOpen, setIsOpen }) {
 
   const { user } = useAuth();
 
@@ -34,7 +34,15 @@ export default function RatingDialog({bathroom, ratingValue, isOpen, setIsOpen }
     },
     validationSchema: commentVlidationSchema,
     onSubmit: async ({ comment }) => {
-      await addComment(bathroom.id, user.email, comment, ratingValue);
+      const newComment = {
+        bathroomId: bathroom.id,
+        userEmail: user.email,
+        comment,
+        ratingValue
+      }
+      await addComment(newComment);
+      setShowRatingInp(true);
+      setHasComment([newComment]);
       commentFormik.resetForm();
       setIsOpen(false);
     }
@@ -42,6 +50,7 @@ export default function RatingDialog({bathroom, ratingValue, isOpen, setIsOpen }
   
   const handleClose = () => {
     commentFormik.resetForm();
+    setRatingValue(0);
     setIsOpen(false);
   };
 

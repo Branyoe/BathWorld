@@ -1,4 +1,4 @@
-import { Avatar, Divider } from "@mui/material";
+import { Avatar, Button, Divider } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,35 +22,40 @@ const LABEL_STYLES = {
   color: "#606060"
 }
 
-export default function BathroomView({  setOpen }) {
+export default function BathroomView({ setOpen }) {
   const [comments, setComments] = useState([]);
   const [bathroom, setBathroom] = useState();
   const [hasComment, setHasComment] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
   const [miniMap, setMiniMap] = useState(null);
+  const [showRatingInp, setShowRatingInp] = useState(false);
   const { user } = useAuth();
-  const {id} = useParams();
+  const { id } = useParams();
   const navigator = useNavigate()
 
   useEffect(() => {
     const getB = async () => {
       const b = await getBathroom(id);
-      setBathroom({id: b.id, ...b.data()});
+      setBathroom({ id: b.id, ...b.data() });
     }
     getB();
   }, [id]);
 
 
   const queryComments = useCallback(async () => {
-    if(!bathroom) return
+    if (!bathroom) return
     await watchComments(bathroom?.id, setComments);
   }, [setComments, bathroom])
 
   const queryComment = useCallback(async () => {
-    if(!bathroom) return 
+    if (!bathroom) return
     const foundComment = await getCommentByUserEmail(user.email, bathroom?.id);
-    if (foundComment.length) setHasComment(foundComment[0]);
+    if (foundComment.length) {
+      setHasComment(foundComment[0]);
+      setRatingValue(foundComment[0].ratingValue)
+      setShowRatingInp(true);
+    }
   }, [bathroom, setHasComment, user])
 
   useEffect(() => {
@@ -61,13 +66,12 @@ export default function BathroomView({  setOpen }) {
     queryComments()
   }, [queryComments])
 
-  
   const commentVlidationSchema = yup.object({
     comment: yup
-    .string('solo textor')
-    .required('esto no puede estar vacio')
-    .min(10, "mínimo 10 caracteres")
-    .max(200, "maximo 200 caracteres")
+      .string('solo textor')
+      .required('esto no puede estar vacio')
+      .min(10, "mínimo 10 caracteres")
+      .max(200, "maximo 200 caracteres")
   });
 
   const commentFormik = useFormik({
@@ -80,26 +84,65 @@ export default function BathroomView({  setOpen }) {
       commentFormik.resetForm();
     }
   });
-  
+
   if (!bathroom) return <Loading />
 
-  const ratingValidate = () => {
-    if (!hasComment) {
+  const showRatingInpHanlder = () => {
+    if (showRatingInp) {
       return (
-        <MyRating
-          ratingValue={ratingValue}
-          setRatingValue={setRatingValue}
-          setOpenRatingDialog={setOpenRatingDialog}
-        />
+        <Stack mx={2} mb={3} mt={2}>
+          <p style={LABEL_STYLES}>Tu calificación</p>
+          <Stack mt={.3}>
+            <MyRating
+              ratingValue={ratingValue}
+              setRatingValue={setRatingValue}
+              setOpenRatingDialog={setOpenRatingDialog}
+            />
+          </Stack>
+        </Stack>
       );
     }
+  }
+
+  const showDisableRatingInp = () => {
+    if (hasComment) {
+      return (
+        <Stack mx={2} mb={3} mt={2}>
+          <p style={LABEL_STYLES}>Tu calificación</p>
+          <Stack mt={.3}>
+            <MyRating
+              disable
+              ratingValue={ratingValue}
+              setRatingValue={setRatingValue}
+              setOpenRatingDialog={setOpenRatingDialog}
+            />
+          </Stack>
+        </Stack>
+      );
+    }
+  }
+
+  const showAttendanceField = () => {
+    if (hasComment) return;
     return (
-      <MyRating
-        disable
-        ratingValue={hasComment?.ratingValue}
-        setRatingValue={setRatingValue}
-        setOpenRatingDialog={setOpenRatingDialog}
-      />
+      <>
+        <Stack mx={2} mb={3} mt={2}>
+          <p style={LABEL_STYLES}>¿Has estado en este baño?</p>
+          <Stack direction="row" spacing={1} mt={.3}>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => setShowRatingInp(true)}
+            >Si</Button>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={() => setShowRatingInp(false)}
+            >No</Button>
+          </Stack>
+        </Stack>
+        {showRatingInpHanlder()}
+      </>
     );
   }
 
@@ -211,13 +254,8 @@ export default function BathroomView({  setOpen }) {
               </Box>
             </Box>
           </Stack>
-          {/* contenedor calificacion */}
-          <Stack mx={2} mb={3} mt={2}>
-            <p style={LABEL_STYLES}>Califíca este baño</p>
-            <Stack mt={.3}>
-              {ratingValidate()}
-            </Stack>
-          </Stack>
+          {showDisableRatingInp()}
+          {showAttendanceField()}
           <CommentsAndLocationTabs
             bathroom={bathroom}
             miniMap={miniMap}
@@ -225,7 +263,7 @@ export default function BathroomView({  setOpen }) {
             data={comments}
           />
         </Box>
-        <RatingDialog bathroom={bathroom} ratingValue={ratingValue} isOpen={openRatingDialog} setIsOpen={setOpenRatingDialog} />
+        <RatingDialog setShowRatingInp={setShowRatingInp} setHasComment={setHasComment} setRatingValue={setRatingValue} bathroom={bathroom} ratingValue={ratingValue} isOpen={openRatingDialog} setIsOpen={setOpenRatingDialog} />
       </Box>
     </>
   );

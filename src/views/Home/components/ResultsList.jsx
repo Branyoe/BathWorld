@@ -4,14 +4,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { ListItemButton } from '@mui/material';
 import { BathroomsContext } from '../../../context';
-import currentBathroomStore from '../../../stores/currentBathroomStore';
+import { useNavigate } from 'react-router-dom';
 
 export const ResultsList = ({ inpValue }) => {
+  const navigator = useNavigate();
+
   const {bathrooms} = React.useContext(BathroomsContext);
-  const { setIsOpen, setData } = currentBathroomStore(state => ({
-    setIsOpen: state.setIsOpen,
-    setData: state.setData
-  }))
 
   const filterData = bathrooms.filter(e => {
     if (inpValue !== '') return e.name.toLowerCase().includes(inpValue.toLowerCase());
@@ -27,8 +25,7 @@ export const ResultsList = ({ inpValue }) => {
         <div key={bathroom.id}>
           <ListItemButton onClick={
             () => {
-              setIsOpen(true);
-              setData(bathroom);
+              navigator(`/bathroom/${bathroom.id}`);
             }
           }>
             <ListItemText primary={bathroom.name} />

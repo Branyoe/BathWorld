@@ -140,7 +140,7 @@ export const RouteView = () => {
   useEffect(() => {
     if (map) getRouteBetweenPoints(userLocation, [bathroom.lng, bathroom.lat]);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, getRouteBetweenPoints, bathroom])
+  }, [bathroom, map])
 
   if (!bathroom) return <Loading />
   return (
