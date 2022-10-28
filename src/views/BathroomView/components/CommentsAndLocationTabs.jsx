@@ -11,7 +11,8 @@ import { Stack } from '@mui/system';
 import { Comments } from "../components/Comments";
 import DirectionsIcon from '@mui/icons-material/AssistantDirectionRounded';
 import { useNavigate } from 'react-router-dom';
-import mapboxgl from 'mapbox-gl';
+//@js-ignore
+import mapboxgl from '!mapbox-gl';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

@@ -1,5 +1,7 @@
+/* eslint import/no-webpack-loader-syntax: off */
 import { Box } from "@mui/material";
-import { LngLatBounds, Map, Marker } from "mapbox-gl";
+//@js-ignore
+import { LngLatBounds, Map, Marker } from "!mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { Loading } from "../../components";
