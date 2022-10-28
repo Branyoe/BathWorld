@@ -2,7 +2,7 @@ import { Avatar, Divider } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import { addComment, getCommentByUserEmail, watchComments } from "../../DB";
+import { addComment, getBathroom, getCommentByUserEmail, watchComments } from "../../DB";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Loading } from "../../components";
@@ -12,6 +12,7 @@ import RatingDialog from "./components/RatingDialog";
 
 import "./index.css"
 import { MyRating } from "./components/MyRating";
+import { useNavigate, useParams } from "react-router-dom";
 
 const LABEL_STYLES = {
   margin: 0,
@@ -21,23 +22,36 @@ const LABEL_STYLES = {
   color: "#606060"
 }
 
-export default function BathroomView({ bathroom, setOpen }) {
+export default function BathroomView({  setOpen }) {
   const [comments, setComments] = useState([]);
+  const [bathroom, setBathroom] = useState();
   const [hasComment, setHasComment] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
   const [miniMap, setMiniMap] = useState(null);
   const { user } = useAuth();
+  const {id} = useParams();
+  const navigator = useNavigate()
+
+  useEffect(() => {
+    const getB = async () => {
+      const b = await getBathroom(id);
+      setBathroom({id: b.id, ...b.data()});
+    }
+    getB();
+  }, [id]);
 
 
   const queryComments = useCallback(async () => {
-    await watchComments(bathroom.id, setComments);
-  }, [setComments, bathroom.id])
+    if(!bathroom) return
+    await watchComments(bathroom?.id, setComments);
+  }, [setComments, bathroom])
 
   const queryComment = useCallback(async () => {
-    const foundComment = await getCommentByUserEmail(user.email, bathroom.id);
+    if(!bathroom) return 
+    const foundComment = await getCommentByUserEmail(user.email, bathroom?.id);
     if (foundComment.length) setHasComment(foundComment[0]);
-  }, [bathroom.id, setHasComment, user])
+  }, [bathroom, setHasComment, user])
 
   useEffect(() => {
     queryComment();
@@ -47,13 +61,13 @@ export default function BathroomView({ bathroom, setOpen }) {
     queryComments()
   }, [queryComments])
 
-
+  
   const commentVlidationSchema = yup.object({
     comment: yup
-      .string('solo textor')
-      .required('esto no puede estar vacio')
-      .min(10, "mínimo 10 caracteres")
-      .max(200, "maximo 200 caracteres")
+    .string('solo textor')
+    .required('esto no puede estar vacio')
+    .min(10, "mínimo 10 caracteres")
+    .max(200, "maximo 200 caracteres")
   });
 
   const commentFormik = useFormik({
@@ -66,7 +80,7 @@ export default function BathroomView({ bathroom, setOpen }) {
       commentFormik.resetForm();
     }
   });
-
+  
   if (!bathroom) return <Loading />
 
   const ratingValidate = () => {
@@ -93,6 +107,8 @@ export default function BathroomView({ bathroom, setOpen }) {
     <>
       <Box
         sx={{
+          p: 0,
+          m: 0,
           width: "100%",
           height: "100vh",
           overflow: "scroll"
@@ -114,11 +130,11 @@ export default function BathroomView({ bathroom, setOpen }) {
             zIndex: 999
           }}
         >
-          <CloseIcon color="#000" onClick={() => setOpen()} />
+          <CloseIcon color="#000" onClick={() => navigator("/")} />
         </Box>
         {/* contenedor img */}
         <Box height="25vh" >
-          <Avatar variant="square" sx={{ height: "100%", width: "100%" }} src={bathroom.mainPhoto}>
+          <Avatar variant="square" sx={{ height: "100%", width: "100vw" }} src={bathroom.mainPhoto}>
             <i style={{ color: "#fff", fontSize: "3rem" }} className="fa-solid fa-toilet"></i>
           </Avatar>
         </Box>
@@ -203,8 +219,7 @@ export default function BathroomView({ bathroom, setOpen }) {
             </Stack>
           </Stack>
           <CommentsAndLocationTabs
-            address={bathroom.address}
-            coords={[bathroom.lng, bathroom.lat]}
+            bathroom={bathroom}
             miniMap={miniMap}
             setMiniMap={setMiniMap}
             data={comments}

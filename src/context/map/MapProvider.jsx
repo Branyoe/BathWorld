@@ -2,7 +2,6 @@
 //@js-ignore
 
 import { useReducer } from "react";
-// import { directionsApi } from "../../apis/directionsApi";
 import { MapContext } from "./MapContext";
 import { mapReducer } from "./MapReducer";
 
@@ -31,6 +30,24 @@ export const MapProvider = ({ children }) => {
   // const getRouteBetweenPoints = async (start, end) => {
   //   const resp = await directionsApi.get(`/${ start.join(',') };${ end.join(',') }`);
   //   console.log(resp);
+
+  //   const {distance, duration, geometry} = resp.data.routes[0];
+  //   const {coordinates: coords} = geometry;
+
+  //   let kms = distance / 1000;
+  //   kms = Math.round(kms * 100);
+  //   kms /= 100;
+
+  //   let min = Math.floor(duration / 60);
+
+  //   const bounds = new LngLatBounds(
+  //     start,
+  //     start
+  //   )
+
+  //   for (const coord of coords) {
+  //     bounds.extend(coord)
+  //   }
   // }
 
   return (

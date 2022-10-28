@@ -9,6 +9,9 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { Stack } from '@mui/system';
 import { Comments } from "../components/Comments";
+import DirectionsIcon from '@mui/icons-material/AssistantDirectionRounded';
+import { useNavigate } from 'react-router-dom';
+import mapboxgl from 'mapbox-gl';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,8 +60,11 @@ const TEXT_STYLES = {
   fontFamily: '"Poppins", sans-serif'
 }
 
-export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, data}) => {
+export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data }) => {
   const [value, setValue] = React.useState(0);
+  const navigator = useNavigate();
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYnJhbnlvZSIsImEiOiJjbDlncTVwaWowOWtrM3Vtd2R2aDZ3c3o0In0.MoFF_EjlzMATPJDHr-zqXA';
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,7 +77,7 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, 
       const map = new Map({
         container: mapContainer.current, // container ID
         style: 'mapbox://styles/mapbox/streets-v11', // style URL
-        center: coords, // starting position [lng, lat]
+        center: [bathroom.lng, bathroom.lat], // starting position [lng, lat]
         zoom: 15, // starting zoom
         scroll: false,
         projection: 'globe' // display the map as a 3D globe
@@ -90,7 +96,7 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, 
         setMiniMap(map);
         // Set the default [-103.7366491808968, 19.283594842470652]ere style
       });
-      
+
       const markerElement = document.createElement('div');
       markerElement.className = 'marker';
       markerElement.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathworld_icono.png?alt=media&token=a0b20773-4ef4-46e3-b97f-afb8b28c55ee)';
@@ -98,11 +104,11 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, 
       markerElement.style.height = `${60}px`;
       markerElement.style.backgroundSize = '100%';
       const newMarker = new Marker({ element: markerElement })
-      newMarker.setLngLat(coords)
+      newMarker.setLngLat([bathroom.lng, bathroom.lat])
       newMarker.addTo(map);
     }
     if (!miniMap) initializeMap({ setMiniMap, mapContainer });
-  }, [miniMap, setMiniMap, coords]);
+  }, [miniMap, setMiniMap, bathroom]);
 
 
   React.useEffect(() => {
@@ -112,7 +118,7 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, 
   }, [value, miniMap])
 
   return (
-    <Box sx={{ width: '100%'}}>
+    <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab style={{ fontFamily: '"Poppins", sans-serif' }} label="Dirección" {...a11yProps(0)} />
@@ -122,8 +128,25 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, 
       <TabPanel value={value} index={0}>
         <Stack>
           {/* <p style={LABEL_STYLES}>Direccion</p> */}
-          <p style={TEXT_STYLES}>{address}</p>
+          <p style={TEXT_STYLES}>{bathroom.address}</p>
         </Stack>
+        <Box sx={{
+            position: 'fixed',
+            top: "calc(100% - 200px)",
+            left: "calc(100% - 55px)",
+            // bgcolor:"white",
+            borderRadius: "50%",
+            zIndex: 999,
+            width: "30px",
+            height: "30px",
+
+          }}
+          onClick={() => {
+            navigator(`/route/${bathroom.id}`);
+          }}
+          >
+            <DirectionsIcon sx={{ padding: 0, backgroundColor: 'white', borderRadius: '50%', width: "40px", height: "40px" }} color="primary" />
+          </Box>
         <Box
           id="map"
           ref={(el) => mapContainer.current = el}
@@ -136,10 +159,10 @@ export const CommentsAndLocationTabs = ({ address, miniMap, setMiniMap, coords, 
           }
         >
         </Box>
-      </TabPanel>
+      </TabPanel >
       <TabPanel value={value} index={1}>
-          <Comments data={data}/>
+        <Comments data={data} />
       </TabPanel>
-    </Box>
+    </Box >
   );
 }

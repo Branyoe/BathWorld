@@ -2,16 +2,18 @@
 //@js-ignore
 import { Map, Marker } from '!mapbox-gl';
 import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { BathroomsContext, MapContext } from '../context';
-import currentBathroomStore from '../stores/currentBathroomStore'
+// import currentBathroomStore from '../stores/currentBathroomStore'
 
 export const MapComponent = () => {
   const { isLoading, userLocation, bathrooms } = useContext(BathroomsContext);
+  const navigator = useNavigate();
   const { setMap, map, isMapReady, markers, setMarkers, setLocationMarker, locationMarker } = useContext(MapContext);
-  const { setIsOpen, setData } = currentBathroomStore(state => ({
-    setIsOpen: state.setIsOpen,
-    setData: state.setData
-  }))
+  // const { setIsOpen, setData } = currentBathroomStore(state => ({
+  //   setIsOpen: state.setIsOpen,
+  //   setData: state.setData
+  // }))
 
   const mapDiv = useRef(null)
 
@@ -44,8 +46,9 @@ export const MapComponent = () => {
       markerElement.style.height = `${60}px`;
       markerElement.style.backgroundSize = '100%';
       markerElement.addEventListener('click', e => {
-        setData(bathroom)
-        setIsOpen(true);
+        // setData(bathroom)
+        // setIsOpen(true);
+        navigator(`/bathroom/${bathroom.id}`)
       });
       const newMarker = new Marker({ element: markerElement })
       newMarker.setLngLat([bathroom.lng, bathroom.lat])
