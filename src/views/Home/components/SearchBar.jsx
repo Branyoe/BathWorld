@@ -1,12 +1,18 @@
 import { AccountCircle, Search } from "@mui/icons-material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { IconButton, InputAdornment, Menu, MenuItem, Stack, TextField } from "@mui/material";
+import { Avatar, IconButton, InputAdornment, Menu, MenuItem, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import { Loading } from "../../../components";
 import { useAuth } from "../../../context/authContext";
 import { ResultsList } from "./ResultsList";
 
+import LogoTest from "../../../assets/logoTestF.png"
+import navigationDrawerStore from "../../../stores/NavigationDrawerStore";
+
 export const SearchBar = () => {
+  const {setIsOpen} = navigationDrawerStore(state => ({
+    setIsOpen: state.setIsOpen
+  }))
   const [searchValue, setSearchValue] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -97,20 +103,27 @@ export const SearchBar = () => {
     <div className="search-bar">
       <Stack>
         <TextField
-          style={{ height: "30px" }}
+          style={{ height: "30px"}}
           variant="standard"
           fullWidth
           id="fullWidth"
           onChange={handleSearch}
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
+            endAdornment: (
+              <InputAdornment position="end">
                 <Search />
               </InputAdornment>
             ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <AccountCircleIcon onClick={handleProfileMenuOpen} />
+            startAdornment: (
+              // <InputAdornment position="start">
+              //   <AccountCircleIcon onClick={handleProfileMenuOpen} />
+              // </InputAdornment>
+              <InputAdornment sx={{mb: 1}} position="start">
+                <Avatar
+                  variant="rounded" 
+                  src={LogoTest}
+                  onClick={() => setIsOpen(true)}
+                />
               </InputAdornment>
             ),
           }}

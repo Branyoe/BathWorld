@@ -15,6 +15,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import Alert from '@mui/material/Alert';
 import L from '@mui/material/Link';
+import appNavBarStore from '../../stores/appNavBarStore';
 
 
 const theme = createTheme();
@@ -24,6 +25,13 @@ export default function SignUp() {
   const [error, setError] = React.useState("");
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const {setShow} = appNavBarStore(state => ({
+    setShow: state.setShow
+  }));
+  
+  React.useEffect(() => {
+    setShow(false);
+  }, [])
 
   const validationSchema = yup.object({
     email: yup

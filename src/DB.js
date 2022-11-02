@@ -6,8 +6,19 @@ export const addComment = ({bathroomId, userEmail, comment, ratingValue}) => {
   const newComment = doc(collection(db, "comments"));
   setDoc(newComment, { bathroomId, userEmail, comment, ratingValue });
 }
-export const getCommentByUserEmail = async (userEmail, bathroomId) => {
+export const getCommentByUserEmailAndBathroomId = async (userEmail, bathroomId) => {
   const q = query(collection(db, "comments"), where("bathroomId", "==", bathroomId), where("userEmail", "==", userEmail));
+
+  const querySnapshot = await getDocs(q);
+  const docs = []
+  querySnapshot.forEach((doc) => {
+    docs.push({ ...doc.data(), id: doc.id });
+  });
+  return docs;
+}
+
+export const getCommentByUserEmail = async (userEmail) => {
+  const q = query(collection(db, "comments"), where("userEmail", "==", userEmail));
 
   const querySnapshot = await getDocs(q);
   const docs = []

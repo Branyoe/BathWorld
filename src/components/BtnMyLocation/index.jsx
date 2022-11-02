@@ -1,7 +1,6 @@
 import { Fab } from "@mui/material";
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { Stack } from "@mui/system";
-import './style.css'
 import { useContext } from "react";
 import { BathroomsContext, MapContext } from "../../context";
 
@@ -25,7 +24,11 @@ export const BtnMyLocation = () => {
   return (
     <>
       <Stack
-        className="fab"
+        sx={{
+          position: "absolute",
+          top: "calc(100% - 190px)",
+          left: "calc(100% - 60px)"
+        }}
         justifyContent="end"
         alignItems="end" direction="column"
       >

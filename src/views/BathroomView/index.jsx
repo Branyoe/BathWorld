@@ -2,17 +2,19 @@ import { Avatar, Button, Divider } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import { addComment, getBathroom, getCommentByUserEmail, watchComments } from "../../DB";
+import { addComment, getBathroom, getCommentByUserEmailAndBathroomId, watchComments } from "../../DB";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Loading } from "../../components";
 import { useAuth } from "../../context/authContext"
 import { CommentsAndLocationTabs } from "./components/CommentsAndLocationTabs.jsx";
 import RatingDialog from "./components/RatingDialog";
+import appNavBarStore from "../../stores/appNavBarStore"
 
 import "./index.css"
 import { MyRating } from "./components/MyRating";
 import { useNavigate, useParams } from "react-router-dom";
+import bathroomViewStore from "../../stores/bathroomViewStore";
 
 const LABEL_STYLES = {
   margin: 0,
@@ -22,7 +24,7 @@ const LABEL_STYLES = {
   color: "#606060"
 }
 
-export default function BathroomView({ setOpen }) {
+export default function BathroomView() {
   const [comments, setComments] = useState([]);
   const [bathroom, setBathroom] = useState();
   const [hasComment, setHasComment] = useState(null);
@@ -33,6 +35,16 @@ export default function BathroomView({ setOpen }) {
   const { user } = useAuth();
   const { id } = useParams();
   const navigator = useNavigate()
+  const { setShow } = appNavBarStore(state => ({
+    setShow: state.setShow
+  }));
+  const { route } = bathroomViewStore(state => ({
+    route: state.route
+  }))
+
+  useEffect(() => {
+    setShow(false);
+  }, [])
 
   useEffect(() => {
     const getB = async () => {
@@ -50,7 +62,7 @@ export default function BathroomView({ setOpen }) {
 
   const queryComment = useCallback(async () => {
     if (!bathroom) return
-    const foundComment = await getCommentByUserEmail(user.email, bathroom?.id);
+    const foundComment = await getCommentByUserEmailAndBathroomId(user.email, bathroom?.id);
     if (foundComment.length) {
       setHasComment(foundComment[0]);
       setRatingValue(foundComment[0].ratingValue)
@@ -84,6 +96,10 @@ export default function BathroomView({ setOpen }) {
       commentFormik.resetForm();
     }
   });
+
+  const handleClose = () => {
+    navigator(route);
+  }
 
   if (!bathroom) return <Loading />
 
@@ -173,7 +189,7 @@ export default function BathroomView({ setOpen }) {
             zIndex: 999
           }}
         >
-          <CloseIcon color="#000" onClick={() => navigator("/")} />
+          <CloseIcon color="#000" onClick={handleClose} />
         </Box>
         {/* contenedor img */}
         <Box height="25vh" >
