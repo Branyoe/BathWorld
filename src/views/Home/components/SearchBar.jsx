@@ -1,5 +1,4 @@
 import { AccountCircle, Search } from "@mui/icons-material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Avatar, IconButton, InputAdornment, Menu, MenuItem, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import { Loading } from "../../../components";

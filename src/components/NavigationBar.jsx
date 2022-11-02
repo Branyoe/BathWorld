@@ -2,12 +2,6 @@ import { Box } from "@mui/material";
 import { Stack } from "@mui/system";
 import BottomNavigation from "./BottomNavigation";
 
-const style = {
-  mainContainer: {
-
-  }
-}
-
 export const NavigationBar = () => {
   return (
     <Box

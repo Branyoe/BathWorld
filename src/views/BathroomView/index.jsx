@@ -44,6 +44,7 @@ export default function BathroomView() {
 
   useEffect(() => {
     setShow(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

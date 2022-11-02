@@ -9,7 +9,8 @@ export const ContactView = () => {
   
   useEffect(() => {
     setShow(true);
-    setValue("contact")
+    setValue("contact");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <h1>Conatc us</h1>

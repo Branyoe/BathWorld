@@ -22,12 +22,14 @@ export const UserView = () => {
   
   useEffect(() => {
     setShow(true);
-    setRoute("/user")
+    setRoute("/user");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
   useEffect(() => {
     setShow(true);
-    setValue("profile")
+    setValue("profile");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleLogOutBtn = async () => {

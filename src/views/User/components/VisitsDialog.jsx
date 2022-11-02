@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
@@ -39,10 +38,6 @@ export default function VisistsDialog({ open, setOpen, user }) {
       return bathrooms.find(bath => bath.id === comment.bathroomId);
     });
   }
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
