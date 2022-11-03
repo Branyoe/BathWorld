@@ -8,13 +8,13 @@ import { SearchBar } from './components/SearchBar';
 import TraceRouteDialog from './components/TraceRouteDialog';
 
 export const HomeView = () => {
-  const {setShow} = appNavBarStore(state => ({
+  const { setShow } = appNavBarStore(state => ({
     setShow: state.setShow
   }));
   const { setRoute } = bathroomViewStore(state => ({
     setRoute: state.setRoute
   }))
-  
+
   useEffect(() => {
     setShow(true);
     setRoute("/");
@@ -24,12 +24,12 @@ export const HomeView = () => {
   return (
     <>
       <MapComponent />
-      <NavigationDrawer/>
-      <BtnMyLocation/>
-      <BtnTraceRoute/>
-      <SearchBar/>
+      <NavigationDrawer />
+      <BtnMyLocation />
+      <BtnTraceRoute />
+      <SearchBar />
       {/* <NavigationBar/> */}
-      <TraceRouteDialog/>
+      <TraceRouteDialog />
     </>
   );
 }
