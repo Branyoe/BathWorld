@@ -5,7 +5,7 @@ import { Loading } from "../../../components";
 import { useAuth } from "../../../context/authContext";
 import { ResultsList } from "./ResultsList";
 
-import LogoTest from "../../../assets/logoTestF.png"
+import LogoTest from "../../../assets/logoTestF.jpg"
 import navigationDrawerStore from "../../../stores/NavigationDrawerStore";
 
 export const SearchBar = () => {
@@ -100,7 +100,7 @@ export const SearchBar = () => {
 
   return (
     <div className="search-bar">
-      <Stack>
+      <Stack sx={{position: "absolute", bottom: 10, width: "90vw"}}>
         <TextField
           style={{ height: "30px"}}
           variant="standard"
@@ -117,7 +117,7 @@ export const SearchBar = () => {
               // <InputAdornment position="start">
               //   <AccountCircleIcon onClick={handleProfileMenuOpen} />
               // </InputAdornment>
-              <InputAdornment sx={{mb: 1}} position="start">
+              <InputAdornment sx={{mb: 2}} position="start">
                 <Avatar
                   variant="rounded" 
                   src={LogoTest}
