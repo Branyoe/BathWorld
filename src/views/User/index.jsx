@@ -8,10 +8,12 @@ import VisistsDialog from "./components/VisitsDialog";
 import { useEffect, useState } from "react";
 import appNavBarStore from "../../stores/appNavBarStore";
 import bathroomViewStore from "../../stores/bathroomViewStore";
+import ReviewsDialog from "./components/ReviewsDialog";
 
 export const UserView = () => {
   const { user, logOut } = useAuth();
-  const [open, setOpen] = useState(false);
+  const [openVisits, setOpenVisits] = useState(false);
+  const [openReviews, setOpenReviews] = useState(false);
   const {setShow, setValue} = appNavBarStore(state => ({
     setShow: state.setShow,
     setValue: state.setCurrent
@@ -64,7 +66,7 @@ export const UserView = () => {
         <nav aria-label="secondary mailbox folders">
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => setOpen(true)}>
+              <ListItemButton onClick={() => setOpenVisits(true)}>
                 <ListItemIcon>
                   <HistoryIcon />
                 </ListItemIcon>
@@ -72,7 +74,7 @@ export const UserView = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => setOpenReviews(true)}>
                 <ListItemIcon>
                   <ReviewsIcon />
                 </ListItemIcon>
@@ -95,7 +97,8 @@ export const UserView = () => {
           </List>
         </nav>
       </Stack>
-      <VisistsDialog open={open} setOpen={setOpen} user={user}/>
+      <VisistsDialog open={openVisits} setOpen={setOpenVisits} user={user}/>
+      <ReviewsDialog open={openReviews} setOpen={setOpenReviews} user={user}/>
     </Box>
   );
 }

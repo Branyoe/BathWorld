@@ -1,7 +1,10 @@
 import { Avatar, Divider, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
+import { useContext } from "react";
+import { authContext } from "../../../context/authContext";
 import { MyRating } from "./MyRating";
 
 export default function Comment({ data }) {
+  const {user} = useContext(authContext);
   return (
     <>
       <ListItem alignItems="flex-start">
@@ -10,7 +13,7 @@ export default function Comment({ data }) {
         </ListItemAvatar>
         <ListItemText
           style={{ wordWrap: "break-word" }}
-          primary={data.userEmail}
+          primary={data.userEmail === user.email ? "Tu" : data.userEmail}
           secondary={
             <Stack sx={{
               display: "flex",
