@@ -32,6 +32,7 @@ export default function BathroomView() {
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
   const [miniMap, setMiniMap] = useState(null);
   const [showRatingInp, setShowRatingInp] = useState(false);
+  const [totalRating, setTotalRating] = useState(0);
   const { user } = useAuth();
   const { id } = useParams();
   const navigator = useNavigate()
@@ -78,6 +79,16 @@ export default function BathroomView() {
   useEffect(() => {
     queryComments()
   }, [queryComments])
+
+  useEffect(() => {
+    let sum = 0;
+    let count = 0;
+    for(let comment of comments){
+      sum += comment.ratingValue;
+      count++;
+    }
+    setTotalRating(sum/count);
+  }, [comments, setTotalRating])
 
   const commentVlidationSchema = yup.object({
     comment: yup
@@ -247,7 +258,7 @@ export default function BathroomView() {
                         color: "brown"
                       }}
                     ></i>
-                    4.5
+                    {totalRating ? totalRating.toFixed(1): "S/N"}
                   </p>
                 </Box>
               </Box>
