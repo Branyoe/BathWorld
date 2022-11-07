@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
-import { BtnMyLocation, MapComponent } from '../../components';
+import { BtnMyLocation } from '../../components';
 import { BtnTraceRoute } from '../../components/BtnTraceRoute';
+import GeolocationErrorDialog from '../../components/GeolocationErrorDialog';
 import appNavBarStore from '../../stores/appNavBarStore';
 import bathroomViewStore from '../../stores/bathroomViewStore';
+import MapComponent from './components/MapComponent';
 import NavigationDrawer from './components/NavigationDrawer';
 import { SearchBar } from './components/SearchBar';
 import TraceRouteDialog from './components/TraceRouteDialog';
@@ -28,7 +30,7 @@ export const HomeView = () => {
       <BtnMyLocation />
       <BtnTraceRoute />
       <SearchBar />
-      {/* <NavigationBar/> */}
+      <GeolocationErrorDialog/>
       <TraceRouteDialog />
     </>
   );

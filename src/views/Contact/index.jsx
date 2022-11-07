@@ -11,26 +11,21 @@ export const ContactView = () => {
     setValue: state.setCurrent
   }));
 
-  const ref = useRef(null);
   useEffect(() => {
     setShow(true);
     setValue("contact");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [setShow, setValue]);
   
-  if(!user) return <Loading />;
+  const ref = useRef(null);
 
+  if(!user) return <Loading />;
+  
   window.ChatraSetup = {
     clientId: user.uid,
     mode: 'frame',
-    /* id del bloque donde quieres integrar el chat */
     injectTo: 'chatra-wrapper'
   }
-
   
-
-
-
   return (
     <>
       {

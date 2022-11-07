@@ -6,7 +6,7 @@ import { watchBathrooms } from "../../DB"
 
 const INITIAL_STATE = {
   isLoading: true,
-  userLocation: undefined,
+  userLocation: null,
   bathrooms: []
 }
 
@@ -14,6 +14,7 @@ export const BathroomsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(BathroomsReducer, INITIAL_STATE)
   getUserLocation()
     .then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+    .catch(() => dispatch({ type: 'setUserLocation', payload: null }))
 
   const queryLocation = () => {
     getUserLocation()

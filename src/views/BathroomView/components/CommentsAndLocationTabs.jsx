@@ -13,6 +13,7 @@ import DirectionsIcon from '@mui/icons-material/AssistantDirectionRounded';
 import { useNavigate } from 'react-router-dom';
 //@js-ignore
 import mapboxgl from '!mapbox-gl';
+import UserLocationContext from '../../../context/userLocation/userLocationContext';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,6 +63,7 @@ const TEXT_STYLES = {
 }
 
 export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data }) => {
+  const {userLocation, queryLocation} = React.useContext(UserLocationContext);
   const [value, setValue] = React.useState(0);
   const navigator = useNavigate();
   mapboxgl.accessToken = 'pk.eyJ1IjoiYnJhbnlvZSIsImEiOiJjbDlncTVwaWowOWtrM3Vtd2R2aDZ3c3o0In0.MoFF_EjlzMATPJDHr-zqXA';
@@ -72,6 +74,10 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
   };
 
   const mapContainer = React.useRef(null);
+
+  React.useEffect(() => {
+    queryLocation();
+  }, [queryLocation])
 
   React.useEffect(() => {
     const initializeMap = ({ setMiniMap, mapContainer }) => {
@@ -118,6 +124,28 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
     }
   }, [value, miniMap])
 
+  const getRouteBtn = () => {
+    return (
+      <Box sx={{
+        position: 'fixed',
+        top: "calc(100% - 200px)",
+        left: "calc(100% - 55px)",
+        // bgcolor:"white",
+        borderRadius: "50%",
+        zIndex: 999,
+        width: "30px",
+        height: "30px",
+
+      }}
+        onClick={() => {
+          navigator(`/route/${bathroom.id}`);
+        }}
+      >
+        <DirectionsIcon sx={{ padding: 0, backgroundColor: 'white', borderRadius: '50%', width: "40px", height: "40px" }} color="primary" />
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -131,23 +159,7 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
           {/* <p style={LABEL_STYLES}>Direccion</p> */}
           <p style={TEXT_STYLES}>{bathroom.address}</p>
         </Stack>
-        <Box sx={{
-          position: 'fixed',
-          top: "calc(100% - 200px)",
-          left: "calc(100% - 55px)",
-          // bgcolor:"white",
-          borderRadius: "50%",
-          zIndex: 999,
-          width: "30px",
-          height: "30px",
-
-        }}
-          onClick={() => {
-            navigator(`/route/${bathroom.id}`);
-          }}
-        >
-          <DirectionsIcon sx={{ padding: 0, backgroundColor: 'white', borderRadius: '50%', width: "40px", height: "40px" }} color="primary" />
-        </Box>
+        {userLocation && getRouteBtn()}
         <Box
           id="map"
           ref={(el) => mapContainer.current = el}

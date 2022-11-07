@@ -5,8 +5,7 @@ export const getUserLocation = async () => {
         resolve([coords.longitude, coords.latitude])
       },
       (err) => {
-        console.log(err)
-        reject(); 
+        reject(err); 
       },
       {enableHighAccuracy: true}
     )

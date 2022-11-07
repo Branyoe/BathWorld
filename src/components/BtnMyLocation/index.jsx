@@ -2,19 +2,20 @@ import { Fab } from "@mui/material";
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { Stack } from "@mui/system";
 import { useContext } from "react";
-import { BathroomsContext, MapContext } from "../../context";
+import { MapContext } from "../../context";
+import UserLocationContext from "../../context/userLocation/userLocationContext";
 
 export const BtnMyLocation = () => {
-  const { map, isMapReady } = useContext(MapContext);
-  const { userLocation, queryLocation } = useContext(BathroomsContext);
+  const { map } = useContext(MapContext);
+  const {userLocation, queryLocation, setIsErrorDialogOpen} = useContext(UserLocationContext);
 
   const handleClick = () => {
-    if(!isMapReady) throw new Error('Mapa no está listo');
-    // if(!userLocation) throw new Error('Hubicación de usuario inexistente');
     if(!userLocation) {
       queryLocation();
-      return
+      if(!userLocation) setIsErrorDialogOpen(true);
+      return;
     }
+    setIsErrorDialogOpen(false);
     map?.flyTo({
       zoom: 14,
       center: userLocation
