@@ -32,7 +32,9 @@ const MapComponent = () => {
 
   useEffect(() => {
     queryLocation();
-  }, [queryLocation])
+    console.log(3);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   //inicializa y reutiliza el mapa 
   useLayoutEffect(() => {

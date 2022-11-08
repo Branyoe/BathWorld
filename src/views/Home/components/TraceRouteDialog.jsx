@@ -34,7 +34,6 @@ export default function TraceRouteDialog() {
 
   const handleEndInpChange = ({ target: { value } }) => {
     setEndInpValue(value);
-    console.log(endInpValue);
   }
 
   const handleItemClick = bath => {
@@ -99,7 +98,8 @@ export default function TraceRouteDialog() {
                   <InputAdornment position="start">
                     <i className="fa-solid fa-toilet"></i>
                   </InputAdornment>
-                )
+                ),
+                autoComplete: "off"
               }}
               value={endInpValue}
               onChange={handleEndInpChange}

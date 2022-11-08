@@ -240,7 +240,7 @@ export const RouteView = () => {
                           alignItems: "center"
                         }}
                       >
-                        <i class="fa-solid fa-person-walking"></i>
+                        <i className="fa-solid fa-person-walking"></i>
                       </Stack>
                     </Grid>
                     <Grid item >

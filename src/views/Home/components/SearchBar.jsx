@@ -55,6 +55,7 @@ export const SearchBar = () => {
                 <InputAdornment sx={{ mb: 2 }} position="start">
                 </InputAdornment>
               ),
+              autoComplete: "off"
             }}
           />
         </Grid>
