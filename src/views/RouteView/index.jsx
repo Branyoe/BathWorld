@@ -10,6 +10,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { directionsApi } from "../../apis/directionsApi";
 import appNavBarStore from "../../stores/appNavBarStore";
 import UserLocationContext from "../../context/userLocation/userLocationContext";
+import ErrorComponent from "../Home/components/ErrorComponent";
+import GeolocationErrorSource from "../../assets/geolocationErrorSource.svg"
 
 export const RouteView = () => {
   const { setShow } = appNavBarStore(state => ({
@@ -112,7 +114,7 @@ export const RouteView = () => {
     markerElement.style.width = `${60}px`;
     markerElement.style.height = `${60}px`;
     markerElement.style.backgroundSize = '100%';
-    const newMarker = new Marker({ element: markerElement })
+    const newMarker = new Marker({ element: markerElement, anchor: 'bottom' })
     newMarker.setLngLat([bathroom.lng, bathroom.lat])
     newMarker.addTo(map)
 
@@ -158,128 +160,136 @@ export const RouteView = () => {
       </Box>
       {
         userLocation
-        ?
-        <>
-          {/* //Mapa */}
-          <div
-            ref={mapContainer}
-            style={
-              {
-                height: '100vh',
-                left: 0,
-                position: 'fixed',
-                top: 0,
-                width: '100vw',
+          ?
+          <>
+            {/* //Mapa */}
+            <div
+              ref={mapContainer}
+              style={
+                {
+                  height: '100vh',
+                  left: 0,
+                  position: 'fixed',
+                  top: 0,
+                  width: '100vw',
+                }
               }
-            }
-          >
-          </div>
-          {/* //Detalles contenedor */}
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 3,
-              width: "100%",
-            }}
-          >
-            <Stack
+            >
+            </div>
+            {/* //Detalles contenedor */}
+            <Box
               sx={{
-                margin: 1,
+                position: "absolute",
+                bottom: 3,
+                width: "100%",
               }}
             >
-              <BottomNavigation
+              <Stack
                 sx={{
-                  height: 100,
-                  width: "auto",
-                  borderRadius: "10px",
-                  boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31);"
+                  margin: 1,
                 }}
               >
-                <Grid container spacing={1}
+                <BottomNavigation
                   sx={{
-                    height: "100%",
-                    width: "100%",
+                    height: 100,
+                    width: "auto",
+                    borderRadius: "10px",
+                    boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31);"
                   }}
                 >
-                  <Grid item xs="auto">
-                    <Stack pl={1} height="100%"
-                      sx={{
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <h1
-                        style={{
-                          fontFamily: '"Nunito", sans-serif',
-                          fontWeight: 800,
+                  <Grid container spacing={1}
+                    sx={{
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  >
+                    <Grid item xs="auto">
+                      <Stack pl={1} height="100%"
+                        sx={{
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        {`${routeMetadata.min} min`}
-                      </h1>
-                      <h2
-                        style={{
-                          fontFamily: '"Nunito", sans-serif',
-                          fontWeight: 600,
-                          color: "#565656"
+                        <h1
+                          style={{
+                            fontFamily: '"Nunito", sans-serif',
+                            fontWeight: 800,
+                          }}
+                        >
+                          {`${routeMetadata.min} min`}
+                        </h1>
+                        <h2
+                          style={{
+                            fontFamily: '"Nunito", sans-serif',
+                            fontWeight: 600,
+                            color: "#565656"
+                          }}
+                        >
+                          {`${routeMetadata.kms} km`}
+                        </h2>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs="auto" fontSize="60px">
+                      <Stack
+                        sx={{
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center"
                         }}
                       >
-                        {`${routeMetadata.kms} km`}
-                      </h2>
-                    </Stack>
+                        <i class="fa-solid fa-person-walking"></i>
+                      </Stack>
+                    </Grid>
+                    <Grid item >
+                      <Stack height="100%" pl={2}
+                        sx={{
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "100%",
+                            fontFamily: '"Nunito", sans-serif',
+                            fontWeight: 800,
+                          }}
+                        >
+                          <h3>Destino:</h3>
+                        </div>
+                        <div
+                          style={{
+                            width: "150px",
+                            maxHeight: "70px",
+                            overflow: "scroll",
+                            fontFamily: '"Nunito", sans-serif',
+                            fontWeight: 600,
+                            color: "#565656"
+                          }}
+                        >
+                          <p style={{ overflow: "scroll" }} >{bathroom.name}</p>
+                        </div>
+                      </Stack>
+                    </Grid>
                   </Grid>
-                  <Grid item xs="auto" fontSize="60px">
-                    <Stack
-                      sx={{
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <i class="fa-solid fa-person-walking"></i>
-                    </Stack>
-                  </Grid>
-                  <Grid item >
-                    <Stack height="100%" pl={2}
-                      sx={{
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "100%",
-                          fontFamily: '"Nunito", sans-serif',
-                          fontWeight: 800,
-                        }}
-                      >
-                        <h3>Destino:</h3>
-                      </div>
-                      <div
-                        style={{
-                          width: "150px",
-                          maxHeight: "70px",
-                          overflow: "scroll",
-                          fontFamily: '"Nunito", sans-serif',
-                          fontWeight: 600,
-                          color: "#565656"
-                        }}
-                      >
-                        <p style={{ overflow: "scroll" }} >{bathroom.name}</p>
-                      </div>
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </BottomNavigation>
-            </Stack>
+                </BottomNavigation>
+              </Stack>
+            </Box>
+          </>
+          :
+          <Box
+            height="100vh"
+            width="100vw"
+          >
+            <ErrorComponent
+              source={GeolocationErrorSource}
+              msg="Hubo un error con tu localización"
+            />
           </Box>
-        </>
-        :
-        <h1>Error con la localización</h1>
       }
     </Box>
   )

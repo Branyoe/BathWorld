@@ -19,12 +19,12 @@ const createBathMarker = (handleClick) => {
   // markerElement.addEventListener('click', e => {
   //   navigator(`/bathroom/${bathId}`)
   // });
-  return new Marker({ element })
+  return new Marker({ element, anchor: 'bottom'})
 }
 
 const MapComponent = () => {
   const { bathrooms } = useContext(BathroomsContext);
-  const { setMap, map} = useContext(MapContext);
+  const { setMap, map, markers, setMarkers} = useContext(MapContext);
   const { userLocation, setIsErrorDialogOpen, queryLocation } = useContext(UserLocationContext);
   const navigator = useNavigate();
 
@@ -54,11 +54,15 @@ const MapComponent = () => {
 
   // Pinta los marcadores
   useEffect(() => {
+    markers.forEach(marker => marker.remove);
+    let auxMarkers = [];
     bathrooms.forEach(bath => {
       const newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`));
       newMarker.setLngLat([bath.lng, bath.lat]);
       newMarker.addTo(map);
+      auxMarkers.push(newMarker);
     });
+    setMarkers(auxMarkers);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bathrooms, map])
 
