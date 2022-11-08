@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -12,20 +11,35 @@ import Slide from '@mui/material/Slide';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import traceRouteDialogStore from '../../../stores/traceRouteDialogStore';
 import { InputAdornment, Stack, TextField } from '@mui/material';
+import { ResultsList } from './ResultsList';
+import { BathroomsContext } from '../../../context';
+import { useNavigate } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function TraceRouteDialog() {
+  const {bathrooms} = React.useContext(BathroomsContext);
   const { isOpen, setIsOpen } = traceRouteDialogStore(state => ({
     isOpen: state.isOpen,
     setIsOpen: state.setIsOpen
   }))
+  const [endInpValue, setEndInpValue] = React.useState("");
+  const navigator = useNavigate();
 
   const handleClose = () => {
     setIsOpen(false);
   };
+
+  const handleEndInpChange = ({ target: { value } }) => {
+    setEndInpValue(value);
+    console.log(endInpValue);
+  }
+
+  const handleItemClick = bath => {
+    navigator(`/route/${bath.id}`)
+  }
 
   return (
     <div>
@@ -48,9 +62,6 @@ export default function TraceRouteDialog() {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Trazar Ruta
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Ir
-            </Button>
           </Toolbar>
         </AppBar>
         <List>
@@ -90,7 +101,20 @@ export default function TraceRouteDialog() {
                   </InputAdornment>
                 )
               }}
+              value={endInpValue}
+              onChange={handleEndInpChange}
             />
+          </Stack>
+          <Stack>
+            {
+              endInpValue 
+              && 
+              <ResultsList 
+                searchValue={endInpValue} 
+                data={bathrooms}
+                onItemClick={handleItemClick}
+              />
+            }
           </Stack>
         </List>
       </Dialog>

@@ -1,5 +1,5 @@
 /* eslint import/no-webpack-loader-syntax: off */
-import { Box } from "@mui/material";
+import { BottomNavigation, Box, Grid, Stack } from "@mui/material";
 //@js-ignore
 import { LngLatBounds, Map, Marker } from "!mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -7,18 +7,25 @@ import { useNavigate, useParams } from "react-router-dom"
 import { Loading } from "../../components";
 import { getBathroom } from "../../DB";
 import CloseIcon from '@mui/icons-material/Close';
-import { BathroomsContext } from "../../context";
 import { directionsApi } from "../../apis/directionsApi";
+import appNavBarStore from "../../stores/appNavBarStore";
+import UserLocationContext from "../../context/userLocation/userLocationContext";
 
 export const RouteView = () => {
+  const { setShow } = appNavBarStore(state => ({
+    setShow: state.setShow
+  }));
+  const [routeMetadata, setRouteMetadata] = useState({});
 
   const { id } = useParams()
   const navigator = useNavigate();
 
-  const { userLocation } = useContext(BathroomsContext);
+  const { userLocation } = useContext(UserLocationContext);
 
   const [bathroom, setBathroom] = useState();
   const [map, setMap] = useState();
+
+  useEffect(() => setShow(false), [setShow]);
 
   useEffect(() => {
     const getB = async () => {
@@ -31,28 +38,20 @@ export const RouteView = () => {
   const getRouteBetweenPoints = async (start, end) => {
     const resp = await directionsApi.get(`/${start.join(',')};${end.join(',')}`);
 
-    // const { distance, duration, geometry } = resp.data.routes[0];
-    const { geometry } = resp.data.routes[0];
+    const { distance, duration, geometry } = resp.data.routes[0];
     const { coordinates: coords } = geometry;
 
-    // let kms = distance / 1000;
-    // kms = Math.round(kms * 100);
-    // kms /= 100;
+    let kms = distance / 1000;
+    kms = Math.round(kms * 100);
+    kms /= 100;
+    let min = Math.floor(duration / 60);
+    setRouteMetadata({ kms, min })
 
-    // let min = Math.floor(duration / 60);
+    const bounds = new LngLatBounds(start, start);
 
-    const bounds = new LngLatBounds(
-      start,
-      start
-    )
+    for (const coord of coords) { bounds.extend(coord) }
 
-    for (const coord of coords) {
-      bounds.extend(coord)
-    }
-
-    map?.fitBounds(bounds, {
-      padding: 50
-    })
+    map?.fitBounds(bounds, { padding: 100 });
 
     //poliline
     const sourceData = {
@@ -88,15 +87,10 @@ export const RouteView = () => {
     })
   }
 
-  // const getRoute = (bathroom) => {
-  //   getRouteBetweenPoints(userLocation, [bathroom.lng, bathroom.lat]);
-  // }
-
-
   const mapContainer = useRef(null)
 
   useEffect(() => {
-    if (!bathroom) return
+    if (!bathroom || !userLocation) return
     const map = new Map({
       container: mapContainer.current, // container ID
       style: 'mapbox://styles/mapbox/streets-v11', // style URL
@@ -106,11 +100,10 @@ export const RouteView = () => {
       projection: 'globe' // display the map as a 3D globe
     });
 
-    
+
     map.on('style.load', () => {
       setMap(map)
-      // map.setFog({});
-      // Set the default [-103.7366491808968, 19.283594842470652]ere style
+      map.setFog({});
     });
 
     const markerElement = document.createElement('div');
@@ -138,13 +131,14 @@ export const RouteView = () => {
   }, [bathroom])
 
   useEffect(() => {
-    if (map) getRouteBetweenPoints(userLocation, [bathroom.lng, bathroom.lat]);
+    if (map && userLocation) getRouteBetweenPoints(userLocation, [bathroom.lng, bathroom.lat]);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bathroom, map])
 
   if (!bathroom) return <Loading />
   return (
     <Box>
+      {/* //Botón cerrar */}
       <Box
         sx={{
           position: "fixed",
@@ -160,21 +154,133 @@ export const RouteView = () => {
           zIndex: 999
         }}
       >
-        <CloseIcon color="#000" onClick={() => navigator(`/bathroom/${bathroom.id}`)} />
+        <CloseIcon color="#000" onClick={() => navigator(-1)} />
       </Box>
-      <div
-        ref={mapContainer}
-        style={
-          {
-            height: '100vh',
-            left: 0,
-            position: 'fixed',
-            top: 0,
-            width: '100vw',
-          }
-        }
-      >
-      </div>
+      {
+        userLocation
+        ?
+        <>
+          {/* //Mapa */}
+          <div
+            ref={mapContainer}
+            style={
+              {
+                height: '100vh',
+                left: 0,
+                position: 'fixed',
+                top: 0,
+                width: '100vw',
+              }
+            }
+          >
+          </div>
+          {/* //Detalles contenedor */}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 3,
+              width: "100%",
+            }}
+          >
+            <Stack
+              sx={{
+                margin: 1,
+              }}
+            >
+              <BottomNavigation
+                sx={{
+                  height: 100,
+                  width: "auto",
+                  borderRadius: "10px",
+                  boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31);"
+                }}
+              >
+                <Grid container spacing={1}
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  <Grid item xs="auto">
+                    <Stack pl={1} height="100%"
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <h1
+                        style={{
+                          fontFamily: '"Nunito", sans-serif',
+                          fontWeight: 800,
+                        }}
+                      >
+                        {`${routeMetadata.min} min`}
+                      </h1>
+                      <h2
+                        style={{
+                          fontFamily: '"Nunito", sans-serif',
+                          fontWeight: 600,
+                          color: "#565656"
+                        }}
+                      >
+                        {`${routeMetadata.kms} km`}
+                      </h2>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs="auto" fontSize="60px">
+                    <Stack
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <i class="fa-solid fa-person-walking"></i>
+                    </Stack>
+                  </Grid>
+                  <Grid item >
+                    <Stack height="100%" pl={2}
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "100%",
+                          fontFamily: '"Nunito", sans-serif',
+                          fontWeight: 800,
+                        }}
+                      >
+                        <h3>Destino:</h3>
+                      </div>
+                      <div
+                        style={{
+                          width: "150px",
+                          maxHeight: "70px",
+                          overflow: "scroll",
+                          fontFamily: '"Nunito", sans-serif',
+                          fontWeight: 600,
+                          color: "#565656"
+                        }}
+                      >
+                        <p style={{ overflow: "scroll" }} >{bathroom.name}</p>
+                      </div>
+                    </Stack>
+                  </Grid>
+                </Grid>
+              </BottomNavigation>
+            </Stack>
+          </Box>
+        </>
+        :
+        <h1>Error con la localización</h1>
+      }
     </Box>
   )
 }

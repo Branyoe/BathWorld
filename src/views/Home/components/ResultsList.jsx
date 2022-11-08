@@ -3,16 +3,11 @@ import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { ListItemButton } from '@mui/material';
-import { BathroomsContext } from '../../../context';
-import { useNavigate } from 'react-router-dom';
 
-export const ResultsList = ({ inpValue }) => {
-  const navigator = useNavigate();
+export const ResultsList = ({ searchValue, data, onItemClick }) => {
 
-  const {bathrooms} = React.useContext(BathroomsContext);
-
-  const filterData = bathrooms.filter(e => {
-    if (inpValue !== '') return e.name.toLowerCase().includes(inpValue.toLowerCase());
+  const filterData = data.filter(e => {
+    if (searchValue !== '') return e.name.toLowerCase().includes(searchValue.toLowerCase());
     return null;
   })
 
@@ -24,8 +19,11 @@ export const ResultsList = ({ inpValue }) => {
       {filterData.map(bathroom => (
         <div key={bathroom.id}>
           <ListItemButton onClick={
+            // () => {
+            //   navigator(`/bathroom/${bathroom.id}`);
+            // }
             () => {
-              navigator(`/bathroom/${bathroom.id}`);
+              onItemClick(bathroom);
             }
           }>
             <ListItemText primary={bathroom.name} />

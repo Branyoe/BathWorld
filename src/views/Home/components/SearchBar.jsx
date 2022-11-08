@@ -1,20 +1,28 @@
 import { Search } from "@mui/icons-material";
 import { Avatar, Grid, InputAdornment, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Loading } from "../../../components";
 import { useAuth } from "../../../context/authContext";
 import { ResultsList } from "./ResultsList";
 
 import LogoTest from "../../../assets/logoTestF.jpg"
+import { BathroomsContext } from "../../../context";
+import { useNavigate } from "react-router-dom";
 
 export const SearchBar = () => {
   const { loading } = useAuth();
+  const {bathrooms} = useContext(BathroomsContext);
   const [searchValue, setSearchValue] = useState("");
+  const navigator = useNavigate();
 
   if (loading) return <Loading />
 
   const handleSearch = ({ target: { value } }) => {
     setSearchValue(value);
+  }
+
+  const handleItemClick = bathroom => {
+    navigator(`/bathroom/${bathroom.id}`);
   }
 
   return (
@@ -52,7 +60,15 @@ export const SearchBar = () => {
         </Grid>
       </Grid>
       <div className="search-list" >
-        {searchValue && <ResultsList inpValue={searchValue} />}
+        {
+          searchValue 
+          && 
+          <ResultsList
+            searchValue={searchValue} 
+            data={bathrooms}
+            onItemClick={handleItemClick}
+          />
+        }
       </div>
     </div>
   );

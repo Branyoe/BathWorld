@@ -10,19 +10,12 @@ import UserLocationContext from '../context/userLocation/userLocationContext';
 export default function GeolocationErrorDialog() {
   const { isErrorDialogOpen: open, setIsErrorDialogOpen: setOpen } = React.useContext(UserLocationContext);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
