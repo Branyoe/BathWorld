@@ -4,6 +4,7 @@ import { Stack } from "@mui/system";
 const createCategoryTile = (name, img) => {
   return (
     <Paper
+      key={name}
       sx={{
         height: 60,
         width: 60,
@@ -21,10 +22,6 @@ const categories = [
   },
   {
     name: "Gratis",
-    img: "w"
-  },
-  {
-    name: "Paga",
     img: "w"
   },
 ] 

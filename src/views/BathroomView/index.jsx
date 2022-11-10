@@ -255,7 +255,7 @@ export default function BathroomView() {
                       className="fa-solid fa-poop"
                       style={{
                         marginRight: ".3rem",
-                        color: "brown"
+                        color: "#745e3d"
                       }}
                     ></i>
                     {totalRating ? totalRating.toFixed(1): "S/N"}

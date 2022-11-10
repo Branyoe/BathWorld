@@ -2,10 +2,10 @@ import { Rating, styled } from "@mui/material";
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
-    color: 'brown',
+    color: '#745e3d',
   },
   '& .MuiRating-iconHover': {
-    color: 'brown',
+    color: '#745e3d',
   },
 });
 

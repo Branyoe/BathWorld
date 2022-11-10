@@ -6,10 +6,28 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
 import appNavBarStore from '../stores/appNavBarStore';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { styled } from '@mui/material/styles';
+
+const NavAction = (props) => {
+  const CustomBottomNavigationAction = styled(props => <BottomNavigationAction {...props}/>)(
+    () => ({
+      '&.MuiBottomNavigationAction-root': {
+        color: "#bbb",
+        transition: "all .3s",
+      },
+      '&.Mui-selected': {
+        color: "#eee",
+        transition: "all .3s",
+      },
+
+    })
+  )
+
+  return <CustomBottomNavigationAction {...props}/>
+}
 
 export default function BottomNavigation() {
-  // const [value, setValue] = React.useState('home');
   const { value, setValue } = appNavBarStore(state => ({
     setValue: state.setCurrent,
     value: state.current
@@ -22,35 +40,36 @@ export default function BottomNavigation() {
 
   return (
     <BottomNav
-      showLabels
-      sx={{
-        width: "auto",
-        borderRadius: "10px",
-        boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31);"
-      }}
-      bgcolor="blue"
-      value={value}
-      onChange={handleChange}
+    showLabels
+    sx={{
+      width: "auto",
+      borderRadius: "10px",
+      boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31)",
+      backgroundColor: "#0147a8",
+      transition: "all .3s",
+    }}
+    value={value}
+    onChange={handleChange}
     >
-      <BottomNavigationAction
+      <NavAction
         label="Contacto"
         value="contact"
         icon={<SupportAgentIcon />}
         onClick={() => navigator('/contact')}
       />
-      <BottomNavigationAction
+      <NavAction
         label="Catálogo"
         value="catalog"
-        icon={<AutoStoriesIcon />}
+        icon={<FormatListBulletedIcon />}
         onClick={() => navigator('/catalog')}
       />
-      <BottomNavigationAction
+      <NavAction
         label="Inicio"
         value="home"
         icon={<HomeIcon />}
         onClick={() => navigator('/')}
       />
-      <BottomNavigationAction
+      <NavAction
         label="Perfil"
         value="profile"
         icon={<AccountCircleIcon />}
