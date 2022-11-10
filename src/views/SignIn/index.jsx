@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -16,6 +15,7 @@ import { LoadingButton } from '@mui/lab';
 import Alert from '@mui/material/Alert';
 import L from '@mui/material/Link';
 import appNavBarStore from '../../stores/appNavBarStore';
+import LogoTest from "../../assets/logoTestF.jpg"
 
 
 const theme = createTheme();
@@ -25,10 +25,10 @@ export default function SignIn() {
   const [error, setError] = React.useState("");
   const { signIn } = useAuth();
   const navigate = useNavigate();
-  const {setShow} = appNavBarStore(state => ({
+  const { setShow } = appNavBarStore(state => ({
     setShow: state.setShow
   }));
-  
+
   React.useEffect(() => {
     setShow(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,9 +46,9 @@ export default function SignIn() {
 
   const dbErrors = {
     "Firebase: Error (auth/user-not-found).": "Usuario  inexistente",
-    "Firebase: Error (auth/wrong-password).":  "Contraseña incorrecta",
-    "Firebase: Error (auth/invalid-email).":  "Correo electónico invalido",
-    "Firebase: Error (auth/network-request-failed).":  "Problemas de red"
+    "Firebase: Error (auth/wrong-password).": "Contraseña incorrecta",
+    "Firebase: Error (auth/invalid-email).": "Correo electónico invalido",
+    "Firebase: Error (auth/network-request-failed).": "Problemas de red"
   }
 
   const formik = useFormik({
@@ -83,11 +83,13 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Avatar 
+            sx={{ m: 1 }}
+            src={LogoTest}
+            variant="rounded"
+          />
           <Typography component="h1" variant="h5">
-            Iniciar Sesión
+            Inicia sesión
           </Typography>
           <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -138,7 +140,7 @@ export default function SignIn() {
               <Grid item>
                 <Link to="/sign-up">
                   <L component={Box} variant="body2">
-                    ¿No tienes una cuenta? Registrate.
+                    ¿Ya tienes una cuenta? Inicia sesión.
                   </L>
                 </Link>
               </Grid>

@@ -6,10 +6,11 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
 import appNavBarStore from '../stores/appNavBarStore';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 
 export default function BottomNavigation() {
   // const [value, setValue] = React.useState('home');
-  const {value, setValue} = appNavBarStore( state => ({
+  const { value, setValue } = appNavBarStore(state => ({
     setValue: state.setCurrent,
     value: state.current
   }))
@@ -20,14 +21,14 @@ export default function BottomNavigation() {
   };
 
   return (
-    <BottomNav 
+    <BottomNav
       showLabels
-      sx={{ 
-        width: "auto", 
+      sx={{
+        width: "auto",
         borderRadius: "10px",
         boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31);"
-      }} 
-      value={value} 
+      }}
+      value={value}
       onChange={handleChange}
     >
       <BottomNavigationAction
@@ -35,6 +36,12 @@ export default function BottomNavigation() {
         value="contact"
         icon={<SupportAgentIcon />}
         onClick={() => navigator('/contact')}
+      />
+      <BottomNavigationAction
+        label="Catálogo"
+        value="catalog"
+        icon={<AutoStoriesIcon />}
+        onClick={() => navigator('/catalog')}
       />
       <BottomNavigationAction
         label="Inicio"

@@ -12,12 +12,14 @@ import { ListItemButton, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getCommentByUserEmail } from '../../../DB';
 import Comment from '../../BathroomView/components/Comment';
+import { BathroomsContext } from '../../../context/bathrooms/BathroomsContext';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function ReviewsDialog({ open, setOpen, user }) {
+  const {bathrooms} = React.useContext(BathroomsContext);
   const [comments, setComents] = React.useState([]);
   const navigator = useNavigate();
 
@@ -26,6 +28,10 @@ export default function ReviewsDialog({ open, setOpen, user }) {
     setComents(foundComment);
   }, [user])
 
+  const findBathData = (id) => {
+    return bathrooms.find(b => b.id === id);
+  }
+
   React.useEffect(() => {
     queryComment();
   }, [queryComment])
@@ -33,6 +39,8 @@ export default function ReviewsDialog({ open, setOpen, user }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  
 
   const loadingManager = () => {
     // if (isLoading) {
@@ -50,7 +58,7 @@ export default function ReviewsDialog({ open, setOpen, user }) {
                 navigator(`/bathroom/${c.bathroomId}`)
               }}
             >
-              <Comment data={c}/>
+              <Comment data={c} bathName={findBathData(c.bathroomId).name}/>
             </ListItemButton>
             <Divider />
           </Stack>

@@ -21,10 +21,10 @@ export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom,
   
   const commentVlidationSchema = yup.object({
     comment: yup
-    .string('solo textor')
-    .required('Esto no puede estar vacio')
-    .min(4, "mínimo 4 caracteres")
-    .max(200, "maximo 200 caracteres")
+    .string('Solo texto')
+    .required('Esto no puede estar vacío')
+    .min(4, "Mínimo 4 caracteres")
+    .max(200, "Máximo 200 caracteres")
   });
   
   
@@ -57,7 +57,7 @@ export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom,
   return (
     <div>
       <Dialog fullWidth open={isOpen} onClose={handleClose}>
-        <DialogTitle>Cuentanos más</DialogTitle>
+        <DialogTitle>Cuéntanos más</DialogTitle>
         <DialogContent>
           <DialogContentText mb={2}>
             <MyRating disable ratingValue={ratingValue} />
@@ -78,8 +78,8 @@ export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom,
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={commentFormik.handleSubmit}>Enivar</Button>
+          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={commentFormik.handleSubmit}>Enviar</Button>
         </DialogActions>
       </Dialog>
     </div>

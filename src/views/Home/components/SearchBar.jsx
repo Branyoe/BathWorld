@@ -38,6 +38,7 @@ export const SearchBar = () => {
         <Grid item xs>
           <TextField
             style={{ height: "30px" }}
+            placeholder="Busca un baño"
             variant="standard"
             fullWidth
             id="fullWidth"

@@ -3,8 +3,15 @@ import { useContext } from "react";
 import { authContext } from "../../../context/authContext";
 import { MyRating } from "./MyRating";
 
-export default function Comment({ data }) {
+export default function Comment({ data, bathName}) {
   const {user} = useContext(authContext);
+
+  const getHeader = () => {
+    if(bathName) return bathName;
+    if(data.userEmail === user.email) return "Tú";
+    return data.userEmail;
+  }
+
   return (
     <>
       <ListItem alignItems="flex-start">
@@ -13,7 +20,7 @@ export default function Comment({ data }) {
         </ListItemAvatar>
         <ListItemText
           style={{ wordWrap: "break-word" }}
-          primary={data.userEmail === user.email ? "Tu" : data.userEmail}
+          primary={getHeader()}
           secondary={
             <Stack sx={{
               display: "flex",

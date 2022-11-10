@@ -35,8 +35,7 @@ export const UserView = () => {
   }, [])
 
   const handleLogOutBtn = async () => {
-    const x = await logOut();
-    console.log(x);
+    await logOut();
   }
 
   return (
@@ -58,7 +57,7 @@ export const UserView = () => {
               <ListItemIcon>
                 <AlternateEmailIcon />
               </ListItemIcon>
-              <ListItemText primary="Email" secondary={user.email} />
+              <ListItemText primary="Correo electrónico" secondary={user.email} />
             </ListItem>
           </List>
         </nav>
@@ -78,7 +77,7 @@ export const UserView = () => {
                 <ListItemIcon>
                   <ReviewsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Tus reseñas" />
+                <ListItemText primary="Tus comentarios" />
               </ListItemButton>
             </ListItem>
           </List>
