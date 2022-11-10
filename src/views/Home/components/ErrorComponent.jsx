@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-const ErrorComponent = ({ source, msg }) => {
+const ErrorComponent = ({ source, msg, imgSize}) => {
   return (
     <Box
       sx={{
@@ -19,7 +19,7 @@ const ErrorComponent = ({ source, msg }) => {
         justifyContent="center"
         alignItems="center"
       >
-        <img src={source} width={"100%"} alt="Imagen de error" />
+        <img src={source} width={imgSize ? imgSize : "100%"} alt="Imagen de error" />
         <p
           style={{
             fontWeight: 400,

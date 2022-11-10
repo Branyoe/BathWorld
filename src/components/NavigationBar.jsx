@@ -11,11 +11,7 @@ export const NavigationBar = () => {
         width: "100%",
       }}
     >
-      <Stack
-        sx={{
-          margin: 1
-        }}
-      >
+      <Stack>
         <BottomNavigation/>
       </Stack>
     </Box>

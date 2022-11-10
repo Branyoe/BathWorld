@@ -28,6 +28,7 @@ export default function BottomNavigation() {
         borderRadius: "10px",
         boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31);"
       }}
+      bgcolor="blue"
       value={value}
       onChange={handleChange}
     >
