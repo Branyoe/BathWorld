@@ -28,8 +28,8 @@ export default function GeolocationErrorDialog() {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <span>Te recomendamos:</span> <br />
-            <span>* Verificar que tu dispositivo cuente con loacalizador.</span> <br />
-            <span>* Activar la localización en tu dispositivo.</span>  
+            <span>  * Verificar que tu dispositivo cuente con localizador.</span> <br />
+            <span>  * Activar la localización en tu dispositivo.</span>  
           </DialogContentText>
         </DialogContent>
         <DialogActions>
