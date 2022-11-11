@@ -4,7 +4,7 @@ import BathList from "./BathList";
 
 const filterByCategory = (category, baths) => {
   let filterBaths = [] 
-  baths.foreach((bath) => {
+  baths.forEach((bath) => {
     if (bath.tags){
       let foundTag;
       foundTag = bath.tags.find(tag => tag === category.toLowerCase());
