@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { db } from "./dbConf";
 
 export const getBathroom = (id) => getDoc(doc(db, "bathrooms", id));
@@ -36,6 +36,15 @@ export const getAllComments = async (bathroomId) => {
     docs.push({ ...doc.data(), id: doc.id });
   });
   return docs;
+}
+
+
+
+export const setTotalBathRating = async (bathId, totalRating) => {
+  const docRef = doc(db, "bathrooms", bathId)
+  await updateDoc(docRef, {
+    totalRating: totalRating
+  })
 }
 
 export const watchBathrooms = async (setState) => {

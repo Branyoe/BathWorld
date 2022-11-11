@@ -1,5 +1,5 @@
 export const mapReducer = (state, action) => {
-  switch (action.type) {  
+  switch (action.type) {
     case 'setMap':
       return {
         ...state,
@@ -10,6 +10,17 @@ export const mapReducer = (state, action) => {
       return {
         ...state,
         markers: action.payload
+      }
+    case 'setMiniMap':
+      return {
+        ...state,
+        isMiniMapReady: true,
+        miniMap: action.payload
+      }
+    case 'setMiniMapMarker':
+      return {
+        ...state,
+        miniMapMarker: action.payload
       }
     case 'setLocationMarker':
       return {

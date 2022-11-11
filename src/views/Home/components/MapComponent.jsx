@@ -24,7 +24,7 @@ const createBathMarker = (handleClick) => {
 
 const MapComponent = () => {
   const { bathrooms } = useContext(BathroomsContext);
-  const { setMap, map, markers, setMarkers} = useContext(MapContext);
+  const { setMap, map, markers, isMapReady,setMarkers} = useContext(MapContext);
   const { userLocation, setIsErrorDialogOpen, queryLocation } = useContext(UserLocationContext);
   const navigator = useNavigate();
 
@@ -35,9 +35,12 @@ const MapComponent = () => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  let i = 0;
+
   //inicializa y reutiliza el mapa 
   useLayoutEffect(() => {
     const initializeMap = ({ setMap, mapRef }) => {
+      console.log("ww");
       const map = new Map({
         container: mapRef.current,
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -49,23 +52,28 @@ const MapComponent = () => {
         map.setFog({});
       });
       setMap(map);
+      i++;
     }
-    if (!map) initializeMap({ setMap, mapRef })
+    if (!isMapReady && i === 0) initializeMap({ setMap, mapRef })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, setMap]);
 
   // Pinta los marcadores
   useEffect(() => {
-    markers.forEach(marker => marker.remove);
-    let auxMarkers = [];
-    bathrooms.forEach(bath => {
-      const newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`));
-      newMarker.setLngLat([bath.lng, bath.lat]);
-      newMarker.addTo(map);
-      auxMarkers.push(newMarker);
-    });
-    setMarkers(auxMarkers);
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bathrooms, map])
+    let aux = [];
+    if(isMapReady && bathrooms.length && !markers.length){
+      markers.forEach(marker => marker.remove());
+      console.log("marcadores agregados");
+      bathrooms.forEach(bath => {
+        const newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`));
+        newMarker.setLngLat([bath.lng, bath.lat]);
+        newMarker.addTo(map);
+        aux.push(newMarker);
+      });
+      setMarkers(aux);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bathrooms, isMapReady, markers]);
 
   //evalúa que el mapa no se sobreescribra
   useEffect(() => {

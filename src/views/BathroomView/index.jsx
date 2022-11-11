@@ -2,7 +2,7 @@ import { Avatar, Button, Divider } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import { addComment, getBathroom, getCommentByUserEmailAndBathroomId, watchComments } from "../../DB";
+import { addComment, getBathroom, getCommentByUserEmailAndBathroomId, setTotalBathRating, watchComments } from "../../DB";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { Loading } from "../../components";
@@ -15,6 +15,7 @@ import "./index.css"
 import { MyRating } from "./components/MyRating";
 import { useNavigate, useParams } from "react-router-dom";
 import bathroomViewStore from "../../stores/bathroomViewStore";
+// import { MapContext } from "../../context";
 
 const LABEL_STYLES = {
   margin: 0,
@@ -25,12 +26,12 @@ const LABEL_STYLES = {
 }
 
 export default function BathroomView() {
+  // const {setMiniMapMarker, miniMapMarker} = useContext(MapContext)
   const [comments, setComments] = useState([]);
   const [bathroom, setBathroom] = useState();
   const [hasComment, setHasComment] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
-  const [miniMap, setMiniMap] = useState(null);
   const [showRatingInp, setShowRatingInp] = useState(false);
   const [totalRating, setTotalRating] = useState(0);
   const { user } = useAuth();
@@ -45,6 +46,7 @@ export default function BathroomView() {
 
   useEffect(() => {
     setShow(false);
+    // setMiniMapMarker(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -55,7 +57,6 @@ export default function BathroomView() {
     }
     getB();
   }, [id]);
-
 
   const queryComments = useCallback(async () => {
     if (!bathroom) return
@@ -80,15 +81,32 @@ export default function BathroomView() {
     queryComments()
   }, [queryComments])
 
+  const saveTotalRating = async (value) => {
+    await setTotalBathRating(id, value);
+  }
+
   useEffect(() => {
+    if(!bathroom) return
+    const {totalRating} = bathroom;
+    if (!totalRating) {
+      const res = calcRating()
+      saveTotalRating(res);
+      setTotalRating(res);
+    }else{
+      setTotalRating(calcRating());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bathroom, comments]);
+
+  const calcRating = () => {
     let sum = 0;
     let count = 0;
-    for(let comment of comments){
+    for (let comment of comments) {
       sum += comment.ratingValue;
       count++;
     }
-    setTotalRating(sum/count);
-  }, [comments, setTotalRating])
+    return sum/count;
+  }
 
   const commentVlidationSchema = yup.object({
     comment: yup
@@ -103,13 +121,17 @@ export default function BathroomView() {
       comment: ""
     },
     validationSchema: commentVlidationSchema,
-    onSubmit: async ({ comment }) => {
-      await addComment(bathroom.id, user.email, comment);
+    onSubmit: ({ comment }) => {
+      addComment(bathroom.id, user.email, comment);
       commentFormik.resetForm();
     }
   });
 
   const handleClose = () => {
+    // console.log(marker);
+    // marker.getElement().remove();
+    // miniMapMarker.forEach(m => m.remove());
+    // setMiniMapMarker([])
     navigator(route);
   }
 
@@ -258,13 +280,13 @@ export default function BathroomView() {
                         color: "#745e3d"
                       }}
                     ></i>
-                    {totalRating ? totalRating.toFixed(1): "S/N"}
+                    {totalRating ? totalRating.toFixed(1) : "S/N"}
                   </p>
                 </Box>
               </Box>
               <Divider orientation="vertical" variant="middle" flexItem />
               <Box ml={1}>
-                <p style={LABEL_STYLES}>Precio</p>
+                <p style={LABEL_STYLES}>Tipo:</p>
                 <Box sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -276,7 +298,7 @@ export default function BathroomView() {
                         marginRight: ".3rem"
                       }}
                     ></i>
-                    {bathroom.type}
+                    {bathroom.cost}
                   </p>
                 </Box>
               </Box>
@@ -286,8 +308,6 @@ export default function BathroomView() {
           {showAttendanceField()}
           <CommentsAndLocationTabs
             bathroom={bathroom}
-            miniMap={miniMap}
-            setMiniMap={setMiniMap}
             data={comments}
           />
         </Box>

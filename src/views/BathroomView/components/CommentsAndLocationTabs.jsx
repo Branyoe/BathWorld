@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 //@js-ignore
 import mapboxgl from '!mapbox-gl';
 import UserLocationContext from '../../../context/userLocation/userLocationContext';
+import { MapContext } from '../../../context';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,8 +63,17 @@ const TEXT_STYLES = {
   fontFamily: '"Poppins", sans-serif'
 }
 
-export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data }) => {
-  const {userLocation, queryLocation} = React.useContext(UserLocationContext);
+const markerElement = document.createElement('div');
+markerElement.className = 'marker';
+markerElement.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathworld_icono.png?alt=media&token=a0b20773-4ef4-46e3-b97f-afb8b28c55ee)';
+markerElement.style.width = `${60}px`;
+markerElement.style.height = `${60}px`;
+markerElement.style.backgroundSize = '100%';
+
+export const CommentsAndLocationTabs = ({ bathroom, data }) => {
+  const { map, miniMap, setMiniMap, miniMapMarker } = React.useContext(MapContext);
+  const { userLocation, queryLocation } = React.useContext(UserLocationContext);
+
   const [value, setValue] = React.useState(0);
   const navigator = useNavigate();
   mapboxgl.accessToken = 'pk.eyJ1IjoiYnJhbnlvZSIsImEiOiJjbDlncTVwaWowOWtrM3Vtd2R2aDZ3c3o0In0.MoFF_EjlzMATPJDHr-zqXA';
@@ -79,6 +89,36 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
     queryLocation();
   }, [queryLocation])
 
+  //agrega y limpia marcadores
+  React.useLayoutEffect(() => {
+    if (!miniMap) return;
+    markerElement.addEventListener('click', e => {
+      navigator(`/`);
+      map.flyTo({
+        center: [bathroom.lng, bathroom.lat],
+        zoom: 16
+      })
+    });
+    const newMarker = new Marker(markerElement)
+    newMarker.setLngLat([bathroom.lng, bathroom.lat])
+    newMarker.addTo(miniMap);
+    miniMap.setCenter([bathroom.lng, bathroom.lat])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [miniMap, miniMapMarker])
+
+  // React.useEffect(() => {
+  //   // return () => {
+  //   //   console.log(marker);
+  //   //   // marker.remove()
+  //   // }
+  //   if (miniMapMarker) setTimeout(() => {
+  //     console.log("eliminado");
+  //     miniMapMarker.remove();
+  //     setMiniMapMarker(null);
+  //   }, 3000)
+  // }, [miniMapMarker])
+
+  //inicia mapa
   React.useEffect(() => {
     const initializeMap = ({ setMiniMap, mapContainer }) => {
       const map = new Map({
@@ -89,7 +129,6 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
         scroll: false,
         projection: 'globe' // display the map as a 3D globe
       });
-
       map.scrollZoom.disable();
       map.boxZoom.disable();
       map.dragRotate.disable();
@@ -103,26 +142,15 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
         setMiniMap(map);
         // Set the default [-103.7366491808968, 19.283594842470652]ere style
       });
-
-      const markerElement = document.createElement('div');
-      markerElement.className = 'marker';
-      markerElement.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathworld_icono.png?alt=media&token=a0b20773-4ef4-46e3-b97f-afb8b28c55ee)';
-      markerElement.style.width = `${60}px`;
-      markerElement.style.height = `${60}px`;
-      markerElement.style.backgroundSize = '100%';
-      const newMarker = new Marker({ element: markerElement })
-      newMarker.setLngLat([bathroom.lng, bathroom.lat])
-      newMarker.addTo(map);
     }
     if (!miniMap) initializeMap({ setMiniMap, mapContainer });
-  }, [miniMap, setMiniMap, bathroom]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [miniMap, bathroom]);
 
-
+  //evita la recarga del mapa
   React.useEffect(() => {
-    if (miniMap && value === 0) {
-      document.getElementById("map").replaceWith(miniMap.getContainer());
-    }
-  }, [value, miniMap])
+    if (miniMap && value === 0) document.getElementById("map").replaceWith(miniMap.getContainer());
+  }, [miniMap, value])
 
   const getRouteBtn = () => {
     return (
@@ -162,7 +190,7 @@ export const CommentsAndLocationTabs = ({ bathroom, miniMap, setMiniMap, data })
         {userLocation && getRouteBtn()}
         <Box
           id="map"
-          ref={(el) => mapContainer.current = el}
+          ref={mapContainer}
           sx={
             {
               mt: 2,

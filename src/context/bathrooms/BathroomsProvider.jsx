@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 }
 
 export const BathroomsProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(BathroomsReducer, INITIAL_STATE)
+  const [state, dispatch] = useReducer(BathroomsReducer, INITIAL_STATE);
   getUserLocation()
     .then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
     .catch(() => dispatch({ type: 'setUserLocation', payload: null }))
@@ -31,7 +31,7 @@ export const BathroomsProvider = ({ children }) => {
 
   useEffect(() => {
     queryBathrooms()
-  }, [queryBathrooms])
+  }, [queryBathrooms]);
 
   return (
     <BathroomsContext.Provider value={{ ...state, queryLocation}}>
