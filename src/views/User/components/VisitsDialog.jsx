@@ -10,10 +10,11 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { BathroomsContext } from '../../../context';
-import { Loading } from '../../../components';
 import { ListItemButton, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getCommentByUserEmail } from '../../../DB';
+import VisitsError from '../../../assets/VisitsError.svg'
+import ErrorComponent from '../../Home/components/ErrorComponent';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function VisistsDialog({ open, setOpen, user }) {
   const [comments, setComents] = React.useState([]);
-  const { isLoading, bathrooms } = React.useContext(BathroomsContext);
+  const { bathrooms } = React.useContext(BathroomsContext);
   const navigator = useNavigate();
 
   const queryComment = React.useCallback(async () => {
@@ -44,11 +45,12 @@ export default function VisistsDialog({ open, setOpen, user }) {
   };
 
   const loadingManager = () => {
-    if (isLoading) {
-      return (
-        <Loading />
-      );
-    }
+    if (!comments.length) return (
+      <ErrorComponent
+        source={VisitsError}
+        msg="Aún no has visitado un baño"
+      />
+    );
     return (
       <List>
         {getBathsData().map((b) => (

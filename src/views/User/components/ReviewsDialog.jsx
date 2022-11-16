@@ -13,13 +13,15 @@ import { useNavigate } from 'react-router-dom';
 import { getCommentByUserEmail } from '../../../DB';
 import Comment from '../../BathroomView/components/Comment';
 import { BathroomsContext } from '../../../context/bathrooms/BathroomsContext';
+import ErrorComponent from '../../Home/components/ErrorComponent';
+import ReviewsError from '../../../assets/ReviewsError.svg'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function ReviewsDialog({ open, setOpen, user }) {
-  const {bathrooms} = React.useContext(BathroomsContext);
+  const { bathrooms } = React.useContext(BathroomsContext);
   const [comments, setComents] = React.useState([]);
   const navigator = useNavigate();
 
@@ -40,20 +42,26 @@ export default function ReviewsDialog({ open, setOpen, user }) {
     setOpen(false);
   };
 
-  
+
 
   const loadingManager = () => {
+    if (!comments.length) return (
+      <ErrorComponent
+        source={ReviewsError}
+        msg="Aún no has hecho reseñas"
+      />
+    );
     return (
       <List>
         {comments.map((c) => (
           <Stack key={c.id}>
             <ListItemButton
-              sx={{padding: 0}}
+              sx={{ padding: 0 }}
               onClick={() => {
                 navigator(`/bathroom/${c.bathroomId}`)
               }}
             >
-              <Comment data={c} bathName={findBathData(c.bathroomId).name}/>
+              <Comment data={c} bathName={findBathData(c.bathroomId).name} />
             </ListItemButton>
             <Divider />
           </Stack>
