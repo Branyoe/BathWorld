@@ -2,9 +2,9 @@ import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc,
 import { db } from "./dbConf";
 
 export const getBathroom = (id) => getDoc(doc(db, "bathrooms", id));
-export const addComment = ({bathroomId, userEmail, comment, ratingValue}) => {
+export const addComment = ({bathroomId, userEmail, comment, ratingValue, date}) => {
   const newComment = doc(collection(db, "comments"));
-  setDoc(newComment, { bathroomId, userEmail, comment, ratingValue });
+  setDoc(newComment, { bathroomId, userEmail, comment, ratingValue, date});
 }
 export const getCommentByUserEmailAndBathroomId = async (userEmail, bathroomId) => {
   const q = query(collection(db, "comments"), where("bathroomId", "==", bathroomId), where("userEmail", "==", userEmail));
@@ -14,8 +14,14 @@ export const getCommentByUserEmailAndBathroomId = async (userEmail, bathroomId) 
   querySnapshot.forEach((doc) => {
     docs.push({ ...doc.data(), id: doc.id });
   });
-  return docs;
+
+  return docs.sort((a, b) => {
+    if(a.date > b.date) return 1;
+    if(a.date < b.date) return -1;
+    return 0;
+  });
 }
+
 
 export const getCommentByUserEmail = async (userEmail) => {
   const q = query(collection(db, "comments"), where("userEmail", "==", userEmail));

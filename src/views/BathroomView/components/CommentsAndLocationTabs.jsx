@@ -184,7 +184,6 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
       </Box>
       <TabPanel value={value} index={0}>
         <Stack>
-          {/* <p style={LABEL_STYLES}>Direccion</p> */}
           <p style={TEXT_STYLES}>{bathroom.address}</p>
         </Stack>
         {userLocation && getRouteBtn()}

@@ -33,14 +33,15 @@ export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom,
       comment: ""
     },
     validationSchema: commentVlidationSchema,
-    onSubmit: async ({ comment }) => {
+    onSubmit: ({ comment }) => {
       const newComment = {
         bathroomId: bathroom.id,
         userEmail: user.email,
         comment,
-        ratingValue
+        ratingValue,
+        date: Date.now()
       }
-      await addComment(newComment);
+      addComment(newComment);
       setShowRatingInp(true);
       setHasComment([newComment]);
       commentFormik.resetForm();
@@ -63,6 +64,7 @@ export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom,
             <MyRating disable ratingValue={ratingValue} />
           </DialogContentText>
           <TextField
+            autoFocus
             autoComplete='off'
             id="outlined-multiline-static"
             label="Escribe un comentario"

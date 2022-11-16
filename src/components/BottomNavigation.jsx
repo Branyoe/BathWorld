@@ -3,11 +3,12 @@ import BottomNav from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
-import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from 'react-router-dom';
 import appNavBarStore from '../stores/appNavBarStore';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { styled } from '@mui/material/styles';
+import AppIcon from '../assets/logoTestF.jpg'
+import { Icon } from '@mui/material';
 
 const NavAction = (props) => {
   const CustomBottomNavigationAction = styled(props => <BottomNavigationAction {...props}/>)(
@@ -66,7 +67,17 @@ export default function BottomNavigation() {
       <NavAction
         label="Inicio"
         value="home"
-        icon={<HomeIcon />}
+        icon={
+          <Icon>
+            <img 
+              src={AppIcon}
+              style={{
+                width: "100%"
+              }}  
+              alt="AppIcon"
+            />
+          </Icon>
+        }
         onClick={() => navigator('/')}
       />
       <NavAction

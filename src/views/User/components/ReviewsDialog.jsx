@@ -43,11 +43,6 @@ export default function ReviewsDialog({ open, setOpen, user }) {
   
 
   const loadingManager = () => {
-    // if (isLoading) {
-    //   return (
-    //     <Loading />
-    //   );
-    // }
     return (
       <List>
         {comments.map((c) => (
