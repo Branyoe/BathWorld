@@ -154,28 +154,6 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
     if (miniMap && value === 0) document.getElementById("map").replaceWith(miniMap.getContainer());
   }, [miniMap, value])
 
-  const getRouteBtn = () => {
-    return (
-      <Box sx={{
-        position: 'fixed',
-        top: "calc(100% - 200px)",
-        left: "calc(100% - 55px)",
-        // bgcolor:"white",
-        borderRadius: "50%",
-        zIndex: 999,
-        width: "30px",
-        height: "30px",
-
-      }}
-        onClick={() => {
-          navigator(`/route/${bathroom.id}`);
-        }}
-      >
-        <DirectionsIcon sx={{ padding: 0, backgroundColor: 'white', borderRadius: '50%', width: "40px", height: "40px" }} color="primary" />
-      </Box>
-    );
-  }
-
   const handleRouteBtn = () => {
     if (!userLocation) {
       setIsErrorDialogOpen(true);
