@@ -1,4 +1,5 @@
 import React from 'react'
+import GeolocationErrorDialog from './components/GeolocationErrorDialog';
 import { BathroomsProvider, MapProvider } from './context'
 import { AuthProvider } from './context/authContext';
 import UserLocationProvider from './context/userLocation/userLocationProvider';
@@ -12,6 +13,7 @@ export default function BathWorldApp() {
         <UserLocationProvider>
           <MapProvider>
             <Routes />
+            <GeolocationErrorDialog />
           </MapProvider>
         </UserLocationProvider>
       </BathroomsProvider>

@@ -77,7 +77,7 @@ export const UserView = () => {
                 <ListItemIcon>
                   <ReviewsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Tus comentarios" />
+                <ListItemText primary="Tus reseñas" />
               </ListItemButton>
             </ListItem>
           </List>

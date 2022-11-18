@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { BtnMyLocation } from '../../components';
 import { BtnTraceRoute } from '../../components/BtnTraceRoute';
-import GeolocationErrorDialog from '../../components/GeolocationErrorDialog';
 import appNavBarStore from '../../stores/appNavBarStore';
 import bathroomViewStore from '../../stores/bathroomViewStore';
 import MapComponent from './components/MapComponent';
@@ -30,7 +29,7 @@ export const HomeView = () => {
       <BtnMyLocation />
       <BtnTraceRoute />
       <SearchBar />
-      <GeolocationErrorDialog/>
+      {/* <GeolocationErrorDialog/> */}
       <TraceRouteDialog />
     </>
   );

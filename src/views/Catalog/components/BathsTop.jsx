@@ -69,7 +69,7 @@ const BathsTop = ({ bathrooms }) => {
               fontWeight: 800,
               fontSize: "1.3rem",
             }}
-          >Top 10</h2>
+          >Top 10 mejores calificados</h2>
         </Stack>
         <Stack
           direction="row"

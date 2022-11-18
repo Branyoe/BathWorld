@@ -7,6 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 // import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import MapIcon from '@mui/icons-material/Map';
 import { Stack } from '@mui/system';
 import { Comments } from "../components/Comments";
 import DirectionsIcon from '@mui/icons-material/AssistantDirectionRounded';
@@ -15,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import mapboxgl from '!mapbox-gl';
 import UserLocationContext from '../../../context/userLocation/userLocationContext';
 import { MapContext } from '../../../context';
+import { Button, Grid } from '@mui/material';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,7 +74,7 @@ markerElement.style.backgroundSize = '100%';
 
 export const CommentsAndLocationTabs = ({ bathroom, data }) => {
   const { map, miniMap, setMiniMap, miniMapMarker } = React.useContext(MapContext);
-  const { userLocation, queryLocation } = React.useContext(UserLocationContext);
+  const { userLocation, queryLocation, setIsErrorDialogOpen } = React.useContext(UserLocationContext);
 
   const [value, setValue] = React.useState(0);
   const navigator = useNavigate();
@@ -87,7 +89,7 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
 
   React.useEffect(() => {
     queryLocation();
-  }, [queryLocation])
+  }, [queryLocation]);
 
   //agrega y limpia marcadores
   React.useLayoutEffect(() => {
@@ -174,19 +176,27 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
     );
   }
 
+  const handleRouteBtn = () => {
+    if (!userLocation) {
+      setIsErrorDialogOpen(true);
+    } else {
+      setIsErrorDialogOpen(false);
+      navigator(`/route/${bathroom.id}`);
+    }
+  }
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab style={{ fontFamily: '"Poppins", sans-serif' }} label="Dirección" {...a11yProps(0)} />
-          <Tab label="Comentarios" {...a11yProps(1)} />
+          <Tab label="Reseñas" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <Stack>
           <p style={TEXT_STYLES}>{bathroom.address}</p>
         </Stack>
-        {userLocation && getRouteBtn()}
         <Box
           id="map"
           ref={mapContainer}
@@ -199,6 +209,42 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
           }
         >
         </Box>
+        <Grid
+          container
+          spacing={1}
+          my={.3}
+        >
+          <Grid item xs>
+            <Stack>
+              <Button
+                variant="contained"
+                endIcon={<MapIcon />}
+                color="secondary"
+                onClick={() => {
+                  navigator(`/`);
+                  map.flyTo({
+                    center: [bathroom.lng, bathroom.lat],
+                    zoom: 16
+                  })
+                }}
+              >
+                Ver en el mapa
+              </Button>
+            </Stack>
+          </Grid>
+          <Grid item xs>
+            <Stack>
+              <Button
+                variant="contained"
+                onClick={handleRouteBtn}
+                color="secondary"
+                endIcon={<DirectionsIcon />}
+              >
+                Trazar ruta
+              </Button>
+            </Stack>
+          </Grid>
+        </Grid>
       </TabPanel >
       <TabPanel value={value} index={1}>
         <Comments data={data} />

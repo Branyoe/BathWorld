@@ -140,7 +140,7 @@ export default function SignIn() {
               <Grid item>
                 <Link to="/sign-up">
                   <L component={Box} variant="body2">
-                    ¿Ya tienes una cuenta? Inicia sesión.
+                    ¿Aún no tienes una cuenta? Regístrate.
                   </L>
                 </Link>
               </Grid>

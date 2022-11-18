@@ -146,7 +146,7 @@ const CatalogView = () => {
               fontWeight: 800,
               fontSize: "1.3rem",
             }}
-          >Categorias</h2>
+          >Categorías</h2>
         </Stack>
         <Stack
           sx={{

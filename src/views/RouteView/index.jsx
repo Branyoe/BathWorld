@@ -1,5 +1,5 @@
 /* eslint import/no-webpack-loader-syntax: off */
-import { BottomNavigation, Box, Grid, Stack } from "@mui/material";
+import { BottomNavigation, Box, Grid, Skeleton, Stack } from "@mui/material";
 //@js-ignore
 import { LngLatBounds, Map, Marker } from "!mapbox-gl";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -17,15 +17,19 @@ export const RouteView = () => {
   const { setShow } = appNavBarStore(state => ({
     setShow: state.setShow
   }));
-  const [routeMetadata, setRouteMetadata] = useState({});
+  const [routeMetadata, setRouteMetadata] = useState(null);
 
   const { id } = useParams()
   const navigator = useNavigate();
 
-  const { userLocation } = useContext(UserLocationContext);
+  const { userLocation, queryLocation } = useContext(UserLocationContext);
 
   const [bathroom, setBathroom] = useState();
   const [map, setMap] = useState();
+
+  useEffect(() => {
+    queryLocation();
+  }, [queryLocation]);
 
   useEffect(() => setShow(false), [setShow]);
 
@@ -135,7 +139,40 @@ export const RouteView = () => {
   useEffect(() => {
     if (map && userLocation) getRouteBetweenPoints(userLocation, [bathroom.lng, bathroom.lat]);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bathroom, map])
+  }, [bathroom, map]);
+
+  const showManagerRouterMetadata = () => {
+    if (!routeMetadata) {
+      return (
+        <>
+          <Skeleton variant="text" sx={{ fontSize: "3rem", width: "100px", p: 0, m: 0 }} />
+          <Skeleton variant="text" sx={{ fontSize: "2.5rem", width: "100px" }} />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <h1
+            style={{
+              fontFamily: '"Nunito", sans-serif',
+              fontWeight: 800,
+            }}
+          >
+            {`${routeMetadata.min} min`}
+          </h1>
+          <h2
+            style={{
+              fontFamily: '"Nunito", sans-serif',
+              fontWeight: 600,
+              color: "#565656"
+            }}
+          >
+            {`${routeMetadata.kms} km`}
+          </h2>
+        </>
+      );
+    }
+  }
 
   if (!bathroom) return <Loading />
   return (
@@ -212,23 +249,7 @@ export const RouteView = () => {
                           alignItems: "center",
                         }}
                       >
-                        <h1
-                          style={{
-                            fontFamily: '"Nunito", sans-serif',
-                            fontWeight: 800,
-                          }}
-                        >
-                          {`${routeMetadata.min} min`}
-                        </h1>
-                        <h2
-                          style={{
-                            fontFamily: '"Nunito", sans-serif',
-                            fontWeight: 600,
-                            color: "#565656"
-                          }}
-                        >
-                          {`${routeMetadata.kms} km`}
-                        </h2>
+                        {showManagerRouterMetadata()}
                       </Stack>
                     </Grid>
                     <Grid item xs="auto" fontSize="60px">

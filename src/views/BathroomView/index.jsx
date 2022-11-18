@@ -86,13 +86,13 @@ export default function BathroomView() {
   }
 
   useEffect(() => {
-    if(!bathroom) return
-    const {totalRating} = bathroom;
+    if (!bathroom) return
+    const { totalRating } = bathroom;
     if (!totalRating) {
       const res = calcRating()
       saveTotalRating(res);
       setTotalRating(res);
-    }else{
+    } else {
       setTotalRating(calcRating());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +105,7 @@ export default function BathroomView() {
       sum += comment.ratingValue;
       count++;
     }
-    return sum/count;
+    return sum / count;
   }
 
   const commentVlidationSchema = yup.object({
