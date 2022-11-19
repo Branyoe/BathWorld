@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider } from "@mui/material";
+import { Avatar, Divider, Paper } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useEffect, useState, useCallback } from "react";
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,6 +32,7 @@ export default function BathroomView() {
   const [hasComment, setHasComment] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
   const [openRatingDialog, setOpenRatingDialog] = useState(false);
+  //eslint-disable-next-line 
   const [showRatingInp, setShowRatingInp] = useState(false);
   const [totalRating, setTotalRating] = useState(0);
   const { user } = useAuth();
@@ -137,61 +138,56 @@ export default function BathroomView() {
 
   if (!bathroom) return <Loading />
 
-  const showRatingInpHanlder = () => {
-    if (showRatingInp) {
-      return (
-        <Stack mx={2} mb={3} mt={2}>
-          <p style={LABEL_STYLES}>Tu calificación</p>
-          <Stack mt={.3}>
-            <MyRating
-              ratingValue={ratingValue}
-              setRatingValue={setRatingValue}
-              setOpenRatingDialog={setOpenRatingDialog}
-            />
-          </Stack>
+  const RatingInp = () => (
+    <Paper
+      elevation={3}
+      sx={{
+        mx: 1,
+        mt: .3,
+        padding: '10px',
+      }}
+    >
+      <Stack>
+        <p style={LABEL_STYLES}>¿Has visitado este baño? Califícalo.</p>
+        <Stack mt={.8}>
+          <MyRating
+            ratingValue={ratingValue}
+            setRatingValue={setRatingValue}
+            setOpenRatingDialog={setOpenRatingDialog}
+          />
         </Stack>
-      );
-    }
-  }
+      </Stack>
+    </Paper>
+  )
 
   const showDisableRatingInp = () => {
     if (hasComment) {
       return (
-        <Stack mx={2} mb={3} mt={2}>
-          <p style={LABEL_STYLES}>Tu calificación</p>
-          <Stack mt={.3}>
-            <MyRating
-              disable
-              ratingValue={ratingValue}
-              setRatingValue={setRatingValue}
-              setOpenRatingDialog={setOpenRatingDialog}
-            />
+        <Paper
+          elevation={3}
+          sx={{
+            mx: 1,
+            mt: .3,
+            padding: '10px',
+          }}
+        >
+          <Stack>
+            <p style={LABEL_STYLES}>Tu calificación.</p>
+            <Stack mt={.8}>
+              <MyRating
+                disable
+                ratingValue={ratingValue}
+                setRatingValue={setRatingValue}
+                setOpenRatingDialog={setOpenRatingDialog}
+              />
+            </Stack>
           </Stack>
-        </Stack>
+        </Paper>
       );
     }
-  }
-
-  const showAttendanceField = () => {
-    if (hasComment) return;
     return (
       <>
-        <Stack mx={2} mb={3} mt={2}>
-          <p style={LABEL_STYLES}>¿Has estado en este baño?</p>
-          <Stack direction="row" spacing={1} mt={.3}>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => setShowRatingInp(true)}
-            >Si</Button>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => setShowRatingInp(false)}
-            >No</Button>
-          </Stack>
-        </Stack>
-        {showRatingInpHanlder()}
+        {RatingInp()}
       </>
     );
   }
@@ -304,14 +300,23 @@ export default function BathroomView() {
               </Box>
             </Box>
           </Stack>
-          {showDisableRatingInp()}
-          {showAttendanceField()}
+          <Stack mx={2} mb={3} mt={2}>
+            {showDisableRatingInp()}
+          </Stack>
           <CommentsAndLocationTabs
             bathroom={bathroom}
             data={comments}
           />
         </Box>
-        <RatingDialog setShowRatingInp={setShowRatingInp} setHasComment={setHasComment} setRatingValue={setRatingValue} bathroom={bathroom} ratingValue={ratingValue} isOpen={openRatingDialog} setIsOpen={setOpenRatingDialog} />
+        <RatingDialog
+          setShowRatingInp={() => {}}
+          setHasComment={setHasComment}
+          setRatingValue={setRatingValue}
+          bathroom={bathroom}
+          ratingValue={ratingValue}
+          isOpen={openRatingDialog}
+          setIsOpen={setOpenRatingDialog}
+        />
       </Box>
     </>
   );

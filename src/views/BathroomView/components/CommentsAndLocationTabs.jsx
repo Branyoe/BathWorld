@@ -197,7 +197,6 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
               <Button
                 variant="contained"
                 endIcon={<MapIcon />}
-                color="secondary"
                 onClick={() => {
                   navigator(`/`);
                   map.flyTo({
@@ -206,7 +205,7 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
                   })
                 }}
               >
-                Ver en el mapa
+                Ver en mapa
               </Button>
             </Stack>
           </Grid>
@@ -215,7 +214,6 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
               <Button
                 variant="contained"
                 onClick={handleRouteBtn}
-                color="secondary"
                 endIcon={<DirectionsIcon />}
               >
                 Trazar ruta
