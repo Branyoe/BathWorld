@@ -6,6 +6,11 @@ export const mapReducer = (state, action) => {
         isMapReady: true,
         map: action.payload
       }
+    case 'setReset':
+      return {
+        ...state,
+        reset: action.payload
+      }
     case 'setMarkers':
       return {
         ...state,

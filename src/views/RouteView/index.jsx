@@ -22,14 +22,10 @@ export const RouteView = () => {
   const { id } = useParams()
   const navigator = useNavigate();
 
-  const { userLocation, queryLocation } = useContext(UserLocationContext);
+  const { userLocation } = useContext(UserLocationContext);
 
   const [bathroom, setBathroom] = useState();
   const [map, setMap] = useState();
-
-  useEffect(() => {
-    queryLocation();
-  }, [queryLocation]);
 
   useEffect(() => setShow(false), [setShow]);
 

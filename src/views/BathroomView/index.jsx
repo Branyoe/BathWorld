@@ -19,10 +19,10 @@ import bathroomViewStore from "../../stores/bathroomViewStore";
 
 const LABEL_STYLES = {
   margin: 0,
-  fontWeight: 400,
   fontSize: ".9rem",
-  fontFamily: '"Poppins", sans-serif',
-  color: "#606060"
+  color: "#606060",
+  fontFamily: "'Roboto', sans-serif",
+  fontWeight: 400,
 }
 
 export default function BathroomView() {
@@ -88,25 +88,19 @@ export default function BathroomView() {
 
   useEffect(() => {
     if (!bathroom) return
-    const { totalRating } = bathroom;
-    if (!totalRating) {
-      const res = calcRating()
-      saveTotalRating(res);
-      setTotalRating(res);
-    } else {
-      setTotalRating(calcRating());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const res = calcRating()
+    saveTotalRating(res);
+    setTotalRating(res);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bathroom, comments]);
 
   const calcRating = () => {
     let sum = 0;
-    let count = 0;
+    if (!comments.length) return 0
     for (let comment of comments) {
       sum += comment.ratingValue;
-      count++;
     }
-    return sum / count;
+    return sum / comments.length;
   }
 
   const commentVlidationSchema = yup.object({
@@ -236,11 +230,12 @@ export default function BathroomView() {
             <div>
               <p
                 style={{
-                  fontFamily: '"Nunito", sans-serif',
-                  fontWeight: 800,
+                  fontWeight: 700,
                   fontSize: "1.7rem",
                   padding: 0,
                   margin: "10px 0",
+                  fontFamily: "'Roboto', sans-serif",
+                  color: "#161616",
                 }}
               >{bathroom.name}</p>
             </div>
@@ -300,7 +295,7 @@ export default function BathroomView() {
               </Box>
             </Box>
           </Stack>
-          <Stack mx={2} mb={3} mt={2}>
+          <Stack mx={1} mb={3} mt={2}>
             {showDisableRatingInp()}
           </Stack>
           <CommentsAndLocationTabs
@@ -309,7 +304,7 @@ export default function BathroomView() {
           />
         </Box>
         <RatingDialog
-          setShowRatingInp={() => {}}
+          setShowRatingInp={() => { }}
           setHasComment={setHasComment}
           setRatingValue={setRatingValue}
           bathroom={bathroom}

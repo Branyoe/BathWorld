@@ -12,7 +12,8 @@ const INITIAL_STATE = {
   isMiniMapReady: false,
   miniMapMarker: [],
   markers: [],
-  locationMarker: undefined
+  locationMarker: undefined,
+  reset: false
 }
 
 // const createBathMarker = (handleClick) => {
@@ -33,6 +34,10 @@ export const MapProvider = ({ children }) => {
     dispatch({ type: 'setMarkers', payload: data })
   }
 
+  const setReset = (state) => {
+    dispatch({ type: 'setReset', payload: state})
+  }
+
   const setMiniMapMarker = (data) => {
     dispatch({ type: 'setMiniMapMarker', payload: data })
   }
@@ -50,7 +55,7 @@ export const MapProvider = ({ children }) => {
   }
 
   return (
-    <MapContext.Provider value={{ ...state, setMap, setMiniMapMarker,setMiniMap,setMarkers, setLocationMarker }}>
+    <MapContext.Provider value={{ ...state, setReset, setMap, setMiniMapMarker,setMiniMap,setMarkers, setLocationMarker }}>
       {children}
     </MapContext.Provider>
   );

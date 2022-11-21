@@ -74,7 +74,7 @@ markerElement.style.backgroundSize = '100%';
 
 export const CommentsAndLocationTabs = ({ bathroom, data }) => {
   const { map, miniMap, setMiniMap, miniMapMarker } = React.useContext(MapContext);
-  const { userLocation, queryLocation, setIsErrorDialogOpen } = React.useContext(UserLocationContext);
+  const { userLocation, setIsErrorDialogOpen } = React.useContext(UserLocationContext);
 
   const [value, setValue] = React.useState(0);
   const navigator = useNavigate();
@@ -86,10 +86,6 @@ export const CommentsAndLocationTabs = ({ bathroom, data }) => {
   };
 
   const mapContainer = React.useRef(null);
-
-  React.useEffect(() => {
-    queryLocation();
-  }, [queryLocation]);
 
   //agrega y limpia marcadores
   React.useLayoutEffect(() => {

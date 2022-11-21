@@ -6,7 +6,7 @@ import UserLocationContext from "./userLocationContext";
 const INITIAL_STATE = {
   error: "",
   hasError: false,
-  userLocation: null,
+  userLocation: [-103.69741979884205, 19.249016823028587],
   isErrorDialogOpen: false,
 }
 
@@ -15,9 +15,9 @@ const UserLocationProvider = ({children}) => {
 
   
   const queryLocation = () => {
-    getUserLocation()
-      .then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
-      .catch(err => dispatch({ type: 'setHasError', payload: err.message }))
+    dispatch({type: 'setUserLocation', payload: getUserLocation()})
+      // .then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+      // .catch(err => dispatch({ type: 'setHasError', payload: err.message }))
   }
 
   const setIsErrorDialogOpen = (state) => {

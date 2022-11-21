@@ -19,21 +19,26 @@ const createBathMarker = (handleClick) => {
   // markerElement.addEventListener('click', e => {
   //   navigator(`/bathroom/${bathId}`)
   // });
-  return new Marker({ element, anchor: 'bottom'})
+  return new Marker({ element, anchor: 'bottom' })
 }
 
 const MapComponent = () => {
   const { bathrooms } = useContext(BathroomsContext);
-  const { setMap, map, markers, isMapReady,setMarkers} = useContext(MapContext);
-  const { userLocation, setIsErrorDialogOpen, queryLocation } = useContext(UserLocationContext);
+  const { setMap, map, markers, isMapReady, setMarkers, setReset, reset } = useContext(MapContext);
+  const { userLocation } = useContext(UserLocationContext);
   const navigator = useNavigate();
 
   const mapRef = useRef(null)
 
   useEffect(() => {
-    queryLocation();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    console.log(1);
+    if (reset && isMapReady) {
+      console.log(2);
+      map.setCenter([-103.7232060376975, 19.24529521526917]);
+      map.setZoom(11);
+      setReset(false);
+    }
+  }, [reset, isMapReady, map, setReset]);
 
   let i = 0;
 
@@ -61,7 +66,7 @@ const MapComponent = () => {
   // Pinta los marcadores
   useEffect(() => {
     let aux = [];
-    if(isMapReady && bathrooms.length && !markers.length){
+    if (isMapReady && bathrooms.length && !markers.length) {
       markers.forEach(marker => marker.remove());
       console.log("marcadores agregados");
       bathrooms.forEach(bath => {
@@ -83,16 +88,20 @@ const MapComponent = () => {
   //maneja el punto indicador de ubucación del usuario
   const dot = new Marker({ element: GeolocationDot });
   useEffect(() => {
-    if (userLocation) {
-      dot.setLngLat(userLocation)
-      dot.addTo(map)
-      setIsErrorDialogOpen(false);
-    } else {
-      dot?.remove();
-      setIsErrorDialogOpen(true);
+    // if (userLocation) {
+    //   dot.setLngLat(userLocation)
+    //   dot.addTo(map)
+    //   setIsErrorDialogOpen(false);
+    // } else {
+    //   dot?.remove();
+    //   setIsErrorDialogOpen(true);
+    // }
+    if (isMapReady) {
+      dot.setLngLat(userLocation);
+      dot.addTo(map);
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userLocation, map])
+  }, [userLocation, map, isMapReady]);
 
 
   return (

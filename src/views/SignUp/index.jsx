@@ -16,11 +16,13 @@ import Alert from '@mui/material/Alert';
 import L from '@mui/material/Link';
 import appNavBarStore from '../../stores/appNavBarStore';
 import LogoTest from "../../assets/logoTestF.jpg"
+import { MapContext } from '../../context/map/MapContext';
 
 
 const theme = createTheme();
 
 export default function SignUp() {
+  const {setReset} = React.useContext(MapContext)
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const { signUp } = useAuth();
@@ -66,6 +68,7 @@ export default function SignUp() {
         setIsLoading(true);
         await signUp(values.email, values.password);
         setIsLoading(false);
+        setReset(true);
         navigate('/')
       } catch (e) {
         setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
