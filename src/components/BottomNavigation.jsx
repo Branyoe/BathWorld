@@ -11,7 +11,7 @@ import AppIcon from '../assets/logoTestF.jpg'
 import { Icon } from '@mui/material';
 
 const NavAction = (props) => {
-  const CustomBottomNavigationAction = styled(props => <BottomNavigationAction {...props}/>)(
+  const CustomBottomNavigationAction = styled(props => <BottomNavigationAction {...props} />)(
     () => ({
       '&.MuiBottomNavigationAction-root': {
         color: "#bbb",
@@ -25,7 +25,7 @@ const NavAction = (props) => {
     })
   )
 
-  return <CustomBottomNavigationAction {...props}/>
+  return <CustomBottomNavigationAction {...props} />
 }
 
 export default function BottomNavigation() {
@@ -41,16 +41,17 @@ export default function BottomNavigation() {
 
   return (
     <BottomNav
-    showLabels
-    sx={{
-      width: "auto",
-      borderRadius: "10px",
-      boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31)",
-      backgroundColor: "#0147a8",
-      transition: "all .3s",
-    }}
-    value={value}
-    onChange={handleChange}
+      id="nav-bar"
+      showLabels
+      sx={{
+        width: "auto",
+        borderRadius: "10px",
+        boxShadow: "0px 10px 26px -3px rgba(0, 0, 0, 0.31)",
+        backgroundColor: "#0147a8",
+        transition: "all .3s",
+      }}
+      value={value}
+      onChange={handleChange}
     >
       <NavAction
         label="Contacto"
@@ -69,11 +70,11 @@ export default function BottomNavigation() {
         value="home"
         icon={
           <Icon>
-            <img 
+            <img
               src={AppIcon}
               style={{
                 width: "100%"
-              }}  
+              }}
               alt="AppIcon"
             />
           </Icon>

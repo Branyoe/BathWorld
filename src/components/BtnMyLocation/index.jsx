@@ -33,7 +33,7 @@ export const BtnMyLocation = () => {
         justifyContent="end"
         alignItems="end" direction="column"
       >
-        <Fab onClick={handleClick} size="medium" color="primary" aria-label="add">
+        <Fab id="geolocate-btn" onClick={handleClick} size="medium" color="primary" aria-label="add">
           <MyLocationIcon />
         </Fab>
       </Stack>

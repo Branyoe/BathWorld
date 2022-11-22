@@ -69,6 +69,7 @@ export default function SignUp() {
         await signUp(values.email, values.password);
         setIsLoading(false);
         setReset(true);
+        window.localStorage.removeItem('TOUR_KEY')
         navigate('/')
       } catch (e) {
         setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)

@@ -33,6 +33,7 @@ export const SearchBar = () => {
     if (toggleSearchBar) return (
       <>
         <Grid container
+          className="SearchBar"
           sx={{
             bgcolor: "#0147a8",
             width: "100%",
@@ -82,6 +83,7 @@ export const SearchBar = () => {
 
     return (
       <Grid container
+        id="search"
         sx={{
           bgcolor: "#0147a8",
           width: "100px",

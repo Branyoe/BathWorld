@@ -8,8 +8,11 @@ import { BathroomsContext, MapContext } from '../../../context';
 import UserLocationContext from '../../../context/userLocation/userLocationContext';
 import GeolocationDot from './GeolocationDot';
 
-const createBathMarker = (handleClick) => {
+const createBathMarker = (handleClick, identifier) => {
   const element = document.createElement('div');
+  if(identifier){
+    element.setAttribute('id', 'bath-icon');
+  }
   element.className = 'marker';
   element.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathworld_icono.png?alt=media&token=a0b20773-4ef4-46e3-b97f-afb8b28c55ee)';
   element.style.width = `${60}px`;
@@ -31,9 +34,7 @@ const MapComponent = () => {
   const mapRef = useRef(null)
 
   useEffect(() => {
-    console.log(1);
     if (reset && isMapReady) {
-      console.log(2);
       map.setCenter([-103.7232060376975, 19.24529521526917]);
       map.setZoom(11);
       setReset(false);
@@ -45,7 +46,6 @@ const MapComponent = () => {
   //inicializa y reutiliza el mapa 
   useLayoutEffect(() => {
     const initializeMap = ({ setMap, mapRef }) => {
-      console.log("ww");
       const map = new Map({
         container: mapRef.current,
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -70,7 +70,12 @@ const MapComponent = () => {
       markers.forEach(marker => marker.remove());
       console.log("marcadores agregados");
       bathrooms.forEach(bath => {
-        const newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`));
+        let newMarker
+        if(bath.id === "Cf6yHd5QtOLuc8PU5H7k"){
+          newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`), true);
+        }else{
+          newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`));
+        }
         newMarker.setLngLat([bath.lng, bath.lat]);
         newMarker.addTo(map);
         aux.push(newMarker);
