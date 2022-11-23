@@ -24,7 +24,7 @@ export default function SignOutDialog({ open, setOpen, signOut }) {
         <DialogActions>
           <Button onClick={handleClose} autoFocus>Cancelar</Button>
           <Button onClick={signOut} variant="contained" color="error">
-            Serrar sesión
+            Cerrar sesión
           </Button>
         </DialogActions>
       </Dialog>

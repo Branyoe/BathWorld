@@ -56,7 +56,7 @@ const STEPS = [
   },
   {
     content: stepComponent(
-      'Barra de busqueda',
+      'Barra de búsqueda',
       'Úsala para buscar un baño en específico mediante palabras clave.'
     ),
     target: '#search'
@@ -85,7 +85,7 @@ const STEPS = [
   {
     content: stepComponent(
       'Icono baño',
-      'Representa la ubicación de un baño, púlsalo para ver mas información.'
+      'Representa la ubicación de un baño, púlsalo para ver más información.'
     ),
     target: '#bath-icon'
   },
