@@ -56,7 +56,8 @@ export const setTotalBathRating = async (bathId, totalRating, date) => {
     })
   } else {
     await updateDoc(docRef, {
-      totalRating: totalRating
+      totalRating: totalRating,
+      ratingModifiedDate: date
     })
   }
 }

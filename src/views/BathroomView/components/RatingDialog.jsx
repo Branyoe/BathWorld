@@ -14,7 +14,7 @@ import { useAuth } from '../../../context/authContext';
 
 
 
-export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom, setRatingValue ,ratingValue, isOpen, setIsOpen }) {
+export default function RatingDialog({setShowRatingInp, setLabel, setHasComment ,bathroom, setRatingValue ,ratingValue, isOpen, setIsOpen }) {
 
   const { user } = useAuth();
 
@@ -53,6 +53,7 @@ export default function RatingDialog({setShowRatingInp, setHasComment ,bathroom,
     commentFormik.resetForm();
     setRatingValue(0);
     setIsOpen(false);
+    setLabel(false);
   };
 
   return (

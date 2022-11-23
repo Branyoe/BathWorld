@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from "@mui/material";
+import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from "@mui/material";
 import { useAuth } from "../../context/authContext";
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import HistoryIcon from '@mui/icons-material/History';
@@ -9,11 +9,14 @@ import { useEffect, useState } from "react";
 import appNavBarStore from "../../stores/appNavBarStore";
 import bathroomViewStore from "../../stores/bathroomViewStore";
 import ReviewsDialog from "./components/ReviewsDialog";
+import SignOutDialog from "./components/SignOutDialog";
 
 export const UserView = () => {
   const { user, logOut } = useAuth();
   const [openVisits, setOpenVisits] = useState(false);
   const [openReviews, setOpenReviews] = useState(false);
+  const [openSignOut, setOpenSignOut] = useState(false);
+
   const {setShow, setValue} = appNavBarStore(state => ({
     setShow: state.setShow,
     setValue: state.setCurrent
@@ -35,6 +38,7 @@ export const UserView = () => {
   }, [])
 
   const handleLogOutBtn = async () => {
+    setOpenSignOut(false);
     await logOut();
   }
 
@@ -44,11 +48,17 @@ export const UserView = () => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          mt: 3
+          alignItems: "flex-start",
+          mt: 3,
+          pl: 2
         }}
       >
-        <Avatar sx={{ width: "30vw", height: "30vw" }} />
+        <Typography
+          sx={{
+            fontWeight: 700,
+            fontSize: "2rem"
+          }}
+        >Tu perfil</Typography>
       </Stack>
       <Stack>
         <nav aria-label="main mailbox folders">
@@ -86,7 +96,7 @@ export const UserView = () => {
         <nav aria-label="secondary mailbox folders">
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={handleLogOutBtn}>
+              <ListItemButton onClick={() => setOpenSignOut(true)}>
                 <ListItemIcon>
                   <LogoutIcon />
                 </ListItemIcon>
@@ -98,6 +108,7 @@ export const UserView = () => {
       </Stack>
       <VisistsDialog open={openVisits} setOpen={setOpenVisits} user={user}/>
       <ReviewsDialog open={openReviews} setOpen={setOpenReviews} user={user}/>
+      <SignOutDialog open={openSignOut} setOpen={setOpenSignOut} signOut={handleLogOutBtn}/>
     </Box>
   );
 }

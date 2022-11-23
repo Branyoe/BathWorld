@@ -28,6 +28,7 @@ const LABEL_STYLES = {
 export default function BathroomView() {
   // const {setMiniMapMarker, miniMapMarker} = useContext(MapContext)
   const [comments, setComments] = useState([]);
+  const [showLabelRating, setShowLabelRating] = useState(false);
   const [bathroom, setBathroom] = useState();
   const [hasComment, setHasComment] = useState(null);
   const [ratingValue, setRatingValue] = useState(0);
@@ -45,12 +46,13 @@ export default function BathroomView() {
     route: state.route
   }))
 
+  
   useEffect(() => {
     setShow(false);
     // setMiniMapMarker(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  
   useEffect(() => {
     const getB = async () => {
       const b = await getBathroom(id);
@@ -83,7 +85,7 @@ export default function BathroomView() {
   }, [queryComments])
 
   const saveTotalRating = async (value) => {
-    await setTotalBathRating(id, value);
+    await setTotalBathRating(id, value, Date.now());
   }
 
   const calcRating = () => {
@@ -98,9 +100,9 @@ export default function BathroomView() {
   useEffect(() => {
     if (!bathroom || !comments.length) return
     const res = calcRating()
-    // if(res === bathroom.totalRating) return;
-    saveTotalRating(res);
     setTotalRating(res);
+    if(res === bathroom.totalRating) return;
+    saveTotalRating(res);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bathroom, comments]);
 
@@ -149,6 +151,8 @@ export default function BathroomView() {
             ratingValue={ratingValue}
             setRatingValue={setRatingValue}
             setOpenRatingDialog={setOpenRatingDialog}
+            setLabel={setShowLabelRating}
+            label={showLabelRating}
           />
         </Stack>
       </Stack>
@@ -312,6 +316,7 @@ export default function BathroomView() {
           ratingValue={ratingValue}
           isOpen={openRatingDialog}
           setIsOpen={setOpenRatingDialog}
+          setLabel={setShowLabelRating}
         />
       </Box>
     </>
