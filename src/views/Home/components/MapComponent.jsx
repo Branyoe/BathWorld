@@ -35,8 +35,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     if (!isMapReady) return
-    map.resize();
-    console.log(2);
+    map.resize(() => console.log(2));
   }, [map, isMapReady])
 
   useEffect(() => {
