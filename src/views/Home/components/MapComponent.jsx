@@ -10,7 +10,7 @@ import GeolocationDot from './GeolocationDot';
 
 const createBathMarker = (handleClick, identifier) => {
   const element = document.createElement('div');
-  if(identifier){
+  if (identifier) {
     element.setAttribute('id', 'bath-icon');
   }
   element.className = 'marker';
@@ -34,7 +34,7 @@ const MapComponent = () => {
   const mapRef = useRef(null)
 
   useEffect(() => {
-    if(!isMapReady) return
+    if (!isMapReady) return
     map.resize();
     console.log(2);
   }, [map, isMapReady])
@@ -76,9 +76,9 @@ const MapComponent = () => {
       markers.forEach(marker => marker.remove());
       bathrooms.forEach(bath => {
         let newMarker
-        if(bath.id === "Cf6yHd5QtOLuc8PU5H7k"){
+        if (bath.id === "Cf6yHd5QtOLuc8PU5H7k") {
           newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`), true);
-        }else{
+        } else {
           newMarker = createBathMarker(() => navigator(`/bathroom/${bath.id}`));
         }
         newMarker.setLngLat([bath.lng, bath.lat]);
@@ -115,7 +115,15 @@ const MapComponent = () => {
 
 
   return (
-    <Box>
+    <Box style={
+      {
+        height: '100vh',
+        left: 0,
+        position: 'fixed',
+        top: 0,
+        width: '100vw',
+      }
+    }>
       <Box
         id="mainMap"
         ref={mapRef}
