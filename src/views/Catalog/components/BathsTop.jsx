@@ -14,8 +14,8 @@ import MedalIcon from '../../../assets/medal.svg';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const orderRating = (baths) => {
-  let x = baths.sort((function (a, b) {
+const ratingOrder = (baths) => {
+  return baths.sort((function (a, b) {
     if (!a.totalRating) a.totalRating = 0;
     if (!b.totalRating) b.totalRating = 0;
     if (a.totalRating > b.totalRating) {
@@ -26,8 +26,18 @@ const orderRating = (baths) => {
     }
     return 0;
   }));
-  return x;
 }
+
+const dateOrder = (baths) => {
+  return baths.sort((a, b) => {
+    if(!a.ratingModifiedDate) a.ratingModifiedDate = 0
+    if(!b.ratingModifiedDate) b.ratingModifiedDate = 0
+    if(a.ratingModifiedDate > b.ratingModifiedDate) return -1;
+    if(a.ratingModifiedDate < b.ratingModifiedDate) return 1;
+    return 0;
+  });
+}
+
 
 const getTop10 = (baths) => {
   let top = [];
@@ -71,7 +81,7 @@ function SwipeableTextMobileStepper({ bathrooms }) {
 
   React.useEffect(() => {
     if (!bathrooms || !bathrooms?.length) return;
-    setTop10(getTop10(orderRating(bathrooms)));
+    setTop10(getTop10(ratingOrder(dateOrder(bathrooms))));
   }, [bathrooms, setTop10])
 
   const handleNext = () => {
@@ -175,6 +185,7 @@ function SwipeableTextMobileStepper({ bathrooms }) {
                   src={bath.mainPhoto}
                   srcSet={bath.mainPhoto}
                   alt={bath.name}
+                  style={{maxHeight: 200}}
                   loading="lazy"
                 />
                 <ImageListItemBar

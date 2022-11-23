@@ -17,7 +17,7 @@ export const BtnMyLocation = () => {
     }
     setIsErrorDialogOpen(false);
     map?.flyTo({
-      zoom: 14,
+      zoom: 17,
       center: userLocation
     })
   }

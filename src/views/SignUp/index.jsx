@@ -75,7 +75,6 @@ export default function SignUp() {
         setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
         setIsLoading(false);
       }
-      console.log("dataBaseUserQuery");
     },
   });
 

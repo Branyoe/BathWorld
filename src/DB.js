@@ -2,9 +2,9 @@ import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc,
 import { db } from "./dbConf";
 
 export const getBathroom = (id) => getDoc(doc(db, "bathrooms", id));
-export const addComment = ({bathroomId, userEmail, comment, ratingValue, date}) => {
+export const addComment = ({ bathroomId, userEmail, comment, ratingValue, date }) => {
   const newComment = doc(collection(db, "comments"));
-  setDoc(newComment, { bathroomId, userEmail, comment, ratingValue, date});
+  setDoc(newComment, { bathroomId, userEmail, comment, ratingValue, date });
 }
 export const getCommentByUserEmailAndBathroomId = async (userEmail, bathroomId) => {
   const q = query(collection(db, "comments"), where("bathroomId", "==", bathroomId), where("userEmail", "==", userEmail));
@@ -15,11 +15,7 @@ export const getCommentByUserEmailAndBathroomId = async (userEmail, bathroomId) 
     docs.push({ ...doc.data(), id: doc.id });
   });
 
-  return docs.sort((a, b) => {
-    if(a.date > b.date) return 1;
-    if(a.date < b.date) return -1;
-    return 0;
-  });
+  return docs;
 }
 
 
@@ -31,7 +27,13 @@ export const getCommentByUserEmail = async (userEmail) => {
   querySnapshot.forEach((doc) => {
     docs.push({ ...doc.data(), id: doc.id });
   });
-  return docs;
+  return docs.sort((a, b) => {
+    if(!a.date) a.date = 0;
+    if(!b.date) b.date = 0;
+    if (a.date > b.date) return -1;
+    if (a.date < b.date) return 1;
+    return 0;
+  });;
 }
 export const getAllComments = async (bathroomId) => {
   const q = query(collection(db, "comments"), where("bathroomId", "==", bathroomId));
@@ -46,11 +48,17 @@ export const getAllComments = async (bathroomId) => {
 
 
 
-export const setTotalBathRating = async (bathId, totalRating) => {
+export const setTotalBathRating = async (bathId, totalRating, date) => {
   const docRef = doc(db, "bathrooms", bathId)
-  await updateDoc(docRef, {
-    totalRating: totalRating
-  })
+  if (!date) {
+    await updateDoc(docRef, {
+      totalRating: totalRating
+    })
+  } else {
+    await updateDoc(docRef, {
+      totalRating: totalRating
+    })
+  }
 }
 
 export const watchBathrooms = async (setState) => {

@@ -14,9 +14,9 @@ const createBathMarker = (handleClick, identifier) => {
     element.setAttribute('id', 'bath-icon');
   }
   element.className = 'marker';
-  element.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathworld_icono.png?alt=media&token=a0b20773-4ef4-46e3-b97f-afb8b28c55ee)';
-  element.style.width = `${60}px`;
-  element.style.height = `${60}px`;
+  element.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathIconOff.png?alt=media&token=dc9e11ff-aec0-4153-ae16-e709f8b7b2c7)';
+  element.style.width = `${40}px`;
+  element.style.height = `${40}px`;
   element.style.backgroundSize = '100%';
   element.addEventListener('click', handleClick);
   // markerElement.addEventListener('click', e => {
@@ -32,6 +32,12 @@ const MapComponent = () => {
   const navigator = useNavigate();
 
   const mapRef = useRef(null)
+
+  useEffect(() => {
+    if(!isMapReady) return
+    map.resize();
+    console.log(2);
+  }, [map, isMapReady])
 
   useEffect(() => {
     if (reset && isMapReady) {
@@ -68,7 +74,6 @@ const MapComponent = () => {
     let aux = [];
     if (isMapReady && bathrooms.length && !markers.length) {
       markers.forEach(marker => marker.remove());
-      console.log("marcadores agregados");
       bathrooms.forEach(bath => {
         let newMarker
         if(bath.id === "Cf6yHd5QtOLuc8PU5H7k"){

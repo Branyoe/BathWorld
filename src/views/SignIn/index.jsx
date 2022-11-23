@@ -70,7 +70,6 @@ export default function SignIn() {
         setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
         setIsLoading(false);
       }
-      console.log("dataBaseUserQuery");
     },
   });
 

@@ -110,9 +110,9 @@ export const RouteView = () => {
 
     const markerElement = document.createElement('div');
     markerElement.className = 'marker';
-    markerElement.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathworld_icono.png?alt=media&token=a0b20773-4ef4-46e3-b97f-afb8b28c55ee)';
-    markerElement.style.width = `${60}px`;
-    markerElement.style.height = `${60}px`;
+    markerElement.style.backgroundImage = 'url(https://firebasestorage.googleapis.com/v0/b/bathworld-8b1e5.appspot.com/o/bathIconOff.png?alt=media&token=dc9e11ff-aec0-4153-ae16-e709f8b7b2c7)';
+    markerElement.style.width = `${40}px`;
+    markerElement.style.height = `${40}px`;
     markerElement.style.backgroundSize = '100%';
     const newMarker = new Marker({ element: markerElement, anchor: 'bottom' })
     newMarker.setLngLat([bathroom.lng, bathroom.lat])
