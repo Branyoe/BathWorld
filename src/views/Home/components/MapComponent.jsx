@@ -34,6 +34,12 @@ const MapComponent = () => {
   const mapRef = useRef(null)
 
   useEffect(() => {
+    if (!isMapReady) return
+    const res = new ResizeObserver(() => {map.resize(); console.log(2);})
+    res.observe(mapRef.current)
+  }, [map, isMapReady])
+
+  useEffect(() => {
     if (reset && isMapReady) {
       map.setCenter([-103.7232060376975, 19.24529521526917]);
       map.setZoom(11);
