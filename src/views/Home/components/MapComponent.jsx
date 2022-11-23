@@ -35,7 +35,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     if (!isMapReady) return
-    const res = new ResizeObserver(() => {map.resize(); console.log(2);})
+    const res = new ResizeObserver(() => map.resize())
     res.observe(mapRef.current)
   }, [map, isMapReady])
 
