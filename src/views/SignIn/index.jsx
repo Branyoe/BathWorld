@@ -47,10 +47,10 @@ export default function SignIn() {
   });
 
   const dbErrors = {
-    "Firebase: Error (auth/user-not-found).": "Usuario  inexistente",
-    "Firebase: Error (auth/wrong-password).": "Contraseña incorrecta",
-    "Firebase: Error (auth/invalid-email).": "Correo electrónico invalido",
-    "Firebase: Error (auth/network-request-failed).": "Problemas de red"
+    "Firebase: Error (auth/user-not-found).": "Error de autenticación",
+    "Firebase: Error (auth/wrong-password).": "Error de autenticación",
+    "Firebase: Error (auth/invalid-email).": "Error de autenticación",
+    "Firebase: Error (auth/network-request-failed).": "Error de autenticación"
   }
 
   const formik = useFormik({

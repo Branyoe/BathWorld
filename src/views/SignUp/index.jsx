@@ -51,9 +51,9 @@ export default function SignUp() {
   });
 
   const dbErrors = {
-    "Firebase: Error (auth/email-already-in-use).": "Este correo ya está registrado",
-    "Firebase: Error (auth/invalid-email).":  "Correo electrónico invalido",
-    "Firebase: Error (auth/network-request-failed).":  "Problemas de red"
+    "Firebase: Error (auth/email-already-in-use).": "Error de autenticación",
+    "Firebase: Error (auth/invalid-email).":  "Error de autenticación",
+    "Firebase: Error (auth/network-request-failed).":  "Error de autenticación"
   }
 
   const formik = useFormik({
