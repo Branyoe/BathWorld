@@ -38,21 +38,21 @@ export default function SignUp() {
 
   const validationSchema = yup.object({
     email: yup
-      .string('solo texto')
-      .required('campo requerido'),
+      .string('Sólo texto')
+      .required('Campo requerido'),
     password: yup
-      .string('solo texto')
-      .min(8, "minimo 8 carácteres")
-      .required("campo requerido"),
+      .string('Sólo texto')
+      .min(8, "Mínimo 8 caracteres")
+      .required("Campo requerido"),
     confirmPassword: yup
-      .string('solo texto')
-      .required("campo requerido")
-      .oneOf([yup.ref('password'), null], 'las contraseñas no coinciden')
+      .string('Sólo texto')
+      .required("Campo requerido")
+      .oneOf([yup.ref('password'), null], 'Las contraseñas no coinciden')
   });
 
   const dbErrors = {
     "Firebase: Error (auth/email-already-in-use).": "Este correo ya está registrado",
-    "Firebase: Error (auth/invalid-email).":  "Correo electónico invalido",
+    "Firebase: Error (auth/invalid-email).":  "Correo electrónico invalido",
     "Firebase: Error (auth/network-request-failed).":  "Problemas de red"
   }
 
