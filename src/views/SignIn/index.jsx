@@ -38,19 +38,19 @@ export default function SignIn() {
 
   const validationSchema = yup.object({
     email: yup
-      .string('solo texto')
-      .required('campo requerido'),
+      .string('Sólo texto')
+      .required('Campo requerido'),
     password: yup
-      .string('solo texto')
-      .min(8, "minimo 8 carácteres")
-      .required("campo requerido")
+      .string('Sólo texto')
+      .min(8, "Mínimo 8 caracteres")
+      .required("Campo requerido")
   });
 
   const dbErrors = {
-    "Firebase: Error (auth/user-not-found).": "Usuario  inexistente",
-    "Firebase: Error (auth/wrong-password).": "Contraseña incorrecta",
-    "Firebase: Error (auth/invalid-email).": "Correo electónico invalido",
-    "Firebase: Error (auth/network-request-failed).": "Problemas de red"
+    "Firebase: Error (auth/user-not-found).": "Error de autenticación",
+    "Firebase: Error (auth/wrong-password).": "Error de autenticación",
+    "Firebase: Error (auth/invalid-email).": "Error de autenticación",
+    "Firebase: Error (auth/network-request-failed).": "Error de autenticación"
   }
 
   const formik = useFormik({
