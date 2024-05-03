@@ -9,6 +9,7 @@ COPY package*.json ./
 
 # Instala las dependencias del proyecto
 RUN npm install --legacy-peer-deps
+RUN npm install pm2 -g
 
 # Copia el resto de los archivos al directorio de trabajo
 COPY . .
@@ -17,4 +18,5 @@ COPY . .
 EXPOSE 3000
 
 # Comando para iniciar la aplicación
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
+CMD [ "pm2-runtime", "npm", "--", "start" ]
