@@ -1,22 +1,20 @@
-# Usa una imagen base de Node.js
-FROM node:latest
-
-# Establece el directorio de trabajo en /usr/src/app
-WORKDIR /usr/src/app
-
-# Copia el archivo package.json y package-lock.json al directorio de trabajo
+# Etapa de construcción
+FROM node:alpine as build
+WORKDIR /app
 COPY package*.json ./
-
-# Instala las dependencias del proyecto
-RUN npm install --legacy-peer-deps
-RUN npm install pm2 -g
-
-# Copia el resto de los archivos al directorio de trabajo
+# Instala las dependencias de producción
+RUN npm install --production --legacy-peer-deps
 COPY . .
-
-# Expone el puerto 3000 para acceder a la aplicación desde fuera del contenedor
-EXPOSE 3000
-
-# Comando para iniciar la aplicación
-#CMD ["npm", "start"]
-CMD [ "pm2-runtime", "npm", "--", "start" ]
+# Construye la aplicación
+RUN npm run build
+# Etapa final: ejecutar el servidor node.js con PM2
+FROM node:alpine
+WORKDIR /app
+# Copia el build de la etapa anterior a la estapa actual
+COPY --from=build /app/build /app/build
+COPY --from=build /app/server.js /app/server.js
+RUN npm install -g pm2
+RUN npm install express morgan
+EXPOSE 3004
+# Inicia el servidor usando PM2
+CMD ["pm2-runtime", "start", "server.js"]

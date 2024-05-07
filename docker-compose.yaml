@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3004:3004"
     volumes:
-      - .:/usr/src/app
+      - ./:/usr/src/app
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
