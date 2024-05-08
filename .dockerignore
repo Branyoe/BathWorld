@@ -1,6 +1,12 @@
-docker-compose.yaml 
 README.md
 node_modules
-.gitignore
 build
-Dockerfile
+.gitignore
+.npmrc
+docker-compose.dev.yml
+docker-compose.prod.yml
+Dockerfile.dev
+Dockerfile.prod
+.env.dev
+.example.env.dev
+.example.env.prod
