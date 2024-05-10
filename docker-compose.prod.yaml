@@ -1,0 +1,12 @@
+services:
+  app-prod:
+    container_name: app-prod
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - SERVER_SECURITY=${SERVER_SECURITY}

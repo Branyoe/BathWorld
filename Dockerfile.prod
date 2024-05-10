@@ -1,0 +1,23 @@
+# Build stage: Build the react app
+FROM node:alpine as build
+WORKDIR /app
+COPY package*.json ./
+# install production dependencies
+RUN npm install --omit=dev --legacy-peer-deps
+COPY public public
+COPY src src
+# [ISSUE] REACT_APP_FIRE_BASE_API_KEY can't be reading in build time so it's necessary to copy the env file.
+COPY .env.prod .env
+RUN npm run build
+
+# Production stage: Production server
+FROM node:alpine as production
+WORKDIR /app
+# Copy necessary files from build stage to the production stage
+COPY --from=build /app/build build
+COPY --from=build /app/.env .env
+COPY server.js server.js
+RUN npm install -g pm2 && npm install express morgan express-rate-limit
+EXPOSE ${PORT}
+# Run the server with pm2
+CMD ["pm2-runtime", "start", "server.js"]

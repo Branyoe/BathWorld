@@ -29,6 +29,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "dev-srv": "docker compose -f docker-compose.dev.yaml --env-file .env.dev up",
+    "prod-srv": "docker compose -f docker-compose.prod.yaml --env-file .env.prod up",
+    "prod-srv-rebuild": "docker compose -f docker-compose.prod.yaml --env-file .env.prod up --build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -3,7 +3,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
   
 const firebaseConfig = {
-  apiKey: "AIzaSyCpny7mqsrDEYoVytz-o7TFnc0DLwT2coE",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "bathworld-8b1e5.firebaseapp.com",
   projectId: "bathworld-8b1e5",
   storageBucket: "bathworld-8b1e5.appspot.com",
