@@ -4,11 +4,12 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
 
 ## Índice
 
-- [Instalación](#instalación)
-- [Uso](#uso)
-- [Características](#características)
-- [Contribuciones](#contribuciones)
-- [Despliegues](#despliegues)
+- Instalación
+- Entornos
+- Característcas
+- Contribuciones
+
+## [Echa un vistazo 🚀](https://bathworld.onrender.com "ver en navegador")
 
 ## Instalación 🛠️
 
@@ -18,7 +19,7 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
    cd BarhWorld
    ```
 
-## Entornos
+## Entornos ⚙️
 
 ### Desarrollo local
 
@@ -27,27 +28,38 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
    ```bash
    npm install --legacy-peer-deps
    ```
-2. Ejecuta el servidor de desarrollo.
+2. Crea una copia del archivo *".example.env.dev"* llamada *".env"* y sustituye los ejemplos por tus variables.
+3. Ejecuta el servidor de desarrollo.
 
    ```bash
-   npm run dev
+   npm start
    ```
-3. Puedes ver la aplicacion desde [localhost](http://localhost:3004 "link").
+4. Accede al servidor de desarrollo desde *http://localhost:{puerto configurado}*
 
 ### Desarrollo con Docker 🐋
 
+1. Asegurate de que el servicio de docker esté activo.
+2. Crea una copia del archivo *".example.env.dev"* llamada *".env.dev"* y sustituye los ejemplos por tus variables.
+3. Ejectua el servidor de desarrollo con docker.
+
+   ```bash
+   npm run dev-srv
+   ```
+4. Accede al servidor de desarrollo desde *http://localhost:{puerto configurado}*
 
 ### Producción con Docker 🐋
 
-1. Ejecuta el siguiente comando en el directroio del proyecto
+1. Asegurate de que el servicio de docker esté activo.
+2. Crea una copia del archivo *".example.env.prod"* llamada *".env.prod"* y sustituye los ejemplos por tus variables.
+3. Ejecuta el servidor de producción.
 
    ```bash
-   docker compose up -3
+   npm run prod-srv
    ```
-2. (opcional) Monitorea el servidor
+4. [OPCIONAL] Monitorea el servidor
 
    ```bash
-   docker exec -it web-container sh
+   docker exec -it app-prod sh
    ```
 
    despues, ya dentro de la consola del contendor
@@ -55,13 +67,20 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
    ```bash
    pm2 monit
    ```
-3. Puedes ver la aplicacion desde [localhost](http://localhost:3004 "link").
+5. Accede al servidor de producción desde http://localhost:{puerto configurado}
+6. [NOTA] El servidor de producción no reconoce cambios en el codigo fuente, para ver los cambios aplicados ejecuta el siguiente comando.
+
+   ```bash
+   npm run prod-srv-rebuild
+   ```
 
 ## Características ✨
 
 - **Autenticación de usuario**.![mobile](https://github.com/Branyoe/BathWorld/assets/65278575/7d2b95ca-1857-431f-9689-d3df6030b2a5)
-- **Integración con Mapbox**.![mobile (2)](https://github.com/Branyoe/BathWorld/assets/65278575/93361a93-4b88-47be-bc42-2d6ec9a4e457)
-- **Trazado de rutas**.![mobile (3)](https://github.com/Branyoe/BathWorld/assets/65278575/df0af467-2d38-441a-b173-f1519e33b30e)
+- **Integración con Mapbox**.
+  ![mobile (2)](https://github.com/Branyoe/BathWorld/assets/65278575/93361a93-4b88-47be-bc42-2d6ec9a4e457)
+- **Trazado de rutas**.
+  ![mobile (3)](https://github.com/Branyoe/BathWorld/assets/65278575/df0af467-2d38-441a-b173-f1519e33b30e)
 - **Tutorial para el usuario**.
   ![mobile (1)](https://github.com/Branyoe/BathWorld/assets/65278575/a1eec8bb-45e9-4b3f-a3e2-99b2c6a7558c)
 
@@ -76,7 +95,3 @@ Fork el proyecto:
 3. Push a la rama (git push origin feature/nueva-caracteristica).
 4. Abre un pull request.
    Por favor, asegúrate de seguir nuestras pautas de contribución.
-
-## Despliegues 🚀
-
-[BathWorld App](https://shiny-gingersnap-a70b48.netlify.app/)
