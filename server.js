@@ -1,22 +1,29 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
-// Middleware para registrar las solicitudes HTTP
-app.use(morgan('dev'));
+const limiter = rateLimit({
+  windowMs: 30 * 1000, // 30 seconds
+  max: 50 // limit of requests per windowMs
+});
 
-// Sirve los archivos estáticos generados por CRA
+if (process.env.SERVER_SECURITY === 'TRUE') {
+  console.log('---[Request limit enabled]---');
+  app.use(limiter); // request limit
+}
+
+app.use(morgan('dev')); // enable logs
 app.use(express.static(path.join(__dirname, 'build')));
 
-// Ruta de manejo para todas las solicitudes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-// Escucha en el puerto 3000
 const PORT = process.env.PORT || 3004;
+
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`Server on http://localhost:${PORT}`);
 });

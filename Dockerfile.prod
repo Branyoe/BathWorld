@@ -1,23 +1,23 @@
-# Etapa de construcción
+# Build stage: Build the react app
 FROM node:alpine as build
 WORKDIR /app
 COPY package*.json ./
-# Instala las dependencias de producción
+# install production dependencies
 RUN npm install --omit=dev --legacy-peer-deps
 COPY public public
 COPY src src
+# [ISSUE] REACT_APP_FIRE_BASE_API_KEY can't be reading in build time so it's necessary to copy the env file.
 COPY .env.prod .env
-# Construye la aplicación
 RUN npm run build
-# Etapa final: ejecutar el servidor node.js con PM2
-FROM node:alpine
+
+# Production stage: Production server
+FROM node:alpine as production
 WORKDIR /app
-# Copia el build de la etapa anterior a la estapa actual
+# Copy necessary files from build stage to the production stage
 COPY --from=build /app/build build
 COPY --from=build /app/.env .env
 COPY server.js server.js
-RUN npm install -g pm2 && npm install express morgan
-ENV PORT=3004
+RUN npm install -g pm2 && npm install express morgan express-rate-limit
 EXPOSE ${PORT}
-# Inicia el servidor usando PM2
+# Run the server with pm2
 CMD ["pm2-runtime", "start", "server.js"]
