@@ -10,6 +10,11 @@ import { RouteView } from "../views/RouteView";
 import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
 import { UserView } from "../views/User";
+//admin views
+import AdminHome from "../views/admin/AdminHome";
+import AddBath from "../views/admin/AddBath";
+import BathList from "../views/admin/BathList";
+import AdminLayout from "../layouts/AdminLayout";
 
 const RoutesComponent = () => (
   <>
@@ -26,11 +31,16 @@ const RoutesComponent = () => (
               <UserView />
             </ProtectedRoute>
           } />
-          <Route path="/contact" element={<ContactView/>}/>
-          <Route path="/catalog" element={<CatalogView/>}/>
-          <Route path="/catalog/:category" element={<BathCategory/>}/>
+          <Route path="/contact" element={<ContactView />} />
+          <Route path="/catalog" element={<CatalogView />} />
+          <Route path="/catalog/:category" element={<BathCategory />} />
           <Route path="/bathroom/:id" element={<BathroomView />} />
           <Route path="/route/:id" element={<RouteView />} />
+          <Route path="/admin" element={<AdminLayout/>}>
+              <Route path="/admin/" element={<AdminHome />} />
+              <Route path="/admin/add-bath" element={<AddBath />} />
+              <Route path="/admin/bath-list" element={<BathList />} />
+          </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
