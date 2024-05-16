@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as yup from "yup"; 
 import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormHelperText, RadioGroup, Radio } from "@mui/material";
 
-
 const AddBath = () => {
   const validationSchema = yup.object({
     name: yup
@@ -55,7 +54,6 @@ const AddBath = () => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h1 style={{ fontSize: '1.5em', marginBottom: '0.5em' }}>Agregar baño</h1>
       <Stack spacing={2}>
         <TextField
           id="name"
