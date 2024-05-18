@@ -1,0 +1,75 @@
+.admin-home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+  
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+  
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+  
+.welcome {
+    font-size: 18px;
+}
+  
+.main-content {
+    padding: 20px;
+}
+  
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+  
+.baths-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.bath-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px; /* Aumentar el margen inferior para evitar superposición */
+    width: 100%; /* Los baños ocupan el ancho completo de la página */
+}
+
+.buttons button {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px; /* Espacio entre botones */
+}
+  
+.buttons button:hover {
+    background-color: #ddd;
+}
+  
+  
+.add-button {
+    background-color: #007bff; /* Color azul primario de Bootstrap */
+    color: #fff; /* Texto blanco */
+    border: none; /* Eliminar borde */
+    padding: 10px 20px;
+    border-radius: 5px; /* Esquinas redondeadas */
+    cursor: pointer;
+    margin-top: 20px; /* Espacio entre el botón y los baños */
+}
+  
+.add-button:hover {
+    background-color: #0069d9; /* Color azul primario oscuro de Bootstrap */
+}
+  
+  
+  
