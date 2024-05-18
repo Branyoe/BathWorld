@@ -27,6 +27,11 @@ export const addBathroom = ({
   });
 }
 
+export const updateBathroom = async (id, data) => {
+  const docRef = doc(db, "bathrooms", id);
+  await updateDoc(docRef, data);
+}
+
 export const watchBathrooms = async (setState) => {
   const q = query(collection(db, "bathrooms"));
   onSnapshot(q, (querySnapshot) => {
