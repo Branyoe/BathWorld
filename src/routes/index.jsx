@@ -12,9 +12,10 @@ import SignUp from "../views/SignUp";
 import { UserView } from "../views/User";
 //admin views
 import AdminHome from "../views/admin/AdminHome";
-import AddBath from "../views/admin/AddBath";
-import BathList from "../views/admin/BathList";
 import AdminLayout from "../layouts/AdminLayout";
+import AddBathView from "../views/admin/AddBathView";
+import BathListView from "../views/admin/BathListView";
+import EditBathView from "../views/admin/EditBathView";
 
 const RoutesComponent = () => (
   <>
@@ -38,8 +39,9 @@ const RoutesComponent = () => (
           <Route path="/route/:id" element={<RouteView />} />
           <Route path="/admin" element={<AdminLayout/>}>
               <Route path="/admin/" element={<AdminHome />} />
-              <Route path="/admin/add-bath" element={<AddBath />} />
-              <Route path="/admin/bath-list" element={<BathList />} />
+              <Route path="/admin/add-bath" element={<AddBathView />} />
+              <Route path="/admin/bath-list" element={<BathListView />} />
+              <Route path="/admin/edit-bath" element={<EditBathView />} />
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
