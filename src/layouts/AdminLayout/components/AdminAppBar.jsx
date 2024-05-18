@@ -14,6 +14,9 @@ import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppMenu from './AppMenu';
 
+import HomeIcon from '@mui/icons-material/Home';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 function ScrollTop(props) {
   const { children, window } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -59,6 +62,24 @@ ScrollTop.propTypes = {
   window: PropTypes.func,
 };
 
+const AppMenuItems = [
+  {
+    text: "Inicio",
+    path: "/admin",
+    icon: <HomeIcon />,
+  },
+  {
+    text: "Lista de Baños",
+    path: "/admin/baths",
+    icon: <FormatListBulletedIcon />,
+  },
+  {
+    text: "Agregar Baño",
+    path: "/admin/baths/add/",
+    icon: <AddCircleOutlineIcon />,
+  },
+];
+
 export default function AdminAppBar(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -94,7 +115,7 @@ export default function AdminAppBar(props) {
           <KeyboardArrowUpIcon />
         </Fab>
       </ScrollTop>
-      <AppMenu setOpen={setOpen} open={open} />
+      <AppMenu items={AppMenuItems} setOpen={setOpen} open={open} />
     </React.Fragment>
   );
 }

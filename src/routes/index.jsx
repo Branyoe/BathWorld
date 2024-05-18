@@ -41,7 +41,8 @@ const RoutesComponent = () => (
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout/>}>
             <Route index element={<AdminHome />} />
-            <Route path="baths" element={<BathListView/>}>
+            <Route path="baths">
+              <Route index element={<BathListView />} />
               <Route path="add" element={<AddBathView />} />
               <Route path="edit" element={<EditBathView />} />
             </Route>
