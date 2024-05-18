@@ -1,57 +1,56 @@
 import React from "react";
 import { useFormik } from "formik";
-import * as yup from "yup";
-import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText } from "@mui/material"
+import * as yup from "yup"; 
+import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText } from "@mui/material";
 
-const EditBath = ({ bath }) => {
-
+const AddBathView = () => {
   const validationSchema = yup.object({
     name: yup
       .string("Sólo strings")
-			.required("Campo requerido"),
-		address: yup
-			.string("Sólo strings")
-			.required("Campo requerido"),
-		lat: yup
-			.number("Sólo números")
-			.required("Campo requerido"),
-		lng: yup
-			.number("Sólo números")
-			.required("Campo requerido"),
-		imgUrl: yup
-			.string("Sólo strings")
-			.required("Campo requerido"),
-		type: yup
-			.string("Sólo strings")
-			.required("Campo requerido"),
-		tags: yup
-			.array()
-			.min(1, "Selecciona al menos una")
-			.required("Campo requerido")
-	});
+      .required("Campo requerido"),
+    address: yup
+      .string("Sólo strings")
+      .required("Campo requerido"),
+    lat: yup
+      .number("Sólo números")
+      .required("Campo requerido"),
+    lng: yup
+      .number("Sólo números")
+      .required("Campo requerido"),
+    imgUrl: yup
+      .string("Sólo strings")
+      .required("Campo requerido"),
+    type: yup
+      .string("Sólo strings")
+      .required("Campo requerido"),
+    tags: yup
+      .array()
+      .min(1, "Selecciona al menos una")
+      .required("Campo requerido")
+  });
 
-	const formik = useFormik({
-		initialValues: {
-			name: bath.name || "",
-			address: bath.address || "",
-			lat: bath.lat || "",
-			lng: bath.lng || "",
-			imgUrl: bath.imgUrl || "",
-			type: bath.type || "",
-			tags: bath.tags || []
-		},
-		validationSchema: validationSchema,
-		onSubmit: values => console.log(values)
-	});
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      address: "",
+      lat: "",
+      lng: "",
+      imgUrl: "",
+      type: "",
+      tags: []
+    },
+    validationSchema: validationSchema,
+    onSubmit: values => console.log(values)
+  });
 
-	const tagOptions = [
+  const tagOptions = [
     { label: "Oxxo", value: "oxxo" },
     { label: "Escuela", value: "escuela" },
     { label: "Hospital", value: "hospital" },
     { label: "Plaza", value: "plaza" },
     { label: "Restaurante", value: "restaurante" },
     { label: "Tienda", value: "tienda" },
-    { label: "Gasolinera", value: "gasolinera" },
+    { label: "Gasolinera", value: "gasolinera" }
   ];
 
   const handleTagChange = (event) => {
@@ -62,9 +61,9 @@ const EditBath = ({ bath }) => {
     currentIndex === -1 ? newTags.push(value) : newTags.splice(currentIndex, 1);
 
     formik.setFieldValue("tags", newTags);
-  };
+  }
 
-	return (
+  return (
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={2}>
         <TextField
@@ -112,7 +111,7 @@ const EditBath = ({ bath }) => {
           error={formik.touched.lng && Boolean(formik.errors.lng)}
           helperText={formik.touched.lng && formik.errors.lng}
         />
-
+        
         <TextField
           id="imgUrl"
           name="imgUrl"
@@ -138,7 +137,9 @@ const EditBath = ({ bath }) => {
             <MenuItem value="public">Público</MenuItem>
             <MenuItem value="private">Privado</MenuItem>
           </Select>
-          <FormHelperText>{formik.touched.type && formik.errors.type}</FormHelperText>
+          <FormHelperText>
+            {formik.touched.type && formik.errors.type}
+          </FormHelperText>
         </FormControl>
 
         <FormControl component="fieldset" error={formik.touched.tags && Boolean(formik.errors.tags)}>
@@ -159,15 +160,17 @@ const EditBath = ({ bath }) => {
               />
             ))}
           </FormGroup>
-          <FormHelperText>{formik.touched.tags && formik.errors.tags}</FormHelperText>
+          <FormHelperText>
+            {formik.touched.tags && formik.errors.tags}
+          </FormHelperText>
         </FormControl>
 
         <Button color="primary" variant="contained" type="submit">
-          Editar baño
+          Agregar baño
         </Button>
       </Stack>
     </form>
   );
-};
+}
 
-export default EditBath;
+export default AddBathView;
