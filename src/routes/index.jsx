@@ -44,7 +44,7 @@ const RoutesComponent = () => (
             <Route path="baths">
               <Route index element={<BathListView />} />
               <Route path="add" element={<AddBathView />} />
-              <Route path="edit" element={<EditBathView />} />
+              <Route path="edit/:id" element={<EditBathView />} />
             </Route>
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
