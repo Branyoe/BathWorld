@@ -1,5 +1,8 @@
 import * as React from 'react';
+
 import PropTypes from 'prop-types';
+
+// material-ui
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,15 +11,18 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Fab from '@mui/material/Fab';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Fade from '@mui/material/Fade';
 import { IconButton } from '@mui/material';
+// stores
+import adminAppBarStore from '../../../stores/adminAppBarStore';
+// icons
 import MenuIcon from '@mui/icons-material/Menu';
-import AppMenu from './AppMenu';
-
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import HomeIcon from '@mui/icons-material/Home';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+// components
+import AppMenu from './AppMenu';
 function ScrollTop(props) {
   const { children, window } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -83,6 +89,11 @@ const AppMenuItems = [
 export default function AdminAppBar(props) {
   const [open, setOpen] = React.useState(false);
 
+  const { title } = adminAppBarStore(state => ({
+    title: state.title
+  }));
+
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -99,7 +110,7 @@ export default function AdminAppBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div">
-            BathWorld
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>
