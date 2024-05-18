@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText } from "@mui/material"
+import { getBathroom, updateBathroom } from "../../DB";
+import { useParams } from "react-router-dom";
 
-const EditBathView = ({ bath }) => {
+const EditBathView = () => {
+  const [bath, setBath] = useState(null);
+  const { id } = useParams();
 
-  // simulación de datos
-  bath = {
-    name: "Baño Los Rojos",
-    address: "123 Calle Principal",
-    lat: 19.4326,
-    lng: -99.1332,
-    imgUrl: "https://baño.com/image-baño.jpg",
-    type: "public",
-    tags: ["oxxo", "escuela"]
-  };
+  useEffect(() => {
+    const getB = async () => {
+      const bath = await getBathroom(id);
+      setBath({ id: bath.id, ...bath.data() });
+    }
+    getB();
+  }, [id]);
 
   const validationSchema = yup.object({
     name: yup
@@ -32,7 +33,7 @@ const EditBathView = ({ bath }) => {
 		imgUrl: yup
 			.string("Sólo strings")
 			.required("Campo requerido"),
-		type: yup
+		cost: yup
 			.string("Sólo strings")
 			.required("Campo requerido"),
 		tags: yup
@@ -41,28 +42,49 @@ const EditBathView = ({ bath }) => {
 			.required("Campo requerido")
 	});
 
+  // console.log(bath);
+
 	const formik = useFormik({
 		initialValues: {
-			name: bath.name || "",
-			address: bath.address || "",
-			lat: bath.lat || "",
-			lng: bath.lng || "",
-			imgUrl: bath.imgUrl || "",
-			type: bath.type || "",
-			tags: bath.tags || []
+			name: "",
+			address: "",
+			lat: "",
+			lng: "",
+			imgUrl: "",
+			cost: "",
+			tags: []
 		},
 		validationSchema: validationSchema,
-		onSubmit: values => console.log(values)
-	});
+    onSubmit: values => {
+      updateBathroom(bath.id, values);
+    }
+  });
+
+  useEffect(() => {
+    if (bath) {
+      formik.setValues({
+        name: bath.name,
+        address: bath.address,
+        lat: bath.lat,
+        lng: bath.lng,
+        imgUrl: bath.mainPhoto,
+        cost: bath.cost,
+        tags: bath.tags
+      });
+    }
+    // eslint-disable-next-line
+  }, [bath]);
 
 	const tagOptions = [
     { label: "Oxxo", value: "oxxo" },
+    { label: "Kiosko", value: "kiosko" },
     { label: "Escuela", value: "escuela" },
     { label: "Hospital", value: "hospital" },
     { label: "Plaza", value: "plaza" },
     { label: "Restaurante", value: "restaurante" },
     { label: "Tienda", value: "tienda" },
     { label: "Gasolinera", value: "gasolinera" },
+    { label: "Farmacia", value: "farmacia" },
   ];
 
   const handleTagChange = (event) => {
@@ -135,21 +157,21 @@ const EditBathView = ({ bath }) => {
           helperText={formik.touched.imgUrl && formik.errors.imgUrl}
         />
 
-        <FormControl error={formik.touched.type && Boolean(formik.errors.type)}>
-          <InputLabel id="type-label">Tipo</InputLabel>
+        <FormControl error={formik.touched.cost && Boolean(formik.errors.cost)}>
+          <InputLabel id="cost-label">Tipo</InputLabel>
           <Select
-            labelId="type-label"
-            id="type"
-            name="type"
-            value={formik.values.type}
+            labelId="cost-label"
+            id="cost"
+            name="cost"
+            value={formik.values.cost}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             label="Tipo"
           >
-            <MenuItem value="public">Público</MenuItem>
-            <MenuItem value="private">Privado</MenuItem>
+            <MenuItem value="público">Público</MenuItem>
+            <MenuItem value="privado">Privado</MenuItem>
           </Select>
-          <FormHelperText>{formik.touched.type && formik.errors.type}</FormHelperText>
+          <FormHelperText>{formik.touched.cost && formik.errors.cost}</FormHelperText>
         </FormControl>
 
         <FormControl component="fieldset" error={formik.touched.tags && Boolean(formik.errors.tags)}>
