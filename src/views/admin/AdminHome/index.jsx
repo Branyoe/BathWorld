@@ -1,13 +1,25 @@
 import React from 'react';
 import BathItem from './BathItem';
+import SearchBar from './SearchBar';
+import { useState } from 'react';
 import './AdminHome.css';
 
 const AdminHome = () => {
   const user = 'Boyi';
+  const [searchQuery, setSearchQuery] = useState('');
+  const baños = [
+    { title: 'Baño 1', description: 'Baño principal' },
+    { title: 'Baño 2', description: 'Baño de invitados' },
+    { title: 'Baño 3', description: 'Baño infantil' },
+  ];
 
   const handleAdd = () => {
     // Abrir modal o formulario para agregar un nuevo baño (kamey lo hizo)
     console.log('Agregar baño');
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -16,21 +28,19 @@ const AdminHome = () => {
         <h1 className="logo">BathWorld</h1>
         <p className="welcome">Bienvenido, {user}</p>
       </div>
+      <SearchBar placeholder="Buscar baños..." onChange={handleSearchChange} />
       <button className="add-button" onClick={handleAdd}>Agregar</button>
 
       <div className="main-content">
         <h2 className="section-title">Baños</h2>
         <div className="baths-section">
-          {/* Aquí se renderizarán los baños */}
-          <BathItem title="Baño 1" description="Baño principal" />
-          <BathItem title="Baño 2" description="Baño de invitados" />
-          <BathItem title="Baño 3" description="Baño infantil" />
+          {baños.map((baño) => (
+            <BathItem key={baño.title} {...baño} />
+          ))}
         </div>
       </div>
     </div>
   );
 };
-
-
 
 export default AdminHome;
