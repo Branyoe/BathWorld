@@ -19,10 +19,10 @@ import adminAppBarStore from '../../../stores/adminAppBarStore';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import HomeIcon from '@mui/icons-material/Home';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 // components
 import AppMenu from './AppMenu';
+
 function ScrollTop(props) {
   const { children, window } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -71,13 +71,8 @@ ScrollTop.propTypes = {
 const AppMenuItems = [
   {
     text: "Inicio",
-    path: "/admin",
-    icon: <HomeIcon />,
-  },
-  {
-    text: "Lista de Baños",
     path: "/admin/baths",
-    icon: <FormatListBulletedIcon />,
+    icon: <HomeIcon />,
   },
   {
     text: "Agregar Baño",

@@ -4,10 +4,17 @@ import * as yup from "yup";
 import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText } from "@mui/material"
 import { getBathroom, updateBathroom } from "../../DB";
 import { useParams } from "react-router-dom";
+import useAdmAppBarTitle from "../../hooks/useAdmAppBarTitle";
 
 const EditBathView = () => {
   const [bath, setBath] = useState(null);
   const { id } = useParams();
+
+  const [setTitle] = useAdmAppBarTitle();
+
+  useEffect(() => {
+    setTitle("Editar baño");
+  }, [setTitle])
 
   useEffect(() => {
     const getB = async () => {

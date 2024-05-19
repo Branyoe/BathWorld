@@ -11,9 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/material';
 // icons
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useAuth } from '../../../context/authContext';
 
 export default function AppMenu({ open, setOpen, items = [] }) {
-
+  const { user, logOut } = useAuth();
   const navigate = useNavigate();
 
   const toggleMenu = (newOpen) => () => {
@@ -43,8 +44,8 @@ export default function AppMenu({ open, setOpen, items = [] }) {
           p={1}
         >
           <AccountCircleIcon fontSize='large' />
-          <Typography variant="h6">
-            Admin
+          <Typography variant="body2">
+            {user.email}
           </Typography>
         </Stack>
         <Divider />
@@ -66,7 +67,13 @@ export default function AppMenu({ open, setOpen, items = [] }) {
         </List>
       </Box>
       <Stack p={2}>
-        <Button variant="contained" color='error'>Cerrar sesión</Button>
+        <Button
+          variant="contained"
+          color='error'
+          onClick={() => logOut()}
+        >
+          Cerrar sesión
+        </Button>
       </Stack>
     </Box>
   );
