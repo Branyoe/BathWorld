@@ -47,7 +47,6 @@ const RoutesComponent = () => (
               <Route path="edit/:id" element={<EditBathView />} />
             </Route>
           </Route>
-
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
