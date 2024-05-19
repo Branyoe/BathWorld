@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup"; 
 import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText } from "@mui/material";
+import useAdmAppBarTitle from "../../hooks/useAdmAppBarTitle";
 
 const AddBathView = () => {
+
+  const [setTitle] = useAdmAppBarTitle();
+
+  useEffect(() => {
+    setTitle("Agregar baño");
+  }, [setTitle])
+
   const validationSchema = yup.object({
     name: yup
       .string("Sólo strings")

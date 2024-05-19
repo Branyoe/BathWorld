@@ -1,5 +1,8 @@
 import * as React from 'react';
+
 import PropTypes from 'prop-types';
+
+// material-ui
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -8,10 +11,16 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Fab from '@mui/material/Fab';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Fade from '@mui/material/Fade';
 import { IconButton } from '@mui/material';
+// stores
+import adminAppBarStore from '../../../stores/adminAppBarStore';
+// icons
 import MenuIcon from '@mui/icons-material/Menu';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import HomeIcon from '@mui/icons-material/Home';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+// components
 import AppMenu from './AppMenu';
 
 function ScrollTop(props) {
@@ -59,8 +68,26 @@ ScrollTop.propTypes = {
   window: PropTypes.func,
 };
 
+const AppMenuItems = [
+  {
+    text: "Inicio",
+    path: "/admin/baths",
+    icon: <HomeIcon />,
+  },
+  {
+    text: "Agregar Baño",
+    path: "/admin/baths/add/",
+    icon: <AddCircleOutlineIcon />,
+  },
+];
+
 export default function AdminAppBar(props) {
   const [open, setOpen] = React.useState(false);
+
+  const { title } = adminAppBarStore(state => ({
+    title: state.title
+  }));
+
 
   return (
     <React.Fragment>
@@ -78,7 +105,7 @@ export default function AdminAppBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div">
-            BathWorld
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -94,7 +121,7 @@ export default function AdminAppBar(props) {
           <KeyboardArrowUpIcon />
         </Fab>
       </ScrollTop>
-      <AppMenu setOpen={setOpen} open={open} />
+      <AppMenu items={AppMenuItems} setOpen={setOpen} open={open} />
     </React.Fragment>
   );
 }
