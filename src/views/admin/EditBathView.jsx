@@ -49,8 +49,6 @@ const EditBathView = () => {
 			.required("Campo requerido")
 	});
 
-  // console.log(bath);
-
 	const formik = useFormik({
 		initialValues: {
 			name: "",

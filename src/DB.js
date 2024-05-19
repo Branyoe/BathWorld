@@ -114,3 +114,13 @@ export const setTotalBathRating = async (bathId, totalRating, date) => {
     })
   }
 }
+
+// users
+export const getUserRoles = async (email) => {
+  const q = query(collection(db, "users"), where("email", "==", email));
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.empty) {
+    return querySnapshot.docs[0].data(); // Asumiendo que el email es único
+  }
+  return null;
+};

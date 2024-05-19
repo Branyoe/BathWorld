@@ -25,7 +25,7 @@ export default function SignIn() {
   const {setReset} = React.useContext(MapContext);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
   const navigate = useNavigate();
   const { setShow } = appNavBarStore(state => ({
     setShow: state.setShow
@@ -65,7 +65,8 @@ export default function SignIn() {
         await signIn(values.email, values.password);
         setIsLoading(false);
         setReset(true);
-        navigate('/');
+        if (user?.roleCode === 1 || !user?.roleCode) navigate('/');
+        if (user?.roleCode === 2) navigate('/admin/baths');
       } catch (e) {
         setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
         setIsLoading(false);
