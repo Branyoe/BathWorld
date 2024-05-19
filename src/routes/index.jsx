@@ -15,6 +15,7 @@ import AddBathView from "../views/admin/AddBathView";
 import AdminLayout from "../layouts/AdminLayout";
 import EditBathView from "../views/admin/EditBathView";
 import BathListView from "../views/admin/BathListView";
+import UserRoutes from "../components/UserRoutes";
 
 const RoutesComponent = () => (
   <>
@@ -23,23 +24,22 @@ const RoutesComponent = () => (
         <Routes>
           <Route path="/" element={
             <ProtectedRoute>
-              <HomeView />
+              <UserRoutes />
             </ProtectedRoute>
-          } />
-          <Route path="/user" element={
-            <ProtectedRoute>
-              <UserView />
-            </ProtectedRoute>
-          } />
-          <Route path="/contact" element={<ContactView />} />
-          <Route path="/catalog" element={<CatalogView />} />
-          <Route path="/catalog/:category" element={<BathCategory />} />
-          <Route path="/bathroom/:id" element={<BathroomView />} />
-          <Route path="/route/:id" element={<RouteView />} />
+          } >
+            <Route index element={<HomeView />} />
+            <Route path="bathroom" element={<BathroomView />} />
+            <Route path="catalog" element={<CatalogView />} />
+            <Route path="catalog/:category" element={<BathCategory />} />
+            <Route path="contact" element={<ContactView />} />
+            <Route path="route" element={<RouteView />} />
+            <Route path="user" element={<UserView />} />
+          </Route>
+
 
           {/* Admin Routes */}
           <Route path="admin" element={<ProtectedRoute>
-            <AdminLayout/>
+            <AdminLayout />
           </ProtectedRoute>}>
             <Route path="baths">
               <Route index element={<BathListView />} />
@@ -47,7 +47,7 @@ const RoutesComponent = () => (
               <Route path="edit/:id" element={<EditBathView />} />
             </Route>
           </Route>
-          
+
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
