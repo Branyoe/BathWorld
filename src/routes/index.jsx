@@ -11,7 +11,6 @@ import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
 import { UserView } from "../views/User";
 //admin views
-import AdminHome from "../views/admin/AdminHome";
 import AddBathView from "../views/admin/AddBathView";
 import AdminLayout from "../layouts/AdminLayout";
 import EditBathView from "../views/admin/EditBathView";
@@ -39,14 +38,16 @@ const RoutesComponent = () => (
           <Route path="/route/:id" element={<RouteView />} />
 
           {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout/>}>
-            <Route index element={<AdminHome />} />
+          <Route path="admin" element={<ProtectedRoute>
+            <AdminLayout/>
+          </ProtectedRoute>}>
             <Route path="baths">
               <Route index element={<BathListView />} />
               <Route path="add" element={<AddBathView />} />
               <Route path="edit/:id" element={<EditBathView />} />
             </Route>
           </Route>
+          
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routes>
