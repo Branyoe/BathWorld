@@ -6,7 +6,6 @@ import './AdminHome.css';
 
 const AdminHome = () => {
   const user = 'Boyi';
-  const [searchQuery, setSearchQuery] = useState('');
   const baños = [
     { title: 'Baño 1', description: 'Baño principal' },
     { title: 'Baño 2', description: 'Baño de invitados' },
@@ -18,17 +17,13 @@ const AdminHome = () => {
     console.log('Agregar baño');
   };
 
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
   return (
     <div className="admin-home">
       <div className="header">
         <h1 className="logo">BathWorld</h1>
         <p className="welcome">Bienvenido, {user}</p>
       </div>
-      <SearchBar placeholder="Buscar baños..." onChange={handleSearchChange} />
+      <SearchBar placeholder="Buscar baños..." />
       <button className="add-button" onClick={handleAdd}>Agregar</button>
 
       <div className="main-content">
