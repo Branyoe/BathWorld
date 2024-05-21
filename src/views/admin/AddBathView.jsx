@@ -13,9 +13,11 @@ const AddBathView = () => {
   const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     setTitle("Agregar baño");
   }, [setTitle])
+
 
   useEffect(() => {
     if (redirect) {
