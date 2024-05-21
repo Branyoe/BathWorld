@@ -1,16 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup"; 
-import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText } from "@mui/material";
+import { Stack, TextField, Button, Select, MenuItem, FormControl, InputLabel, FormControlLabel, FormLabel, FormGroup, Checkbox, FormHelperText, Snackbar, Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import useAdmAppBarTitle from "../../hooks/useAdmAppBarTitle";
+import { addBathroom } from "../../DB";
 
 const AddBathView = () => {
 
   const [setTitle] = useAdmAppBarTitle();
+  const [successMessage, setSuccessMessage] = useState('');
+  const [redirect, setRedirect] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     setTitle("Agregar baño");
   }, [setTitle])
+
+
+  useEffect(() => {
+    if (redirect) {
+      navigate('/admin/baths/');
+    }
+  }, [redirect, navigate]);
 
   const validationSchema = yup.object({
     name: yup
@@ -48,7 +61,19 @@ const AddBathView = () => {
       tags: []
     },
     validationSchema: validationSchema,
-    onSubmit: values => console.log(values)
+    onSubmit: async ({ name, address, lat, lng, imgUrl, tags }, { resetForm }) => {
+      await addBathroom({
+        name,
+        address,
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+        mainPhoto: imgUrl,
+        cost: 0,
+        tags
+      });
+      setSuccessMessage('Baño agregado correctamente');
+      resetForm();
+    }
   });
 
   const tagOptions = [
@@ -71,113 +96,122 @@ const AddBathView = () => {
     formik.setFieldValue("tags", newTags);
   }
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSuccessMessage('');
+    setRedirect(true);
+  };
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stack spacing={2}>
-        <TextField
-          id="name"
-          name="name"
-          label="Nombre del baño"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-
-        <TextField
-          id="address"
-          name="address"
-          label="Dirección"
-          value={formik.values.address}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.address && Boolean(formik.errors.address)}
-          helperText={formik.touched.address && formik.errors.address}
-        />
-
-        <TextField
-          id="lat"
-          name="lat"
-          label="Latitud"
-          type="number"
-          value={formik.values.lat}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.lat && Boolean(formik.errors.lat)}
-          helperText={formik.touched.lat && formik.errors.lat}
-        />
-
-        <TextField
-          id="lng"
-          name="lng"
-          label="Longitud"
-          type="number"
-          value={formik.values.lng}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.lng && Boolean(formik.errors.lng)}
-          helperText={formik.touched.lng && formik.errors.lng}
-        />
-        
-        <TextField
-          id="imgUrl"
-          name="imgUrl"
-          label="Imagen URL"
-          value={formik.values.imgUrl}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.imgUrl && Boolean(formik.errors.imgUrl)}
-          helperText={formik.touched.imgUrl && formik.errors.imgUrl}
-        />
-
-        <FormControl error={formik.touched.type && Boolean(formik.errors.type)}>
-          <InputLabel id="type-label">Tipo</InputLabel>
-          <Select
-            labelId="type-label"
-            id="type"
-            name="type"
-            value={formik.values.type}
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Stack spacing={2}>
+          <TextField
+            id="name"
+            name="name"
+            label="Nombre del baño"
+            value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            label="Tipo"
-          >
-            <MenuItem value="public">Público</MenuItem>
-            <MenuItem value="private">Privado</MenuItem>
-          </Select>
-          <FormHelperText>
-            {formik.touched.type && formik.errors.type}
-          </FormHelperText>
-        </FormControl>
-
-        <FormControl component="fieldset" error={formik.touched.tags && Boolean(formik.errors.tags)}>
-          <FormLabel component="legend">Tags</FormLabel>
-          <FormGroup>
-            {tagOptions.map((tag) => (
-              <FormControlLabel
-                key={tag.value}
-                control={
-                  <Checkbox
-                    checked={formik.values.tags.includes(tag.value)}
-                    onChange={handleTagChange}
-                    name="tags"
-                    value={tag.value}
-                  />
-                }
-                label={tag.label}
-              />
-            ))}
-          </FormGroup>
-          <FormHelperText>
-            {formik.touched.tags && formik.errors.tags}
-          </FormHelperText>
-        </FormControl>
-
-        <Button color="primary" variant="contained" type="submit">
-          Agregar baño
-        </Button>
-      </Stack>
-    </form>
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
+          />
+          <TextField
+            id="address"
+            name="address"
+            label="Dirección"
+            value={formik.values.address}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.address && Boolean(formik.errors.address)}
+            helperText={formik.touched.address && formik.errors.address}
+          />
+          <TextField
+            id="lat"
+            name="lat"
+            label="Latitud"
+            type="number"
+            value={formik.values.lat}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.lat && Boolean(formik.errors.lat)}
+            helperText={formik.touched.lat && formik.errors.lat}
+          />
+          <TextField
+            id="lng"
+            name="lng"
+            label="Longitud"
+            type="number"
+            value={formik.values.lng}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.lng && Boolean(formik.errors.lng)}
+            helperText={formik.touched.lng && formik.errors.lng}
+          />
+          
+          <TextField
+            id="imgUrl"
+            name="imgUrl"
+            label="Imagen URL"
+            value={formik.values.imgUrl}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.imgUrl && Boolean(formik.errors.imgUrl)}
+            helperText={formik.touched.imgUrl && formik.errors.imgUrl}
+          />
+          <FormControl error={formik.touched.type && Boolean(formik.errors.type)}>
+            <InputLabel id="type-label">Tipo</InputLabel>
+            <Select
+              labelId="type-label"
+              id="type"
+              name="type"
+              value={formik.values.type}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              label="Tipo"
+            >
+              <MenuItem value="public">Público</MenuItem>
+              <MenuItem value="private">Privado</MenuItem>
+            </Select>
+            <FormHelperText>
+              {formik.touched.type && formik.errors.type}
+            </FormHelperText>
+          </FormControl>
+          <FormControl component="fieldset" error={formik.touched.tags && Boolean(formik.errors.tags)}>
+            <FormLabel component="legend">Tags</FormLabel>
+            <FormGroup>
+              {tagOptions.map((tag) => (
+                <FormControlLabel
+                  key={tag.value}
+                  control={
+                    <Checkbox
+                      checked={formik.values.tags.includes(tag.value)}
+                      onChange={handleTagChange}
+                      name="tags"
+                      value={tag.value}
+                    />
+                  }
+                  label={tag.label}
+                />
+              ))}
+            </FormGroup>
+            <FormHelperText>
+              {formik.touched.tags && formik.errors.tags}
+            </FormHelperText>
+          </FormControl>
+          <Button color="primary" variant="contained" type="submit">
+            Agregar baño
+          </Button>
+        </Stack>
+      </form>
+      <Snackbar open={Boolean(successMessage)} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
 
