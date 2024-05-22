@@ -17,12 +17,13 @@ import L from '@mui/material/Link';
 import appNavBarStore from '../../stores/appNavBarStore';
 import LogoTest from "../../assets/logoTestF.jpg"
 import { MapContext } from '../../context/map/MapContext';
+import { getUserRoles } from '../../DB';
 
 
 const theme = createTheme();
 
 export default function SignIn() {
-  const {setReset} = React.useContext(MapContext);
+  const { setReset } = React.useContext(MapContext);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const { signIn, user } = useAuth();
@@ -62,11 +63,12 @@ export default function SignIn() {
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
-        await signIn(values.email, values.password);
-        setIsLoading(false);
+        const userCredential = await signIn(values.email, values.password);
         setReset(true);
-        if (user?.roleCode === 1 || !user?.roleCode) navigate('/');
-        if (user?.roleCode === 2) navigate('/admin/baths');
+        const { roleCode } = await getUserRoles(userCredential.user.email)
+        if (roleCode === 1 || !roleCode) navigate('/');
+        if (roleCode === 2) navigate('/admin/baths');
+        setIsLoading(false);
       } catch (e) {
         setError(dbErrors[e.message] ? dbErrors[e.message] : e.message)
         setIsLoading(false);
@@ -86,7 +88,7 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar 
+          <Avatar
             sx={{ m: 1 }}
             src={LogoTest}
             variant="rounded"
