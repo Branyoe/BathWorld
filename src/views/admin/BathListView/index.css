@@ -1,0 +1,44 @@
+.bathlist {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+
+}
+
+.filter {
+    margin-left: 20px;
+    width: 8rem;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.bath-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.bath-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.add-btn-container {
+    display: flex;
+    justify-content: flex-end;
+}

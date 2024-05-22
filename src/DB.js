@@ -27,6 +27,10 @@ export const addBathroom = ({
   });
 }
 
+export const deleteBathroom = async (id) => {
+  await updateDoc(doc(db, "bathrooms", id), { deleted: true });
+}
+
 export const updateBathroom = async (id, data) => {
   const docRef = doc(db, "bathrooms", id);
   await updateDoc(docRef, data);
