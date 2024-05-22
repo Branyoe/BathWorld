@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+}
+
+.error-code {
+    font-size: 100px;
+    font-weight: 700;
+    color: #1976d2;
+}
+
+.error-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+}
+
+.error-message {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 20px;
+    color: #333;
+}
+
+.error-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #1976d2;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+

@@ -3,6 +3,7 @@ import appNavBarStore from "../../stores/appNavBarStore";
 import { useEffect } from "react";
 import AdminAppBar from "./components/AdminAppBar";
 import { useAuth } from "../../context/authContext";
+import Unauthorized from "../../views/Unauthorized";
 
 const AdminLayout = ({ children }) => {
   const {user} = useAuth();
@@ -15,7 +16,7 @@ const AdminLayout = ({ children }) => {
     setShow(false);
   }, [setShow])
 
-  if (user.roleCode !== 2 ) return <h1>Acceso denegado</h1>;
+  if (user.roleCode !== 2 ) return <Unauthorized />;
 
   return (
     <AdminAppBar>
