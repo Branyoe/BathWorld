@@ -2,10 +2,11 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import BathItem from './Components/BathItem';
-import SearchBar from './Components/SearchBar';
-import CategoryFilter from './Components/CategoryFilter';
+import BathItem from './components/BathItem';
+import SearchBar from './components/SearchBar';
+import CategoryFilter from './components/CategoryFilter';
 import { BathroomsContext } from '../../../context/bathrooms/BathroomsContext';
+import NotFound from './components/NotFound';
 
 import './index.css';
 
@@ -14,7 +15,7 @@ const BathListView = () => {
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const { bathrooms, isLoading } = useContext(BathroomsContext);
+  const { bathrooms, isLoading, handleDeleteBath } = useContext(BathroomsContext);
 
   const handleAdd = () => {
     navigate('/admin/baths/add');
@@ -34,11 +35,12 @@ const BathListView = () => {
     setSelectedCategory(event.target.value);
   }
 
-  const handleDeleteBath = ({ id }) => {
-    return () => {
-      console.log('Delete bath with id:', id);
+  const handleDeleteBathroom = ({ id }) => {
+    return async () => {
+      console.log('Deleting bathroom', id);
+      await handleDeleteBath(id);
     }
-  }
+  };
 
   const filteredBaths = bathrooms.filter((bath) => {
     const matchesSearch = bath.name.toLowerCase().includes(searchQuery) || bath.address.toLowerCase().includes(searchQuery);
@@ -46,12 +48,11 @@ const BathListView = () => {
     let matchesCategory = true;
     if (selectedCategory) matchesCategory = bath.tags.includes(selectedCategory);
 
-
     return matchesSearch && matchesCategory;
   });
 
   if (!isLoading) {
-    return <h1>Cargando...</h1>;
+    return <h1>Loading...</h1>;
   }
 
   return (
@@ -65,9 +66,13 @@ const BathListView = () => {
 
       <div className="main-content">
         <div>
-          {filteredBaths.map((bath) => (
-            <BathItem key={bath.id} {...bath} onEdit={handleEditBath(bath)} onDelete={handleDeleteBath(bath)}/>
-          ))}
+          {filteredBaths.length > 0 ? (
+            filteredBaths.map((bath) => (
+              <BathItem key={bath.id} {...bath} onEdit={handleEditBath(bath)} onDelete={handleDeleteBathroom(bath)}/>
+            ))
+          ) : (
+            <NotFound />
+          )}
         </div>
         <div className="add-btn-container">
           <Fab color="primary" aria-label="add" onClick={handleAdd}>

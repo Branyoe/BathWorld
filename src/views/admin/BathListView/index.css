@@ -42,3 +42,28 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.container-not-found {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.error-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #1976d2;
+}
+
+.error-message {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+}
+
+.notfound-image {
+    width: 40%;
+    height: auto;
+}
