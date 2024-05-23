@@ -11,6 +11,11 @@ export const BathroomsReducer = (state, action) => {
         ...state,
         bathrooms: action.payload
       }
+    case 'deleteBath':
+        return {
+          ...state,
+          bathrooms: state.bathrooms.filter((bath) => bath.id !== action.payload)
+        }
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useReducer } from "react";
 import { BathroomsContext } from "./BathroomsContext";
 import { BathroomsReducer } from "./BathroomsReducer";
-import { watchBathrooms } from "../../DB"
+import { watchBathrooms, deleteBathroom } from "../../DB"
 
 const INITIAL_STATE = {
   isLoading: true,
@@ -32,8 +32,17 @@ export const BathroomsProvider = ({ children }) => {
     queryBathrooms()
   }, [queryBathrooms]);
 
+  const handleDeleteBath = async (id) => {
+    try {
+      await deleteBathroom(id);
+      dispatch({ type: 'deleteBath', payload: id });
+    } catch (error) {
+      console.error('Error deleting bathroom', error);
+    }
+  }
+
   return (
-    <BathroomsContext.Provider value={{ ...state}}>
+    <BathroomsContext.Provider value={{ ...state, handleDeleteBath}}>
       {children}
     </BathroomsContext.Provider>
   );

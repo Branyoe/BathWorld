@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { db } from "./dbConf";
 
 // Bathrooms
@@ -28,7 +28,7 @@ export const addBathroom = ({
 }
 
 export const deleteBathroom = async (id) => {
-  await updateDoc(doc(db, "bathrooms", id), { deleted: true });
+  await deleteDoc(doc(db, "bathrooms", id));
 }
 
 export const updateBathroom = async (id, data) => {
