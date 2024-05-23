@@ -28,11 +28,11 @@ const RoutesComponent = () => (
             </ProtectedRoute>
           } >
             <Route index element={<HomeView />} />
-            <Route path="bathroom" element={<BathroomView />} />
+            <Route path="bathroom/:id" element={<BathroomView />} />
             <Route path="catalog" element={<CatalogView />} />
             <Route path="catalog/:category" element={<BathCategory />} />
             <Route path="contact" element={<ContactView />} />
-            <Route path="route" element={<RouteView />} />
+            <Route path="route/:id" element={<RouteView />} />
             <Route path="user" element={<UserView />} />
           </Route>
 
