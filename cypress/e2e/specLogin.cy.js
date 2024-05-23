@@ -1,13 +1,13 @@
-describe("BathWorld App", () => {
+describe("BathWorld Login", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000");
+    cy.visit("http://localhost:3000/sign-in");
   });
 
-  it("Frontend can be opened", () => {
+  it("El frontend se renderiza", () => {
     cy.contains("Inicia sesión").should("be.visible");
   });
 
-  it("Login form can be used", () => {
+  it("El formulario del login puede ser usado", () => {
     cy.get("form").should("be.visible");
     cy.get("input:first").type("luis@luis.com");
     cy.get("input:last").type("luisluis");
