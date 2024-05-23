@@ -26,7 +26,7 @@ export default function SignIn() {
   const { setReset } = React.useContext(MapContext);
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState("");
-  const { signIn, user } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   const { setShow } = appNavBarStore(state => ({
     setShow: state.setShow
