@@ -16,6 +16,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import EditBathView from "../views/admin/EditBathView";
 import BathListView from "../views/admin/BathListView";
 import UserRoutes from "../components/UserRoutes";
+import StatusMsg from "../views/StatusMsg";
 
 const RoutesComponent = () => (
   <>
@@ -50,6 +51,17 @@ const RoutesComponent = () => (
 
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-in" element={<SignIn />} />
+
+          <Route
+            path="*"
+            element={
+              <StatusMsg
+                status={404}
+                title={"Ruta no encontrada"}
+                msg="Al parecer esta ruta no existe"
+              />
+            }
+          />
         </Routes>
       </AppNavBar>
     </BrowserRouter>
