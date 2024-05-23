@@ -81,7 +81,13 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
 
 ### Pruebas con Cypress
 
-1. Ejecutar el comando
+1. Instalar Cypress
+
+   ```bash
+   npm i cypress -D
+   ```
+
+2. Ejecutar el comando
 
    ```bash
    npm run cypress:open
