@@ -28,34 +28,38 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
    ```bash
    npm install --legacy-peer-deps
    ```
-2. Crea una copia del archivo *".example.env.dev"* llamada *".env"* y sustituye los ejemplos por tus variables.
+
+2. Crea una copia del archivo _".example.env.dev"_ llamada _".env"_ y sustituye los ejemplos por tus variables.
 3. Ejecuta el servidor de desarrollo.
 
    ```bash
    npm start
    ```
-4. Accede al servidor de desarrollo desde *http://localhost:{puerto configurado}*
+
+4. Accede al servidor de desarrollo desde _http://localhost:{puerto configurado}_
 
 ### Desarrollo con Docker 🐋
 
 1. Asegurate de que el servicio de docker esté activo.
-2. Crea una copia del archivo *".example.env.dev"* llamada *".env.dev"* y sustituye los ejemplos por tus variables.
+2. Crea una copia del archivo _".example.env.dev"_ llamada _".env.dev"_ y sustituye los ejemplos por tus variables.
 3. Ejectua el servidor de desarrollo con docker.
 
    ```bash
    npm run dev-srv
    ```
-4. Accede al servidor de desarrollo desde *http://localhost:{puerto configurado}*
+
+4. Accede al servidor de desarrollo desde _http://localhost:{puerto configurado}_
 
 ### Producción con Docker 🐋
 
 1. Asegurate de que el servicio de docker esté activo.
-2. Crea una copia del archivo *".example.env.prod"* llamada *".env.prod"* y sustituye los ejemplos por tus variables.
+2. Crea una copia del archivo _".example.env.prod"_ llamada _".env.prod"_ y sustituye los ejemplos por tus variables.
 3. Ejecuta el servidor de producción.
 
    ```bash
    npm run prod-srv
    ```
+
 4. [OPCIONAL] Monitorea el servidor
 
    ```bash
@@ -67,12 +71,23 @@ Permite al usuario ubicar y calificar los mejores y más cercanos baños publico
    ```bash
    pm2 monit
    ```
+
 5. Accede al servidor de producción desde http://localhost:{puerto configurado}
 6. [NOTA] El servidor de producción no reconoce cambios en el codigo fuente, para ver los cambios aplicados ejecuta el siguiente comando.
 
    ```bash
    npm run prod-srv-rebuild
    ```
+
+### Pruebas con Cypress
+
+1. Ejecutar el comando
+
+   ```bash
+   npm run cypress:open
+   ```
+
+2. Seleccionar el tipo de testing (el utilizado ahorita es E2E).
 
 ## Características ✨
 
